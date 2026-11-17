@@ -10,6 +10,7 @@
     "not_found_handling": "404-page",
     "run_worker_first": ["/edit", "/edit/*"]
   },
+  "ai": { "binding": "AI" },
   "vars": { "GITHUB_REPO": "darpanarora82/gta6-tracker" },
   "observability": { "enabled": true }
 }

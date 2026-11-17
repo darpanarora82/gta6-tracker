@@ -12,6 +12,11 @@ and still mirrored on Vercel (gta6-tracker-snowy.vercel.app). Every push to `mai
 - Write every name and note in our own words. Never copy text from other guide sites.
 - Commit messages end with the attribution lines from the session's system reminder.
 
+## Before editing anything
+
+The owner publishes items from `/edit`, which commits to `main` directly. **Always pull the latest `main`
+(especially `data.json` and `src/assets/img/items/`) before changing files**, or you will overwrite published items.
+
 ## Adding tracker items from the owner's screenshots
 
 The owner plays on PS5, sends screenshots with a few words each, and Claude turns them into items.
@@ -43,6 +48,11 @@ The owner plays on PS5, sends screenshots with a few words each, and Claude turn
 5. Run `node build.mjs` to check it builds, commit to `main`, push, and reply with the list of IDs that went live.
 
 ## The owner's own editor
+
+`/edit` also has **Quick add with AI**: the owner picks several screenshots, adds a hint (typed or spoken),
+and `POST /edit/draft` asks Workers AI (`@cf/meta/llama-3.2-11b-vision-instruct`, free daily allowance) to
+draft each item. The owner reviews the drafts and presses **Publish all**.
+
 
 `/edit` (password: Cloudflare secret `EDIT_PASSWORD`) lets the owner add drafts with a screenshot and press
 **Publish drafts**. `worker.js` uploads photos and commits items to GitHub in one commit, using the Cloudflare

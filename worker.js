@@ -4,6 +4,7 @@
 //   /edit           password-protected tracker editor
 //   /edit/blob      uploads one photo to GitHub (streamed straight through)
 //   /edit/publish   commits new tracker items (and their photos) to GitHub in one commit
+//   /edit/draft     asks Workers AI (free daily allowance) to draft an item from a screenshot + hint
 // Secrets (Cloudflare → Settings → Variables and Secrets, type Secret):
 //   EDIT_PASSWORD   password for the editor
 //   GITHUB_TOKEN    fine-grained GitHub token with Contents: read and write on this repo only
@@ -95,6 +96,49 @@ async function publish(request, env) {
   return json({ ok: false, error: "The site changed while publishing. Try again." }, 409);
 }
 
+
+const VISION = "@cf/meta/llama-3.2-11b-vision-instruct";
+async function draft(request, env) {
+  const { image, hint, categories, regions } = await request.json();
+  if (typeof image !== "string" || !image.startsWith("data:image/")) return json({ ok: false, error: "Send a screenshot" }, 400);
+  const cats = (categories || []).map((c) => `- ${c.id}: ${c.name}${c.desc ? " – " + c.desc : ""}`).join("\n");
+  const system = `You help write a GTA 6 100% completion tracker. From a game screenshot and the player's short hint, draft ONE tracker item.
+Reply with JSON only, no other text:
+{"name": "...", "category": "...", "region": "...", "note": "...", "missable": false, "spoiler": false, "regionSure": true}
+Rules:
+- name: short and specific, max 60 characters, like "Jacket from the stranger" or "#3 – under the north pier". No full sentences.
+- category: one of these ids:
+${cats}
+- region: exactly one of ${JSON.stringify(regions || [])}, or "" if unknown. Use the hint first. Set regionSure to false if you are guessing.
+- note: 1-2 plain sentences telling another player how to find or complete it. Use the hint's facts; add only what the screenshot clearly shows. Never invent map locations.
+- missable: true only if the hint says it can be missed for good.
+- spoiler: true if it names a mission, a story event or a character twist. Collectibles and general activities are not spoilers.`;
+  const run = () => env.AI.run(VISION, { messages: [{ role: "system", content: system }, { role: "user", content: `Player's hint: ${clean(hint, 500) || "(none)"}` }], image, max_tokens: 300, temperature: 0.2 });
+  let out;
+  try { out = await run(); } catch (e) {
+    const m = String(e && e.message || e);
+    if (/agree|licen[cs]e/i.test(m)) return json({ ok: false, error: "The AI model's licence hasn't been accepted for this account yet." }, 503);
+    if (/neuron|limit|quota|429|4006/i.test(m)) return json({ ok: false, error: "Today's free AI allowance is used up. It resets at 05:30 IST." }, 429);
+    throw e;
+  }
+  const text = String(out && (out.response ?? out.result?.response) || "");
+  const match = text.match(/\{[\s\S]*\}/);
+  let d = {};
+  try { d = match ? JSON.parse(match[0]) : {}; } catch { d = {}; }
+  const catIds = (categories || []).map((c) => c.id);
+  const res = {
+    name: clean(d.name, 80),
+    cat: catIds.includes(d.category) ? d.category : "",
+    region: (regions || []).includes(d.region) ? d.region : "",
+    note: clean(d.note, 600),
+    missable: d.missable === true,
+    spoiler: d.spoiler === true,
+    regionSure: d.regionSure !== false && (regions || []).includes(d.region),
+  };
+  if (!res.name && !res.note) return json({ ok: false, error: "The AI couldn't read this one. Fill it in by hand." }, 502);
+  return json({ ok: true, draft: res });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -103,6 +147,10 @@ export default {
     if (!env.EDIT_PASSWORD) return denied("Editor is locked: add the EDIT_PASSWORD secret in Cloudflare.");
     if (!authorised(request, env)) return denied("Sign in to use the editor.");
 
+    if (request.method === "POST" && p === "/edit/draft") {
+      if (!env.AI) return json({ ok: false, error: "AI isn't connected to this Worker." }, 500);
+      try { return await draft(request, env); } catch (e) { return json({ ok: false, error: "AI error: " + (e.message || e) }, 502); }
+    }
     if (request.method === "POST" && (p === "/edit/blob" || p === "/edit/publish")) {
       if (!env.GITHUB_TOKEN || !env.GITHUB_REPO) return json({ ok: false, error: "Publishing isn't set up: add the GITHUB_TOKEN secret in Cloudflare." }, 500);
       try {
