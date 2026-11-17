@@ -1,5 +1,5 @@
 {
-  "intro": "GTA 6 launches on Thursday 19 November 2026 on PS5 and Xbox Series X|S. It unlocks at midnight local time, country by country, so the launch rolls around the world over about 19 hours.",
+  "intro": "GTA 6 launches on Thursday 19 November 2026 on PS5 and Xbox Series X|S. It unlocks at midnight local time, country by country, so launch rolls around the world over about 19 hours.",
   "sources": [
     {
       "title": "Digit – GTA 6 India unlock time",
@@ -22,8 +22,8 @@
       "url": "https://www.noobfeed.com/articles/gta-6-know-before-launch"
     },
     {
-      "title": "PC Gamer – PC release outlook",
-      "url": "https://pcgamer.com/games/grand-theft-auto/gta-6-pc-release-date/"
+      "title": "Dexerto – GamesBeat report on the PC version",
+      "url": "https://www.dexerto.com/gta/gta-6-releasing-on-pc-much-earlier-than-expected-report-3418569/"
     }
   ],
   "facts": [
@@ -36,8 +36,9 @@
       "value": "PS5, Xbox Series X|S"
     },
     {
-      "label": "Unlocks in India",
-      "value": "12:00 AM IST"
+      "label": "Unlocks for you",
+      "value": "12:00 AM, 19 Nov",
+      "dyn": "unlock"
     },
     {
       "label": "Pre-load",
@@ -49,7 +50,7 @@
     },
     {
       "label": "PC",
-      "value": "Not announced"
+      "value": "Q1 2027 (reported)"
     }
   ],
   "unlocks": [
@@ -159,7 +160,7 @@
   ],
   "notes": [
     "Online: Rockstar describes GTA 6 as a single-player experience. No online mode has been announced, and dates you see elsewhere are rumours.",
-    "PC: no date or window yet. GTA V took about 18 months to reach PC; PC Gamer's best guess is not before November 2027.",
+    "PC: not at launch. GamesBeat reported, citing four sources, that it's planned for January to March 2027. Rockstar hasn't confirmed it.",
     "Playing early: some players switch to a New Zealand account or region. On PlayStation that needs a separate NZ account and a copy bought from that store."
   ]
 }

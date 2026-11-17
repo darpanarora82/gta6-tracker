@@ -1,5 +1,17 @@
 {
   "buildCommand": "node build.mjs",
   "outputDirectory": "dist",
-  "trailingSlash": true
+  "trailingSlash": true,
+  "redirects": [
+    {
+      "source": "/countdown",
+      "destination": "/launch/",
+      "permanent": true
+    },
+    {
+      "source": "/countdown/",
+      "destination": "/launch/",
+      "permanent": true
+    }
+  ]
 }
