@@ -19,3 +19,15 @@ Fan-made GTA 6 guide with a 100% tracker. Vercel builds it on every commit by ru
 - Write descriptions in your own words and keep a source link for every fact.
 - Never change a published tracker item ID.
 - To preview locally: `node build.mjs`, then serve the `dist` folder (e.g. `npx serve dist`).
+
+## Hosting on Cloudflare (Workers)
+
+The same repo deploys to Cloudflare Workers. Static pages are served free and unlimited; the small
+`worker.js` only runs for `/edit` to check the password.
+
+- Config: `wrangler.jsonc` (serves `./dist`, runs the worker first for `/edit`).
+- Build command: `node build.mjs` · Deploy command: `npx wrangler deploy`.
+- Secret: `EDIT_PASSWORD` (Settings → Variables and Secrets → type Secret).
+- Analytics: create a site in Cloudflare Web Analytics, then add a build variable
+  `CF_ANALYTICS_TOKEN` with its token. On Vercel, Vercel Analytics is used automatically.
+- Redirects live in `dist/_redirects`, cache headers in `dist/_headers` (both written by the build).

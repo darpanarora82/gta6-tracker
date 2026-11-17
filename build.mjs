@@ -28,6 +28,12 @@ const placeById = Object.fromEntries(C.places.items.map((p) => [p.id, p]));
 const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const fmtDate = (iso) => new Date(iso + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
 const pages = [];
+// Visitor analytics: Vercel Analytics when built on Vercel, Cloudflare Web Analytics when CF_ANALYTICS_TOKEN is set.
+const ANALYTICS = process.env.VERCEL
+  ? `<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>\n<script defer src="/_vercel/insights/script.js"></script>`
+  : process.env.CF_ANALYTICS_TOKEN
+    ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='${JSON.stringify({ token: process.env.CF_ANALYTICS_TOKEN })}'></script>`
+    : "";
 const SITE_CSS = fs.readFileSync(path.join(ROOT, "src/assets/site.css"), "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/\s*\n\s*/g, "\n");
 
 function write(rel, html) {
@@ -138,8 +144,7 @@ function layout({ url, title, description, body, jsonld, script }) {
 <style>html{background:#1b1d24;color-scheme:dark}</style>
 ${HEAD_FX}
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
-<script defer src="/_vercel/insights/script.js"></script>
+${ANALYTICS}
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>${SITE_CSS}</style>
@@ -546,6 +551,8 @@ write("countdown/index.html", `<!DOCTYPE html><html lang="en"><head><meta charse
 
 const today = new Date().toISOString().slice(0, 10);
 write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map((u) => `  <url><loc>${SITE}${u}</loc><lastmod>${today}</lastmod></url>`).join("\n")}\n</urlset>\n`);
+write("_redirects", "/countdown /launch/ 301\n/countdown/ /launch/ 301\n");
+write("_headers", "/assets/img/*\n  Cache-Control: public, max-age=604800\n/assets/*.js\n  Cache-Control: public, max-age=3600\n");
 write("robots.txt", `User-agent: *\nDisallow: /edit\nSitemap: ${SITE}/sitemap.xml\n`);
 
 console.log(`Built ${pages.length} pages into dist/`);
