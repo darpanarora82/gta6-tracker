@@ -28,6 +28,7 @@ const placeById = Object.fromEntries(C.places.items.map((p) => [p.id, p]));
 const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const fmtDate = (iso) => new Date(iso + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
 const pages = [];
+const SITE_CSS = fs.readFileSync(path.join(ROOT, "src/assets/site.css"), "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/\s*\n\s*/g, "\n");
 
 function write(rel, html) {
   const file = path.join(OUT, rel);
@@ -118,7 +119,7 @@ const NAV = [
 function layout({ url, title, description, body, jsonld, script }) {
   pages.push(url);
   const full = url === "/" ? `${SITE_NAME}: release times, prices, characters, map and 100% tracker` : `${title} | ${SITE_NAME}`;
-  const nav = NAV.map(([h, l]) => `<a href="${h}"${h === url || (h !== "/" && url.startsWith(h)) ? ' aria-current="page"' : ""}${h === "/tracker/" ? ' class="cta"' : ""}>${l}</a>`).join("");
+  const nav = NAV.filter(([h]) => h !== "/tracker/").map(([h, l]) => `<a href="${h}"${h === url || (h !== "/" && url.startsWith(h)) ? ' aria-current="page"' : ""}${h === "/tracker/" ? ' class="cta"' : ""}>${l}</a>`).join("");
   return `<!DOCTYPE html>
 <html lang="en-IN">
 <head>
@@ -141,12 +142,12 @@ ${HEAD_FX}
 <script defer src="/_vercel/insights/script.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/site.css">
+<style>${SITE_CSS}</style>
 <script defer src="/assets/region.js"></script>
 ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld).replace(/</g, "\\u003c")}</script>` : ""}
 </head>
 <body>
-<header class="bar"><div class="wrap"><a class="logo" href="/" aria-label="${SITE_NAME} home"><span><b>GTA 6 Guide</b><small>Leonida field guide</small></span></a><nav class="nav" aria-label="Main">${nav}</nav></div></header>
+<header class="bar"><div class="wrap"><a class="logo" href="/" aria-label="${SITE_NAME} home">${LOGO_MARK}<span><b>GTA 6 Guide</b><small>Leonida field guide</small></span></a><nav class="nav" aria-label="Main">${nav}</nav><a class="hcta${url === "/tracker/" ? " on" : ""}" href="/tracker/"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l3.5 3.5L16 5.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>100% Tracker</a></div></header>
 ${body}
 <footer class="site"><div class="wrap">
   <div class="cols"><nav aria-label="Footer"><a href="/">Home</a>${NAV.map(([h, l]) => `<a href="${h}">${l}</a>`).join("")}<a href="/about/">About</a></nav></div>
@@ -157,8 +158,16 @@ ${body}
 </html>`;
 }
 
+
+const LOGO_MARK = `<svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><defs><linearGradient id="lgS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe27a"/><stop offset=".55" stop-color="#ff8a5b"/><stop offset="1" stop-color="#e2457a"/></linearGradient><clipPath id="lgC"><rect width="40" height="40" rx="11"/></clipPath></defs><g clip-path="url(#lgC)"><rect width="40" height="40" fill="#1a1238"/><circle cx="20" cy="25" r="12" fill="url(#lgS)"/><g fill="#1a1238"><rect y="24" width="40" height="1.6"/><rect y="28" width="40" height="2.2"/><rect y="32.5" width="40" height="2.8"/></g><rect y="36" width="40" height="4" fill="#1a1238"/></g><rect x=".75" y=".75" width="38.5" height="38.5" rx="10.3" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.5"/></svg>`;
+const ARROW = `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4.5L7 10l5.5 5.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const crumbBar = (crumbs) => {
+  const links = crumbs.filter(([h]) => h), parent = links[links.length - 1];
+  const here = crumbs[crumbs.length - 1];
+  return `<nav class="crumbs" aria-label="Breadcrumb"><a class="back" href="${parent[0]}">${ARROW}<span>${parent[1] === "Home" ? "Back to home" : "All " + esc(parent[1].toLowerCase())}</span></a><span class="trail">${crumbs.map(([h, l]) => (h ? `<a href="${h}">${esc(l)}</a>` : `<span aria-current="page">${esc(l)}</span>`)).join('<i aria-hidden="true">/</i>')}</span></nav>`;
+};
 const pageHead = (crumbs, title, lede) => `<section class="pagehead"><div class="wrap">
-  <div class="crumbs">${crumbs.map(([h, l]) => (h ? `<a href="${h}">${esc(l)}</a>` : esc(l))).join(" / ")}</div>
+  ${crumbBar(crumbs)}
   <div class="plate"><div><h1>${esc(title)}</h1></div></div>
   ${lede ? `<p class="lede">${esc(lede)}</p>` : ""}
 </div></section>`;
@@ -180,7 +189,7 @@ const LB_SCRIPT = `(function(){var set=[],i=0,box,img,cap,last;function build(){
 const YT_SCRIPT = `document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".play[data-yt]");if(!b)return;var f=document.createElement("iframe");f.src="https://www.youtube-nocookie.com/embed/"+b.dataset.yt+"?autoplay=1&rel=0";f.title=b.getAttribute("aria-label");f.allow="autoplay; encrypted-media; picture-in-picture; fullscreen";f.allowFullscreen=true;b.replaceWith(f)});`;
 
 const HEAD_FX = `<script type="speculationrules">{"prefetch":[{"where":{"href_matches":"/*"},"eagerness":"moderate"}]}</script>
-<script>(function(){var d=document.documentElement;if("onpagereveal" in window)return;d.classList.add("fx");addEventListener("pageshow",function(){d.classList.remove("leaving")});document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a||e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||a.target||a.hasAttribute("download")||a.dataset.lb!==undefined)return;var u=new URL(a.href,location.href);if(u.origin!==location.origin||(u.pathname===location.pathname&&u.hash))return;if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;e.preventDefault();d.classList.add("leaving");setTimeout(function(){location.href=u.href},140)})})();</script>`;
+<script>(function(){var d=document.documentElement,seen={};function pf(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a||a.target)return;var u=new URL(a.href,location.href);if(u.origin!==location.origin||u.pathname===location.pathname||seen[u.pathname])return;seen[u.pathname]=1;var l=document.createElement("link");l.rel="prefetch";l.href=u.pathname;document.head.appendChild(l)}if(!HTMLScriptElement.supports||!HTMLScriptElement.supports("speculationrules")){document.addEventListener("mouseover",pf,{passive:true});document.addEventListener("touchstart",pf,{passive:true})}if("onpagereveal" in window)return;d.classList.add("fx");addEventListener("pageshow",function(){d.classList.remove("leaving")});document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a||e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||a.target||a.hasAttribute("download")||a.dataset.lb!==undefined)return;var u=new URL(a.href,location.href);if(u.origin!==location.origin||(u.pathname===location.pathname&&u.hash))return;if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;e.preventDefault();d.classList.add("leaving");setTimeout(function(){location.href=u.href},140)})})();</script>`;
 const TOK = { unlock: "Thu 19 Nov, 12:00 AM", country: "the US", std: "$79.99", ult: "$99.99", diff: "$20" };
 const fillHtml = (s) => esc(s).replace(/\{(\w+)\}/g, (_, k) => `<b data-r="${k}">${TOK[k]}</b>`);
 const fillText = (s) => s.replace(/\{(\w+)\}/g, (_, k) => TOK[k]);
@@ -195,15 +204,14 @@ const factHtml = (f) => `<div class="fact"><span>${esc(f.label)}</span><b${f.dyn
   const L = C.launch;
   const firstFeatures = C.features.groups.flatMap((g) => g.items).filter((f) => f.status === "Shown").slice(0, 6);
   const body = `
-<section class="hero home">${HERO}
-  <div class="wrap">
-    <div class="sign"><div class="sign-in">
-      <p class="kick">Leonida field guide</p>
-      <h1>Everything GTA 6, in one place</h1>
-      <p class="lede">Unlock times and prices for where you are, the cast, every region of Leonida, and a 100% tracker updated live from launch night.</p>
-      <div class="row"><a class="btn primary" href="/tracker/">Open the 100% tracker</a><a class="btn ghost" href="/launch/" id="unlock">Unlock times</a></div>
-    </div></div>
-    <div class="posts" aria-hidden="true"><i></i><i></i></div>
+<section class="hero2">
+  <img class="hero2-bg" src="/assets/img/places/vice-city.jpg" alt="" fetchpriority="high" decoding="async">
+  <span class="hero2-credit">Image: Rockstar Games</span>
+  <div class="wrap hero2-in">
+    <p class="hero2-kick"><span class="pulse" aria-hidden="true"></span>19 November · PS5 and Xbox Series X|S</p>
+    <h1><span>Everything GTA 6,</span><span>in one place.</span></h1>
+    <p class="hero2-lede">Unlock times and prices for where you are, the cast, every region of Leonida, and a 100% tracker updated live from launch night.</p>
+    <div class="hero2-actions"><a class="btn primary" href="/tracker/">Open the 100% tracker</a><a class="btn glass" href="/launch/" id="unlock">See when it unlocks</a></div>
   </div>
 </section>
 <main class="wrap">
@@ -266,7 +274,7 @@ const factHtml = (f) => `<div class="fact"><span>${esc(f.label)}</span><b${f.dyn
     const prev = arr[(i - 1 + arr.length) % arr.length], next = arr[(i + 1) % arr.length];
     const conns = (c.connections || []).map((id) => charById[id]).filter(Boolean);
     const body = `<section class="chero">${photo("characters", c.id, poster(c), `${c.name}, official GTA VI image`, { eager: true, focus: c.photoFocus })}<div class="wrap">
-      <div class="crumbs"><a href="/">Home</a> / <a href="/characters/">Characters</a> / ${esc(c.name)}</div>
+      ${crumbBar([["/", "Home"], ["/characters/", "Characters"], [null, c.name]])}
       ${status(c.status)}
       <h1>${esc(c.name)}</h1>
       <p class="say">${esc(c.summary)}</p>
@@ -301,7 +309,7 @@ const factHtml = (f) => `<div class="fact"><span>${esc(f.label)}</span><b${f.dyn
     const people = C.characters.items.filter((c) => c.place === p.id);
     const prev = arr[(i - 1 + arr.length) % arr.length], next = arr[(i + 1) % arr.length];
     const body = `<section class="phero">${photo("places", p.id, art(p.name, "b" + i), `${p.name}, official GTA VI screenshot`, { eager: true })}<div class="wrap">
-      <div class="crumbs"><a href="/">Home</a> / <a href="/places/">Places</a> / ${esc(p.name)}</div>
+      ${crumbBar([["/", "Home"], ["/places/", "Places"], [null, p.name]])}
       ${status("Confirmed")}
       <h1>${esc(p.name)}</h1>
       <p class="say">${esc(p.tagline)}</p>
@@ -394,7 +402,7 @@ const factHtml = (f) => `<div class="fact"><span>${esc(f.label)}</span><b${f.dyn
   const CD_JS = fs.readFileSync(path.join(ROOT, "src/js/countdown.js"), "utf8");
   const body = `<div class="cd">
   <section class="cdhero" id="hero"><div class="wrap">
-    <div class="crumbs"><a href="/">Home</a> / Launch</div>
+    ${crumbBar([["/", "Home"], [null, "Launch"]])}
     <p class="cd-kick">PS5 and Xbox Series X|S · Thursday 19 November 2026</p>
     <h1>Unlocks in <span class="where" id="heroName">your country</span></h1>
     <div class="picker"><label for="country">Countdown for</label><select id="country"></select></div>
@@ -460,8 +468,80 @@ pages.pop(); // 404 is not in the sitemap
 /* ======================= static files ======================= */
 copyDir(path.join(ROOT, "src/assets"), path.join(OUT, "assets"));
 fs.copyFileSync(path.join(ROOT, "data.json"), path.join(OUT, "data.json"));
-write("tracker/index.html", fs.readFileSync(path.join(ROOT, "src/tracker.html"), "utf8").replace("</head>", `<meta name="color-scheme" content="dark"><style>html{background:#1b1d24}@view-transition{navigation:auto}::view-transition-old(root){animation:vtOut .16s ease both}::view-transition-new(root){animation:vtIn .26s cubic-bezier(.2,.7,.2,1) both}@keyframes vtOut{to{opacity:0}}@keyframes vtIn{from{opacity:0;transform:translateY(8px)}}.fx body{animation:vtIn .24s ease-out both}.fx.leaving body{opacity:0;transition:opacity .14s}@media (prefers-reduced-motion:reduce){::view-transition-old(root),::view-transition-new(root),.fx body{animation:none}}</style>${HEAD_FX}</head>`));
-pages.push("/tracker/");
+// TRACKER: same engine as src/tracker.html, new design inside the site layout
+{
+  const src = fs.readFileSync(path.join(ROOT, "src/tracker.html"), "utf8");
+  const fallback = src.match(/<script type="application\/json" id="fallback">[\s\S]*?<\/script>/)[0];
+  let js = src.slice(src.lastIndexOf("<script>") + 8, src.lastIndexOf("</script>"));
+  const patch = (a, b2) => { if (!js.includes(a)) throw new Error("tracker patch missing: " + a); js = js.replace(a, b2); };
+  patch('b.innerHTML = art(r, i);', 'b.innerHTML = TK_IMG[r] ? \'<img src="\' + TK_IMG[r] + \'" alt="" loading="lazy" decoding="async">\' : art(r, i);');
+  patch('$("bar").style.width = p + "%";', '$("bar").style.width = p + "%"; $("hero").style.setProperty("--p", p);');
+  const IMG = { "Vice City": "vice-city", "Leonida Keys": "leonida-keys", "Grassrivers": "grassrivers", "Port Gellhorn": "port-gellhorn", "Ambrosia": "ambrosia", "Mount Kalaga": "mount-kalaga" };
+  const TK_IMG = Object.fromEntries(Object.entries(IMG).map(([k, v]) => [k, photos("places", v)[0] || ""]));
+  const body = `<div class="tk">
+  <div class="tk-float" id="mini" aria-hidden="true"><span class="ring-s"></span><strong id="miniName">100% Tracker</strong><span id="miniPct">0%</span></div>
+  <section class="tk-hero" id="hero">
+    <img class="tk-bg" src="${photos("places", "vice-city")[3] || ""}" alt="" fetchpriority="high" decoding="async"><span class="hero2-credit">Image: Rockstar Games</span>
+    <div class="wrap tk-hero-in">
+      <div>
+        ${crumbBar([["/", "Home"], [null, "100% Tracker"]])}
+        <p class="hero2-kick"><span class="pulse" aria-hidden="true"></span>Mapped live from launch night</p>
+        <h1 id="siteName">100% Tracker</h1>
+        <p class="tk-tag" id="tagline"></p>
+        <p class="tk-upd" id="updated"></p>
+      </div>
+      <div class="tk-ring" aria-live="polite"><div class="tk-ring-in"><b id="pct">0%</b><span id="count">0 of 0 done</span></div></div>
+    </div>
+    <div class="wrap"><div class="tk-meter" role="progressbar" aria-label="Overall completion" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="road"><i id="bar"></i></div></div>
+  </section>
+  <main class="wrap">
+    <section class="tk-work" id="edit" hidden aria-labelledby="editTitle">
+      <h2 id="editTitle">Edit mode</h2>
+      <p>Only you see this. New items are drafts saved in this browser. To publish, download data.json and commit it to GitHub. Never change an item ID once it's published, or visitors lose their ticks.</p>
+      <form class="tk-form" id="addForm" autocomplete="off">
+        <select id="fCat" aria-label="Category"></select>
+        <select id="fRegion" aria-label="Region"></select>
+        <input class="full" type="text" id="fName" placeholder="Name, e.g. #12 – rooftop above the pier diner" required aria-label="Item name">
+        <textarea class="full" id="fNote" placeholder="How to find or complete it" aria-label="Note"></textarea>
+        <input class="full" type="text" id="fImg" placeholder="Image path (optional), e.g. img/collectibles-012.jpg" aria-label="Image path">
+        <div class="checks full"><label><input type="checkbox" id="fMiss"> Missable</label><label><input type="checkbox" id="fSpoil"> Spoiler</label></div>
+        <button class="tk-btn solid full" type="submit">Add item</button>
+      </form>
+      <div class="tk-btns"><button class="tk-btn solid" type="button" id="dlData">Download data.json</button><button class="tk-btn" type="button" id="copyData">Copy JSON</button><button class="tk-btn ghost" type="button" id="clearDrafts">Clear drafts</button></div>
+    </section>
+
+    <section class="tk-sec" aria-labelledby="catTitle">
+      <div class="sec-head"><div><h2 id="catTitle">What are you hunting?</h2><p>Pick a category, or keep everything in view.</p></div></div>
+      <div class="tk-tiles" id="tiles"></div>
+    </section>
+
+    <section class="tk-sec" aria-labelledby="regTitle">
+      <div class="sec-head"><div><h2 id="regTitle">Explore Leonida</h2><p>Tap a region to see only what's there. Tap it again to see everywhere.</p></div></div>
+      <div class="tk-cards" id="cards"></div>
+    </section>
+
+    <section class="tk-sec" aria-labelledby="listTitle">
+      <div class="sec-head"><div><h2 id="listTitle">Checklist</h2><p>Tick things off as you go. Missables are marked so you don't lose them for good.</p></div></div>
+      <div class="tk-filters">
+        <label class="sr" for="q">Search items</label>
+        <div class="tk-search"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="9" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M14 14l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><input type="search" id="q" placeholder="Search items or places"></div>
+        <label class="tk-switch"><input type="checkbox" id="hideDone"><span></span>Hide completed</label>
+        <label class="tk-switch"><input type="checkbox" id="showSpoilers"><span></span>Show spoilers</label>
+      </div>
+      <div class="tk-active" id="active"></div>
+      <div id="list"></div>
+    </section>
+
+    <section class="tk-mine" aria-labelledby="mineTitle">
+      <div><h2 id="mineTitle">Your progress</h2><p>Ticks are saved in this browser. Back them up to move them to another phone or computer.</p></div>
+      <div class="tk-btns"><button class="tk-btn" type="button" id="backup">Back up progress</button><button class="tk-btn" type="button" id="restoreBtn">Restore progress</button><input type="file" id="restore" accept="application/json,.json" hidden><button class="tk-btn ghost" type="button" id="reset">Reset progress</button></div>
+    </section>
+  </main>
+  <div class="tk-toast" id="toast" role="status"></div>
+  ${fallback}
+  </div>`;
+  write("tracker/index.html", layout({ url: "/tracker/", title: "100% completion tracker", description: "Free GTA 6 100% completion tracker: tick off missables, collectibles, side activities and trophies by region. Progress saves on your device.", body, script: `var TK_IMG = ${JSON.stringify(TK_IMG)};` + js, jsonld: breadcrumbLd([["/", "Home"], ["/tracker/", "100% Tracker"]]) }));
+}
 write("countdown/index.html", `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Moved to the Launch page</title><meta name="robots" content="noindex"><link rel="canonical" href="${SITE}/launch/"><meta http-equiv="refresh" content="0;url=/launch/"><style>html{background:#1b1d24;color:#f7f4ee;font-family:system-ui}</style></head><body><p>The countdown now lives on the <a style="color:#f7c318" href="/launch/">Launch page</a>.</p></body></html>`);
 
 const today = new Date().toISOString().slice(0, 10);
