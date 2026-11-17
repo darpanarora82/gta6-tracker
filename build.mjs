@@ -28,6 +28,7 @@ const placeById = Object.fromEntries(C.places.items.map((p) => [p.id, p]));
 const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const fmtDate = (iso) => new Date(iso + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
 const pages = [];
+const SITE_CSS = fs.readFileSync(path.join(ROOT, "src/assets/site.css"), "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/\s*\n\s*/g, "\n");
 
 function write(rel, html) {
   const file = path.join(OUT, rel);
@@ -141,7 +142,7 @@ ${HEAD_FX}
 <script defer src="/_vercel/insights/script.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/site.css">
+<style>${SITE_CSS}</style>
 <script defer src="/assets/region.js"></script>
 ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld).replace(/</g, "\\u003c")}</script>` : ""}
 </head>
@@ -180,7 +181,7 @@ const LB_SCRIPT = `(function(){var set=[],i=0,box,img,cap,last;function build(){
 const YT_SCRIPT = `document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".play[data-yt]");if(!b)return;var f=document.createElement("iframe");f.src="https://www.youtube-nocookie.com/embed/"+b.dataset.yt+"?autoplay=1&rel=0";f.title=b.getAttribute("aria-label");f.allow="autoplay; encrypted-media; picture-in-picture; fullscreen";f.allowFullscreen=true;b.replaceWith(f)});`;
 
 const HEAD_FX = `<script type="speculationrules">{"prefetch":[{"where":{"href_matches":"/*"},"eagerness":"moderate"}]}</script>
-<script>(function(){var d=document.documentElement;if("onpagereveal" in window)return;d.classList.add("fx");addEventListener("pageshow",function(){d.classList.remove("leaving")});document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a||e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||a.target||a.hasAttribute("download")||a.dataset.lb!==undefined)return;var u=new URL(a.href,location.href);if(u.origin!==location.origin||(u.pathname===location.pathname&&u.hash))return;if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;e.preventDefault();d.classList.add("leaving");setTimeout(function(){location.href=u.href},140)})})();</script>`;
+<script>(function(){var d=document.documentElement,seen={};function pf(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a||a.target)return;var u=new URL(a.href,location.href);if(u.origin!==location.origin||u.pathname===location.pathname||seen[u.pathname])return;seen[u.pathname]=1;var l=document.createElement("link");l.rel="prefetch";l.href=u.pathname;document.head.appendChild(l)}if(!HTMLScriptElement.supports||!HTMLScriptElement.supports("speculationrules")){document.addEventListener("mouseover",pf,{passive:true});document.addEventListener("touchstart",pf,{passive:true})}if("onpagereveal" in window)return;d.classList.add("fx");addEventListener("pageshow",function(){d.classList.remove("leaving")});document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a||e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||a.target||a.hasAttribute("download")||a.dataset.lb!==undefined)return;var u=new URL(a.href,location.href);if(u.origin!==location.origin||(u.pathname===location.pathname&&u.hash))return;if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;e.preventDefault();d.classList.add("leaving");setTimeout(function(){location.href=u.href},140)})})();</script>`;
 const TOK = { unlock: "Thu 19 Nov, 12:00 AM", country: "the US", std: "$79.99", ult: "$99.99", diff: "$20" };
 const fillHtml = (s) => esc(s).replace(/\{(\w+)\}/g, (_, k) => `<b data-r="${k}">${TOK[k]}</b>`);
 const fillText = (s) => s.replace(/\{(\w+)\}/g, (_, k) => TOK[k]);
