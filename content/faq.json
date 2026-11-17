@@ -1,19 +1,115 @@
 {
-  "intro": "Quick answers to what people ask most about GTA 6, especially players in India.",
-  "items": [
-    {"q": "What time does GTA 6 unlock in India?", "a": "12:00 AM IST on Thursday 19 November 2026, on PS5 and Xbox Series X|S. That's about 10 hours before players in the US can start.", "link": "/launch/"},
-    {"q": "How much does GTA 6 cost in India?", "a": "₹5,999 for the Standard Edition and ₹7,499 for the Ultimate Edition on the PlayStation Store.", "link": "/editions/"},
-    {"q": "Is GTA 6 on PC?", "a": "Not at launch, and Rockstar hasn't announced a PC date. Past Rockstar games reached PC 9 to 18 months after consoles.", "link": "/launch/"},
-    {"q": "Does GTA 6 have online multiplayer?", "a": "Not at launch. Rockstar calls GTA 6 a single-player experience and hasn't announced an online mode. Any dates you see are rumours.", "link": "/features/"},
-    {"q": "Does the physical edition come with a disc?", "a": "No. Boxed copies contain a download code instead of a disc.", "link": "/editions/"},
-    {"q": "Can I still get the pre-order bonus?", "a": "The Vintage Vice City Pack comes with every digital purchase made before 20 November 2026, and with boxed copies while stocks last.", "link": "/editions/"},
-    {"q": "Is the Ultimate Edition worth it?", "a": "It adds 16 extras: cars, weapons, outfits, shops and two side activities. Nothing in it is needed to finish the game, so Standard is enough if you only care about the story.", "link": "/editions/"},
-    {"q": "How big is the download?", "a": "Around 210 GB has been reported. Pre-loading opened on 10 November.", "link": "/launch/"},
-    {"q": "Who are the main characters?", "a": "Jason Duval and Lucia Caminos, and you can switch between them. The supporting cast includes Cal Hampton, Brian and Lori Heder, Boobie Ike, Dre'Quan Priest, Real Dimez and Raul Bautista.", "link": "/characters/"},
-    {"q": "Where is GTA 6 set?", "a": "In Leonida, Rockstar's version of Florida: Vice City, the Leonida Keys, Grassrivers, Port Gellhorn, Ambrosia and Mount Kalaga National Park.", "link": "/places/"},
-    {"q": "How many wanted stars are there?", "a": "Six, up from five in GTA V.", "link": "/features/"},
-    {"q": "Are there cheat codes?", "a": "Nobody knows until people play it. GTA V had cheats but no money cheat. Any GTA 6 cheat list published before launch is made up.", "link": null},
-    {"q": "Is GTA 6 on Game Pass?", "a": "No. Take-Two has said it won't be on Xbox Game Pass at launch.", "link": "/features/"},
-    {"q": "Are there microtransactions?", "a": "Rockstar says single-player launches without microtransactions.", "link": "/features/"}
-  ]
+ "intro": "Quick answers to what people ask most about GTA 6. Times and prices adjust to where you are.",
+ "sources": [
+  {
+   "title": "Rockstar Games – Grand Theft Auto VI official site",
+   "url": "https://www.rockstargames.com/VI"
+  },
+  {
+   "title": "Dexerto – GamesBeat report on the PC version (Q1 2027)",
+   "url": "https://www.dexerto.com/gta/gta-6-releasing-on-pc-much-earlier-than-expected-report-3418569/"
+  },
+  {
+   "title": "PCWorld – PC report, Rockstar did not comment",
+   "url": "https://www.pcworld.com/article/3260660/we-guessed-late-2027-for-gta-6-on-pc-a-report-says-q1-2027.html"
+  },
+  {
+   "title": "Timesaver – prices in the UK, Europe, Canada and Australia",
+   "url": "https://timesaver.gg/blog/gta-6-price-uk-europe-canada-australia"
+  },
+  {
+   "title": "Beebom – global price list",
+   "url": "https://beebom.com/gta-6-global-prices-list/"
+  },
+  {
+   "title": "KeenGamer – pre-load live, 30 fps target",
+   "url": "https://www.keengamer.com/articles/news/grand-theft-auto-vi-pre-load-is-now-live-for-all-digital-pre-orders/"
+  },
+  {
+   "title": "Netto's Game Room – Xbox Cloud Gaming on Xbox One",
+   "url": "https://www.nettosgameroom.com/2026/11/grand-theft-auto-vi-pre-load-now.html"
+  }
+ ],
+ "items": [
+  {
+   "q": "When does GTA 6 unlock?",
+   "a": "At midnight local time on Thursday 19 November 2026 in most countries, starting with New Zealand. The US and Canada unlock together at midnight Eastern, which is 9 PM Pacific on the 18th. Where you are, it unlocks {unlock}.",
+   "link": "/launch/"
+  },
+  {
+   "q": "How much does GTA 6 cost?",
+   "a": "The Standard Edition is $79.99 in the US, £69.99 in the UK and €79.99 in the eurozone. Ultimate is $99.99, £89.99 or €99.99. Prices for {country}: {std} Standard, {ult} Ultimate.",
+   "link": "/editions/"
+  },
+  {
+   "q": "Is GTA 6 on PC?",
+   "a": "Not at launch. Rockstar hasn't announced a PC version. GamesBeat reported in October 2026, citing four sources, that a PC release is planned for January to March 2027. Rockstar didn't comment, so treat that as unconfirmed.",
+   "link": "/launch/"
+  },
+  {
+   "q": "Does GTA 6 have online multiplayer?",
+   "a": "Not at launch. Rockstar calls GTA 6 a single-player experience and hasn't announced an online mode. Any dates you see are rumours.",
+   "link": "/features/"
+  },
+  {
+   "q": "Which consoles can play it?",
+   "a": "PS5 and Xbox Series X|S. Xbox One owners can stream it through Xbox Cloud Gaming. There's no PS4 or Switch version.",
+   "link": "/launch/"
+  },
+  {
+   "q": "What frame rate does it run at?",
+   "a": "Rockstar targets 30 frames per second on both PS5 and Xbox Series X|S, with extra PS5 Pro features.",
+   "link": "/launch/"
+  },
+  {
+   "q": "How big is the download?",
+   "a": "Around 210 GB has been reported. Pre-loading opened on 10 November for digital pre-orders.",
+   "link": "/launch/"
+  },
+  {
+   "q": "Does the physical edition come with a disc?",
+   "a": "No. Boxed copies contain a download code instead of a disc.",
+   "link": "/editions/"
+  },
+  {
+   "q": "Can I still get the pre-order bonus?",
+   "a": "The Vintage Vice City Pack comes with every digital purchase made before 20 November 2026, and with boxed copies while stocks last.",
+   "link": "/editions/"
+  },
+  {
+   "q": "Is the Ultimate Edition worth it?",
+   "a": "It adds 16 extras for {diff} more: cars, weapons, outfits, shops and two side activities. Nothing in it is needed to finish the game, so Standard is enough if you only care about the story.",
+   "link": "/editions/"
+  },
+  {
+   "q": "Who are the main characters?",
+   "a": "Jason Duval and Lucia Caminos, and you can switch between them. The supporting cast includes Cal Hampton, Brian and Lori Heder, Boobie Ike, Dre'Quan Priest, Real Dimez and Raul Bautista.",
+   "link": "/characters/"
+  },
+  {
+   "q": "Where is GTA 6 set?",
+   "a": "In Leonida, Rockstar's version of Florida: Vice City, the Leonida Keys, Grassrivers, Port Gellhorn, Ambrosia and Mount Kalaga National Park.",
+   "link": "/places/"
+  },
+  {
+   "q": "How many wanted stars are there?",
+   "a": "Six, up from five in GTA V.",
+   "link": "/features/"
+  },
+  {
+   "q": "Are there cheat codes?",
+   "a": "Nobody knows until people play it. GTA V had cheats but no money cheat. Any GTA 6 cheat list published before launch is made up.",
+   "link": null
+  },
+  {
+   "q": "Is GTA 6 on Game Pass?",
+   "a": "No. Take-Two has said it won't be on Xbox Game Pass at launch.",
+   "link": "/features/"
+  },
+  {
+   "q": "Are there microtransactions?",
+   "a": "Rockstar says single-player launches without microtransactions.",
+   "link": "/features/"
+  }
+ ]
 }

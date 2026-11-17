@@ -133,20 +133,24 @@ function layout({ url, title, description, body, jsonld, script }) {
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${SITE}${url}">
 <meta name="theme-color" content="#141433">
+<meta name="color-scheme" content="dark">
+<style>html{background:#1b1d24;color-scheme:dark}</style>
+${HEAD_FX}
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
 <script defer src="/_vercel/insights/script.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css">
+<script defer src="/assets/region.js"></script>
 ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld).replace(/</g, "\\u003c")}</script>` : ""}
 </head>
 <body>
 <header class="bar"><div class="wrap"><a class="logo" href="/" aria-label="${SITE_NAME} home"><span><b>GTA 6 Guide</b><small>Leonida field guide</small></span></a><nav class="nav" aria-label="Main">${nav}</nav></div></header>
 ${body}
 <footer class="site"><div class="wrap">
-  <div class="cols"><nav aria-label="Footer"><a href="/">Home</a>${NAV.map(([h, l]) => `<a href="${h}">${l}</a>`).join("")}<a href="/countdown/">Countdown</a><a href="/about/">About</a></nav></div>
-  <p>Fan-made and unofficial. Not affiliated with or endorsed by Rockstar Games or Take-Two Interactive. Grand Theft Auto and related names are trademarks of their owners. All illustrations on this site are original. Every fact links to its source.</p>
+  <div class="cols"><nav aria-label="Footer"><a href="/">Home</a>${NAV.map(([h, l]) => `<a href="${h}">${l}</a>`).join("")}<a href="/about/">About</a></nav></div>
+  <p>Fan-made and unofficial. Not affiliated with or endorsed by Rockstar Games or Take-Two Interactive. Grand Theft Auto and related names are trademarks of their owners. Screenshots are official Rockstar Games images, credited where shown. <a href="/faq/#sources">Where our facts come from</a>.</p>
 </div></footer>
 <script>${LB_SCRIPT}${script || ""}</script>
 </body>
@@ -175,6 +179,16 @@ const vidCard = (v) => `<article class="vid" id="${v.id}"><div class="frame"><bu
 const LB_SCRIPT = `(function(){var set=[],i=0,box,img,cap,last;function build(){box=document.createElement("div");box.className="lb";box.setAttribute("role","dialog");box.setAttribute("aria-modal","true");box.setAttribute("aria-label","Photo viewer");box.hidden=true;box.innerHTML='<button class="lb-x" type="button" aria-label="Close (Esc)">&times;</button><button class="lb-nav prev" type="button" aria-label="Previous photo">&#8249;</button><figure><img alt=""><figcaption></figcaption></figure><button class="lb-nav next" type="button" aria-label="Next photo">&#8250;</button>';document.body.appendChild(box);img=box.querySelector("img");cap=box.querySelector("figcaption");box.addEventListener("click",function(e){if(e.target===box||e.target.tagName==="FIGURE")close();else if(e.target.closest(".lb-x"))close();else if(e.target.closest(".prev"))go(-1);else if(e.target.closest(".next"))go(1)});}function show(){var a=set[i];img.src=a.getAttribute("href");img.alt=a.querySelector("img").alt;cap.textContent=(i+1)+" / "+set.length+"  ·  Image: Rockstar Games";box.classList.toggle("single",set.length<2);}function go(d){i=(i+d+set.length)%set.length;show();}function open(a){if(!box)build();set=[].slice.call(document.querySelectorAll('[data-lb="'+a.dataset.lb+'"]'));i=set.indexOf(a);last=a;show();box.hidden=false;document.documentElement.classList.add("lb-on");box.querySelector(".lb-x").focus();}function close(){box.hidden=true;img.removeAttribute("src");document.documentElement.classList.remove("lb-on");if(last)last.focus();}document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-lb]");if(!a||e.metaKey||e.ctrlKey)return;e.preventDefault();open(a)});document.addEventListener("keydown",function(e){if(!box||box.hidden)return;if(e.key==="Escape")close();else if(e.key==="ArrowLeft")go(-1);else if(e.key==="ArrowRight")go(1);});var sx=0;document.addEventListener("touchstart",function(e){if(box&&!box.hidden)sx=e.touches[0].clientX},{passive:true});document.addEventListener("touchend",function(e){if(!box||box.hidden)return;var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50)go(dx<0?1:-1)});})();`;
 const YT_SCRIPT = `document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".play[data-yt]");if(!b)return;var f=document.createElement("iframe");f.src="https://www.youtube-nocookie.com/embed/"+b.dataset.yt+"?autoplay=1&rel=0";f.title=b.getAttribute("aria-label");f.allow="autoplay; encrypted-media; picture-in-picture; fullscreen";f.allowFullscreen=true;b.replaceWith(f)});`;
 
+const HEAD_FX = `<script type="speculationrules">{"prefetch":[{"where":{"href_matches":"/*"},"eagerness":"moderate"}]}</script>
+<script>(function(){var d=document.documentElement;if("onpagereveal" in window)return;d.classList.add("fx");addEventListener("pageshow",function(){d.classList.remove("leaving")});document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a||e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||a.target||a.hasAttribute("download")||a.dataset.lb!==undefined)return;var u=new URL(a.href,location.href);if(u.origin!==location.origin||(u.pathname===location.pathname&&u.hash))return;if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;e.preventDefault();d.classList.add("leaving");setTimeout(function(){location.href=u.href},140)})})();</script>`;
+const TOK = { unlock: "Thu 19 Nov, 12:00 AM", country: "the US", std: "$79.99", ult: "$99.99", diff: "$20" };
+const fillHtml = (s) => esc(s).replace(/\{(\w+)\}/g, (_, k) => `<b data-r="${k}">${TOK[k]}</b>`);
+const fillText = (s) => s.replace(/\{(\w+)\}/g, (_, k) => TOK[k]);
+const PRICE_NOTE = `<span class="rnote" data-r="note" hidden>Your store's price isn't on our list yet, so US prices are shown.</span>`;
+const regionBar = (id) => `<div class="regionbar"><label for="${id}">Showing times and prices for</label><select id="${id}" data-region-picker></select></div>`;
+const faqAnswer = (f) => fillHtml(f.a) + (f.a.includes("{std}") ? " " + PRICE_NOTE : "");
+const factHtml = (f) => `<div class="fact"><span>${esc(f.label)}</span><b${f.dyn ? ` data-r="${f.dyn}"` : ""}>${esc(f.value)}</b></div>`;
+
 /* ======================= pages ======================= */
 // HOME
 {
@@ -186,21 +200,21 @@ const YT_SCRIPT = `document.addEventListener("click",function(e){var b=e.target.
     <div class="sign"><div class="sign-in">
       <p class="kick">Leonida field guide</p>
       <h1>Everything GTA 6, in one place</h1>
-      <p class="lede">Release times, prices in India, the cast, every region of Leonida, and a 100% tracker updated live from launch night.</p>
+      <p class="lede">Unlock times and prices for where you are, the cast, every region of Leonida, and a 100% tracker updated live from launch night.</p>
       <div class="row"><a class="btn primary" href="/tracker/">Open the 100% tracker</a><a class="btn ghost" href="/launch/" id="unlock">Unlock times</a></div>
     </div></div>
     <div class="posts" aria-hidden="true"><i></i><i></i></div>
   </div>
 </section>
 <main class="wrap">
-  <div class="facts">${L.facts.map((f) => `<div class="fact"><span>${esc(f.label)}</span><b>${esc(f.value)}</b></div>`).join("")}</div>
+  <div class="facts">${L.facts.map(factHtml).join("")}</div>
 
   <section class="sec">
     <div class="sec-head"><div><h2>Start here</h2><p>The three things most people need this week.</p></div></div>
     <div class="big">
       <a class="bigcard t1" href="/tracker/">${ICON.tracker}<h3>100% tracker</h3><p>Tick off collectibles, missables and trophies. Progress saves on your device.</p><span class="go">Open</span></a>
-      <a class="bigcard t2" href="/launch/">${ICON.clock}<h3>When it unlocks</h3><p>Midnight local time. India gets it about 10 hours before the US.</p><span class="go">See times</span></a>
-      <a class="bigcard t3" href="/editions/">${ICON.tag}<h3>Which edition?</h3><p>₹5,999 or ₹7,499. What the extra ₹1,500 actually buys you.</p><span class="go">Compare</span></a>
+      <a class="bigcard t2" href="/launch/">${ICON.clock}<h3>When it unlocks</h3><p>Midnight local time, country by country. For you: <b data-r="unlock">Thu 19 Nov, 12:00 AM</b>.</p><span class="go">Live countdown</span></a>
+      <a class="bigcard t3" href="/editions/">${ICON.tag}<h3>Which edition?</h3><p><b data-r="std">$79.99</b> or <b data-r="ult">$99.99</b>. What the extra <span data-r="diff">$20</span> actually buys you.</p><span class="go">Compare</span></a>
     </div>
   </section>
 
@@ -230,12 +244,12 @@ const YT_SCRIPT = `document.addEventListener("click",function(e){var b=e.target.
   </section>
 
   <section class="sec">
-    <div class="sec-head"><div><h2>Quick answers</h2></div><a href="/faq/">All questions</a></div>
-    <div class="faq">${C.faq.items.slice(0, 4).map((f) => `<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join("")}</div>
+    <div class="sec-head"><div><h2>Quick answers</h2>${regionBar("rp-home")}</div><a href="/faq/">All questions</a></div>
+    <div class="faq">${C.faq.items.slice(0, 4).map((f) => `<details><summary>${esc(f.q)}</summary><p>${faqAnswer(f)}</p></details>`).join("")}</div>
   </section>
 </main>`;
-  const script = YT_SCRIPT + `(function(){var t=Date.parse("2026-11-18T18:30:00Z"),a=document.getElementById("unlock");function f(){var l=t-Date.now();if(l<=0){a.textContent="Out now in India";return}var h=Math.floor(l/36e5),m=Math.floor(l%36e5/6e4);a.textContent="Unlocks in India in "+(h?h+"h ":"")+m+"m"}f();setInterval(f,3e4)})();`;
-  write("index.html", layout({ url: "/", title: "Home", description: "GTA 6 guide for India and everywhere: unlock times, ₹ prices and editions, characters, every region of Leonida, radio stations, gameplay details and a free 100% completion tracker.", body, script,
+  const script = YT_SCRIPT + `(function(){var a=document.getElementById("unlock");function f(){if(!window.GTAR)return;var l=GTAR.unlockAt()-Date.now();if(l<=0){a.textContent="Out now where you are";return}var h=Math.floor(l/36e5),m=Math.floor(l%36e5/6e4);a.textContent="Unlocks for you in "+(h?h+"h ":"")+m+"m"}document.addEventListener("gta-region",f);setInterval(f,3e4)})();`;
+  write("index.html", layout({ url: "/", title: "Home", description: "GTA 6 guide: unlock times and prices for your country, editions, characters, every region of Leonida, radio stations, gameplay details and a free 100% completion tracker.", body, script,
     jsonld: { "@context": "https://schema.org", "@type": "WebSite", name: SITE_NAME, url: SITE + "/" } }));
 }
 
@@ -244,7 +258,7 @@ const YT_SCRIPT = `document.addEventListener("click",function(e){var b=e.target.
   const groups = [...new Set(C.characters.items.map((c) => c.group))];
   const body = pageHead([["/", "Home"], [null, "Characters"]], "GTA 6 characters", C.characters.intro) + `<main class="wrap">
   ${groups.map((g) => `<section class="sec"><div class="sec-head"><h2>${esc(g)}</h2></div>${cast(C.characters.items.filter((c) => c.group === g), false)}</section>`).join("")}
-  ${sources(C.characters.sources)}</main>`;
+  </main>`;
   write("characters/index.html", layout({ url: "/characters/", title: "Characters", description: "Every GTA 6 character Rockstar has revealed: Jason Duval, Lucia Caminos, Cal Hampton, Boobie Ike, Raul Bautista and more, with who they are and how they connect.", body, jsonld: breadcrumbLd([["/", "Home"], ["/characters/", "Characters"]]) }));
 
   C.characters.items.forEach((c, i, arr) => {
@@ -272,7 +286,7 @@ const YT_SCRIPT = `document.addEventListener("click",function(e){var b=e.target.
     </div>
     ${conns.length ? `<section class="sec"><div class="sec-head"><div><h2>Connected to</h2><p>The people ${esc(c.name.split(" ")[0])} is tied to.</p></div></div>${cast(conns, true)}</section>` : ""}
     <nav class="pager" aria-label="More characters"><a href="/characters/${prev.id}/"><span>Previous</span><b>${esc(prev.name)}</b></a><a class="next" href="/characters/${next.id}/"><span>Next</span><b>${esc(next.name)}</b></a></nav>
-    ${sources(C.characters.sources)}</main>`;
+    </main>`;
     write(`characters/${c.id}/index.html`, layout({ url: `/characters/${c.id}/`, title: `${c.name} in GTA 6`, description: `${c.name} in GTA 6: ${c.summary} Who they are, where they're based and who they're connected to.`, body,
       jsonld: breadcrumbLd([["/", "Home"], ["/characters/", "Characters"], [`/characters/${c.id}/`, c.name]]) }));
   });
@@ -280,7 +294,7 @@ const YT_SCRIPT = `document.addEventListener("click",function(e){var b=e.target.
 
 // PLACES
 {
-  const body = pageHead([["/", "Home"], [null, "Places"]], "Places in Leonida", C.places.intro) + `<main class="wrap"><section class="sec"><div class="cards">${C.places.items.map(placeCard).join("")}</div></section>${sources(C.places.sources)}</main>`;
+  const body = pageHead([["/", "Home"], [null, "Places"]], "Places in Leonida", C.places.intro) + `<main class="wrap"><section class="sec"><div class="cards">${C.places.items.map(placeCard).join("")}</div></section></main>`;
   write("places/index.html", layout({ url: "/places/", title: "Places in Leonida", description: "Every GTA 6 region revealed so far: Vice City, Leonida Keys, Grassrivers, Port Gellhorn, Ambrosia and Mount Kalaga National Park, with landmarks and who lives there.", body, jsonld: breadcrumbLd([["/", "Home"], ["/places/", "Places"]]) }));
 
   C.places.items.forEach((p, i, arr) => {
@@ -306,7 +320,7 @@ const YT_SCRIPT = `document.addEventListener("click",function(e){var b=e.target.
     </div>
     ${people.length ? `<section class="sec"><div class="sec-head"><h2>Who you'll meet here</h2></div>${cast(people, true)}</section>` : ""}
     <nav class="pager" aria-label="More places"><a href="/places/${prev.id}/"><span>Previous</span><b>${esc(prev.name)}</b></a><a class="next" href="/places/${next.id}/"><span>Next</span><b>${esc(next.name)}</b></a></nav>
-    ${sources(C.places.sources)}</main>`;
+    </main>`;
     write(`places/${p.id}/index.html`, layout({ url: `/places/${p.id}/`, title: `${p.name} in GTA 6`, description: `${p.name} in GTA 6: ${p.about[0]} Landmarks, characters and what to track there.`, body,
       jsonld: breadcrumbLd([["/", "Home"], ["/places/", "Places"], [`/places/${p.id}/`, p.name]]) }));
   });
@@ -314,20 +328,46 @@ const YT_SCRIPT = `document.addEventListener("click",function(e){var b=e.target.
 
 // RADIO
 {
-  const eq = (seed) => Array.from({ length: 9 }, (_, i) => `<i style="height:${8 + ((seed * 7 + i * 13) % 22)}px"></i>`).join("");
-  const body = pageHead([["/", "Home"], [null, "Radio"]], "GTA 6 radio stations", C.radio.intro) + `<main class="wrap">
-  <section class="sec"><div class="dials">${C.radio.stations.map((s, i) => `<article class="dial" id="${s.id}"><div class="top" style="background:linear-gradient(135deg,${s.color},#14112a)"><div><h3>${esc(s.name)}</h3><div class="genre">${esc(s.genre)}</div></div><div class="eq" aria-hidden="true">${eq(i + 1)}</div></div><div class="bot"><p>${esc(s.note)}</p>${s.hosts.map((h) => `<div class="host"><b>${esc(h.name)}</b><span>${h.voice === h.name ? "as themselves" : "voiced by " + esc(h.voice)}</span></div>`).join("")}</div></article>`).join("")}</div></section>
-  <section class="sec"><div class="sec-head"><h2>How radio works in GTA 6</h2></div><div class="notes">${C.radio.howItWorks.map((t) => `<div class="note">${esc(t)}</div>`).join("")}</div></section>
-  ${sources(C.radio.sources)}</main>`;
-  write("radio/index.html", layout({ url: "/radio/", title: "Radio stations", description: "All six GTA 6 radio stations revealed so far, with genres and celebrity hosts: Flash FM, The Chamber 106.6, Cocoteo FM, Dirty South Classics, AfroBank FM and Back Country Radio.", body, jsonld: breadcrumbLd([["/", "Home"], ["/radio/", "Radio"]]) }));
+  const R = C.radio;
+  const bars = (n) => Array.from({ length: 18 }, (_, i) => `<i style="--h:${18 + ((n * 37 + i * 53) % 70)}%;--d:${(((n + i) * 97) % 9) / 10 + 0.5}s"></i>`).join("");
+  const mic = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-3.1A7 7 0 0 0 19 11h-2Z" fill="currentColor"/></svg>`;
+  const body = pageHead([["/", "Home"], [null, "Radio"]], "GTA 6 radio stations", R.intro) + `<main class="wrap">
+  <section class="tuner" aria-label="Pick a station">
+    <div class="tuner-face"><div class="tuner-scale" aria-hidden="true">${Array.from({ length: 61 }, (_, i) => `<i class="${i % 10 === 0 ? "big" : i % 5 === 0 ? "mid" : ""}"></i>`).join("")}</div>
+      <div class="tuner-needle" aria-hidden="true"></div>
+      <div class="tuner-btns">${R.stations.map((s, i) => `<button type="button" data-st="${s.id}" style="--c:${s.color};--x:${(i + 0.5) / R.stations.length}" aria-pressed="false">${esc(s.name)}</button>`).join("")}</div>
+    </div>
+  </section>
+  <section class="stereos">${R.stations.map((s, i) => `<article class="stereo" id="${s.id}" style="--c:${s.color}" tabindex="-1">
+    <div class="st-face">
+      <span class="st-mark" aria-hidden="true">${esc(s.name)}</span>
+      <div class="lcd"><span class="lcd-on" aria-hidden="true">ON AIR</span><b>${esc(s.name)}</b><span class="lcd-genre">${esc(s.genre)}</span></div>
+      <div class="vu" aria-hidden="true">${bars(i + 1)}</div>
+    </div>
+    <div class="st-body"><p>${esc(s.note)}</p><ul class="hosts">${s.hosts.map((h) => `<li>${mic}<b>${esc(h.name)}</b><span>${h.voice === h.name ? "as themselves" : "voiced by " + esc(h.voice)}</span></li>`).join("")}</ul></div>
+  </article>`).join("")}</section>
+  <section class="sec"><div class="sec-head"><h2>How radio works in GTA 6</h2></div><div class="notes">${R.howItWorks.map((t) => `<div class="note">${esc(t)}</div>`).join("")}</div></section>
+  </main>`;
+  const script = `(function(){var btns=[].slice.call(document.querySelectorAll(".tuner-btns button")),needle=document.querySelector(".tuner-needle"),face=document.querySelector(".tuner-face");function tune(id,scroll){btns.forEach(function(b){var on=b.dataset.st===id;b.setAttribute("aria-pressed",on);if(on){needle.style.left=(b.style.getPropertyValue("--x")*100)+"%";face.style.setProperty("--c",b.style.getPropertyValue("--c"))}});document.querySelectorAll(".stereo").forEach(function(s){s.classList.toggle("live",s.id===id)});if(scroll){var el=document.getElementById(id);el.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"});el.focus({preventScroll:true})}}btns.forEach(function(b){b.addEventListener("click",function(){tune(b.dataset.st,true)})});document.querySelectorAll(".stereo").forEach(function(s){s.addEventListener("click",function(){tune(s.id,false)})});tune((location.hash||"").slice(1)||btns[0].dataset.st,!!location.hash)})();`;
+  write("radio/index.html", layout({ url: "/radio/", title: "Radio stations", description: "All six GTA 6 radio stations revealed so far, with genres and celebrity hosts: Flash FM, The Chamber 106.6, Cocoteo FM, Dirty South Classics, AfroBank FM and Back Country Radio.", body, script, jsonld: breadcrumbLd([["/", "Home"], ["/radio/", "Radio"]]) }));
 }
 
-// FEATURES
+// FEATURES (photo-led chapters)
 {
-  const body = pageHead([["/", "Home"], [null, "Gameplay"]], "How GTA 6 plays", C.features.intro) + `<main class="wrap">
-  <div class="legend">${status("Shown")} In official footage or stated by Rockstar ${status("Reported")} From previews or interviews</div>
-  ${C.features.groups.map((g) => `<section class="fgroup"><h2>${ICON[g.icon] || ""}${esc(g.name)}</h2><div class="fgrid">${g.items.map((f) => `<div class="feat${f.status === "Reported" ? " rep" : ""}">${status(f.status)}<h3 style="margin-top:8px">${esc(f.title)}</h3><p>${esc(f.text)}</p></div>`).join("")}</div></section>`).join("")}
-  ${sources(C.features.sources)}</main>`;
+  const F = C.features;
+  const PIC = { "Story and characters": "/assets/img/characters/lucia-caminos-3.jpg", "Combat and the police": "/assets/img/places/vice-city-8.jpg", "Things to do": "/assets/img/places/leonida-keys-2.jpg", "Phone, social and music": "/assets/img/characters/real-dimez-2.jpg", "Business model": "/assets/img/places/vice-city-2.jpg" };
+  const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  const all = F.groups.flatMap((g) => g.items), shown = all.filter((f) => f.status === "Shown").length;
+  const body = pageHead([["/", "Home"], [null, "Gameplay"]], "How GTA 6 plays", F.intro) + `<main class="wrap">
+  <div class="gp-top">
+    <div class="gp-count"><div><b>${all.length}</b><span>details so far</span></div><div class="s"><b>${shown}</b><span>shown by Rockstar</span></div><div class="r"><b>${all.length - shown}</b><span>reported by press</span></div></div>
+    <nav class="gp-toc" aria-label="Chapters">${F.groups.map((g) => `<a href="#${slug(g.name)}"><img src="${PIC[g.name] || ""}" alt="" loading="lazy"><span>${esc(g.name)}</span></a>`).join("")}</nav>
+  </div>
+  ${F.groups.map((g) => `<section class="chap" id="${slug(g.name)}">
+    <div class="chap-band">${PIC[g.name] ? `<img src="${PIC[g.name]}" alt="" loading="lazy" decoding="async"><span class="credit">Image: Rockstar Games</span>` : ""}<div class="chap-t"><span>${g.items.length} details</span><h2>${esc(g.name)}</h2></div></div>
+    <ul class="chap-list">${g.items.map((f) => `<li class="${f.status === "Reported" ? "rep" : "shown"}"><span class="mk">${f.status === "Reported" ? "Reported" : "Shown by Rockstar"}</span><h3>${esc(f.title)}</h3><p>${esc(f.text)}</p></li>`).join("")}</ul>
+  </section>`).join("")}
+  </main>`;
   write("features/index.html", layout({ url: "/features/", title: "Gameplay details", description: "Every confirmed GTA 6 gameplay detail: six wanted stars, switching between Jason and Lucia, combat, activities, phone and social media, and what's been reported from previews.", body, jsonld: breadcrumbLd([["/", "Home"], ["/features/", "Gameplay"]]) }));
 }
 
@@ -336,51 +376,78 @@ const YT_SCRIPT = `document.addEventListener("click",function(e){var b=e.target.
   const E = C.editions;
   const types = [...new Set(E.ultimate.map((u) => u.type))];
   const body = pageHead([["/", "Home"], [null, "Editions & prices"]], "Editions and prices", E.intro) + `<main class="wrap">
-  <section class="sec"><div class="sec-head"><h2>Prices</h2></div><div class="prices">${E.prices.map((p) => `<div class="price${p.region === "India" ? " in" : ""}"><h3>${esc(p.region)}</h3><div class="p"><span>Standard</span><b>${esc(p.standard)}</b></div><div class="p"><span>Ultimate</span><b>${esc(p.ultimate)}</b></div></div>`).join("")}</div></section>
+  <section class="sec"><div class="yp"><div class="yp-head"><label for="rp-ed">Prices for</label><select id="rp-ed" data-region-picker></select></div>
+    <div class="yp-row"><div><span>Standard</span><b data-r="std">$79.99</b></div><div><span>Ultimate</span><b data-r="ult">$99.99</b></div><div><span>Ultimate costs</span><b>+<span data-r="diff">$20</span></b></div></div>${PRICE_NOTE}</div>
+    <div class="sec-head" style="margin-top:26px"><div><h2>Official prices by region</h2><p>Same on PS5 and Xbox Series X|S.</p></div></div><div class="prices">${E.prices.map((p) => `<div class="price" data-price-region="${p.key}"><h3>${esc(p.region)}</h3><div class="p"><span>Standard</span><b>${esc(p.standard)}</b></div><div class="p"><span>Ultimate</span><b>${esc(p.ultimate)}</b></div></div>`).join("")}</div></section>
   <section class="sec"><div class="sec-head"><h2>Standard vs Ultimate</h2></div><div class="tblwrap"><table class="tbl"><thead><tr><th></th><th>Standard</th><th>Ultimate</th></tr></thead><tbody>${E.compare.map((r) => `<tr><td><b>${esc(r.label)}</b></td><td>${esc(r.standard)}</td><td>${esc(r.ultimate)}</td></tr>`).join("")}</tbody></table></div>
     <p class="prose" style="margin-top:14px;color:var(--soft)">Short version: everything Ultimate adds is optional. Cars, weapons, outfits, shops and two side activities, nothing you need to finish the story.</p></section>
   <section class="sec"><div class="sec-head"><div><h2>Vintage Vice City Pack</h2><p>${esc(E.packRules)}</p></div></div><div class="items">${E.pack.map((x) => `<div class="item"><b>${esc(x.name)}</b><p>${esc(x.note)}</p></div>`).join("")}</div></section>
   <section class="sec"><div class="sec-head"><div><h2>What Ultimate adds</h2><p>All ${E.ultimate.length} extras, grouped by type.</p></div></div>
     ${types.map((t) => `<h3 style="margin:18px 0 10px;font-size:18px">${esc(t)}s</h3><div class="items">${E.ultimate.filter((u) => u.type === t).map((x) => `<div class="item"><b>${esc(x.name)}</b><p>${esc(x.note)}</p></div>`).join("")}</div>`).join("")}</section>
-  ${sources(E.sources)}</main>`;
-  write("editions/index.html", layout({ url: "/editions/", title: "Editions and prices (India, US, UK)", description: "GTA 6 price in India (₹5,999 / ₹7,499), US and UK, Standard vs Ultimate compared, all 16 Ultimate extras and the Vintage Vice City pre-order pack.", body, jsonld: breadcrumbLd([["/", "Home"], ["/editions/", "Editions & prices"]]) }));
+  </main>`;
+  write("editions/index.html", layout({ url: "/editions/", title: "Editions and prices", description: "GTA 6 prices in the US ($79.99), UK, Europe, Canada, Australia, New Zealand and India, Standard vs Ultimate compared, all 16 Ultimate extras and the Vintage Vice City pre-order pack.", body, jsonld: breadcrumbLd([["/", "Home"], ["/editions/", "Editions & prices"]]) }));
 }
 
-// LAUNCH
+// LAUNCH (live countdown + launch facts)
 {
   const L = C.launch;
-  const body = pageHead([["/", "Home"], [null, "Launch times"]], "GTA 6 launch times", L.intro) + `<main class="wrap">
-  <div class="facts" style="margin-top:20px">${L.facts.map((f) => `<div class="fact"><span>${esc(f.label)}</span><b>${esc(f.value)}</b></div>`).join("")}</div>
-  <section class="sec"><div class="sec-head"><div><h2>When it unlocks</h2><p>"Your time" uses your device's clock. Want every country with a live countdown? <a href="/countdown/">Open the countdown</a>.</p></div></div>
-    <div class="tblwrap"><table class="tbl"><thead><tr><th>Where</th><th>Local time</th><th>India (IST)</th><th>Your time</th></tr></thead><tbody>${L.unlocks.map((u) => `<tr${u.where === "India" ? ' class="me"' : ""}><td><b>${esc(u.where)}</b></td><td>${esc(u.local)}</td><td class="num">${esc(u.ist)}</td><td class="num" data-utc="${u.utc}">–</td></tr>`).join("")}</tbody></table></div></section>
-  <section class="sec"><div class="sec-head"><h2>Good to know</h2></div><div class="notes">${L.notes.map((n) => `<div class="note">${esc(n)}</div>`).join("")}</div></section>
-  <section class="sec"><div class="sec-head"><div><h2>The road to launch</h2><p>From the first trailer to release day.</p></div></div>
-    <ol class="tl">${L.timeline.map((t) => `<li data-date="${t.date}"><time datetime="${t.date}">${fmtDate(t.date)}</time><b>${esc(t.title)}</b><p>${esc(t.text)}</p></li>`).join("")}</ol></section>
-  ${sources(L.sources)}</main>`;
-  const script = `(function(){var f=new Intl.DateTimeFormat(undefined,{weekday:"short",day:"numeric",month:"short",hour:"numeric",minute:"2-digit"});document.querySelectorAll("[data-utc]").forEach(function(td){td.textContent=f.format(new Date(td.dataset.utc))});var now=Date.now(),marked=false;document.querySelectorAll(".tl li").forEach(function(li){var d=Date.parse(li.dataset.date+"T23:59:59");if(d<now)li.classList.add("past");else if(!marked){li.classList.add("next");marked=true}})})();`;
-  write("launch/index.html", layout({ url: "/launch/", title: "Launch times by country (India 12 AM IST)", description: "Exactly when GTA 6 unlocks: 12:00 AM IST on 19 November in India, plus New Zealand, Japan, UK, US and more in your own time, pre-load, install size and the full release timeline.", body, script, jsonld: breadcrumbLd([["/", "Home"], ["/launch/", "Launch times"]]) }));
+  const CD_JS = fs.readFileSync(path.join(ROOT, "src/js/countdown.js"), "utf8");
+  const body = `<div class="cd">
+  <section class="cdhero" id="hero"><div class="wrap">
+    <div class="crumbs"><a href="/">Home</a> / Launch</div>
+    <p class="cd-kick">PS5 and Xbox Series X|S · Thursday 19 November 2026</p>
+    <h1>Unlocks in <span class="where" id="heroName">your country</span></h1>
+    <div class="picker"><label for="country">Countdown for</label><select id="country"></select></div>
+    <div class="clock" aria-live="off">
+      <div class="unit"><span class="num" id="d">00</span><span class="lab">Days</span></div>
+      <div class="unit"><span class="num" id="h">00</span><span class="lab">Hours</span></div>
+      <div class="unit"><span class="num" id="m">00</span><span class="lab">Minutes</span></div>
+      <div class="unit"><span class="num" id="s">00</span><span class="lab">Seconds</span></div>
+    </div>
+    <div class="out" id="outMsg">It's out.</div>
+    <div class="cdmeta"><span>Local unlock <strong id="heroLocal">–</strong></span><span>On your clock <strong id="heroYou">–</strong></span></div>
+  </div></section>
+  <main class="wrap">
+    <div class="facts">${L.facts.map(factHtml).join("")}</div>
+    <section class="sec" aria-labelledby="waveTitle"><div class="sec-head"><div><h2 id="waveTitle">The midnight wave</h2><p>Launch rolls west around the world for about 19 hours, from New Zealand to the Americas. Each dot is one unlock moment, shown in your time. Tap one to jump to it.</p></div></div>
+      <div class="wave-scroll"><div class="wave" id="wave"></div></div></section>
+    <section class="sec" aria-labelledby="boardTitle"><div class="sec-head"><div><h2 id="boardTitle">Every country, live</h2><p>Tap a row to put it in the big countdown.</p></div></div>
+      <div class="tools"><input type="search" id="q" placeholder="Search a country" aria-label="Search a country">
+        <div class="seg" role="group" aria-label="Sort"><button type="button" id="sortTime" aria-pressed="true">First to unlock</button><button type="button" id="sortName" aria-pressed="false">A–Z</button></div>
+        <span class="count" id="count"></span></div>
+      <div class="board" id="board" role="list"></div>
+      <p class="cd-fine">The US and Canada unlock together at midnight Eastern, so the West Coast starts at 9 PM on the 18th. Other countries with several time zones are shown at their capital's midnight. Rockstar can still change timing, so check your console store on the night.</p></section>
+    <section class="sec"><div class="sec-head"><h2>Good to know</h2></div><div class="notes">${L.notes.map((n) => `<div class="note">${esc(n)}</div>`).join("")}</div></section>
+    <section class="sec"><div class="sec-head"><div><h2>The road to launch</h2><p>From the first trailer to release day.</p></div></div>
+      <ol class="tl">${L.timeline.map((t) => `<li data-date="${t.date}"><time datetime="${t.date}">${fmtDate(t.date)}</time><b>${esc(t.title)}</b><p>${esc(t.text)}</p></li>`).join("")}</ol></section>
+  </main></div>`;
+  const script = CD_JS + `(function(){var now=Date.now(),marked=false;document.querySelectorAll(".tl li").forEach(function(li){var d=Date.parse(li.dataset.date+"T23:59:59");if(d<now)li.classList.add("past");else if(!marked){li.classList.add("next");marked=true}})})();`;
+  write("launch/index.html", layout({ url: "/launch/", title: "Live countdown and launch times by country", description: "Live GTA 6 countdown for every country: exactly when it unlocks where you are, the midnight wave from New Zealand to the Americas, pre-load, install size and the full release timeline.", body, script, jsonld: breadcrumbLd([["/", "Home"], ["/launch/", "Launch"]]) }));
 }
 
 // VIDEOS
 {
-  const body = pageHead([["/", "Home"], [null, "Videos"]], "GTA 6 trailers and videos", C.videos.intro) + `<main class="wrap"><section class="sec"><div class="vids">${VIDEOS.map(vidCard).join("")}</div></section>${sources(C.videos.sources)}</main>`;
+  const body = pageHead([["/", "Home"], [null, "Videos"]], "GTA 6 trailers and videos", C.videos.intro) + `<main class="wrap"><section class="sec"><div class="vids">${VIDEOS.map(vidCard).join("")}</div></section></main>`;
   write("videos/index.html", layout({ url: "/videos/", title: "Trailers and videos", description: "Watch every official GTA 6 video: the Launch Trailer, An Extended Look, Trailer 2, Trailer 1 and the cover art reveal, with dates and what each one shows.", body, script: YT_SCRIPT, jsonld: breadcrumbLd([["/", "Home"], ["/videos/", "Videos"]]) }));
 }
 
 // FAQ
 {
   const F = C.faq;
-  const body = pageHead([["/", "Home"], [null, "FAQ"]], "GTA 6 FAQ", F.intro) + `<main class="wrap"><section class="sec"><div class="faq">${F.items.map((f, i) => `<details${i < 2 ? " open" : ""}><summary>${esc(f.q)}</summary><p>${esc(f.a)}${f.link ? ` <a href="${f.link}">More</a>` : ""}</p></details>`).join("")}</div></section></main>`;
-  write("faq/index.html", layout({ url: "/faq/", title: "FAQ", description: "Answers to the most asked GTA 6 questions: India unlock time and price, PC, online mode, physical disc, pre-order bonus, download size, cheats and more.", body,
-    jsonld: { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: F.items.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) } }));
+  const groups = [["Launch and release", C.launch.sources], ["Prices and editions", C.editions.sources], ["Answers on this page", F.sources], ["Characters", C.characters.sources], ["Places", C.places.sources], ["Gameplay", C.features.sources], ["Radio", C.radio.sources], ["Videos", C.videos.sources]];
+  const body = pageHead([["/", "Home"], [null, "FAQ"]], "GTA 6 FAQ", F.intro) + `<main class="wrap"><section class="sec">${regionBar("rp-faq")}<div class="faq">${F.items.map((f, i) => `<details${i < 2 ? " open" : ""}><summary>${esc(f.q)}</summary><p>${faqAnswer(f)}${f.link ? ` <a href="${f.link}">More</a>` : ""}</p></details>`).join("")}</div></section>
+  <section class="sec srcall" id="sources"><div class="sec-head"><div><h2>Where our facts come from</h2><p>Everything on this site comes from Rockstar's own material or the reporting below. Anything that comes from previews or interviews is marked "Reported" where it appears.</p></div></div>
+  <div class="srcgrid">${groups.map(([t, list]) => `<div class="srcbox"><h3>${esc(t)}</h3><ul>${list.map((s) => `<li><a href="${esc(s.url)}" rel="noopener" target="_blank">${esc(s.title)}</a></li>`).join("")}</ul></div>`).join("")}</div></section></main>`;
+  write("faq/index.html", layout({ url: "/faq/", title: "FAQ", description: "Answers to the most asked GTA 6 questions: unlock time and price where you are, PC version, online mode, consoles, frame rate, download size, pre-order bonus and more.", body,
+    jsonld: { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: F.items.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: fillText(f.a) } })) } }));
 }
 
 // ABOUT
 {
-  const body = pageHead([["/", "Home"], [null, "About"]], "About this site", "A free, fan-made GTA 6 guide built by a player in India.") + `<main class="wrap"><section class="sec prose">
-  <p>Everything before launch comes from Rockstar's official material: the GTA VI website, trailers, the Extended Look and Newswire posts. Each page lists its sources, and anything that comes from previews or interviews is marked "Reported".</p>
+  const body = pageHead([["/", "Home"], [null, "About"]], "About this site", "A free, fan-made GTA 6 guide.") + `<main class="wrap"><section class="sec prose">
+  <p>Everything before launch comes from Rockstar's official material: the GTA VI website, trailers, the Extended Look and Newswire posts. <a href="/faq/#sources">The FAQ lists every source</a>, and anything that comes from previews or interviews is marked "Reported".</p>
   <p>From launch night, the 100% tracker is filled in from real play. Items are only added once they've been seen in the game. Nothing here comes from leaks.</p>
-  <p>All writing and illustrations are original. No Rockstar artwork, logos or screenshots are used.</p>
+  <p>All writing is original. Screenshots are official images released by Rockstar Games and are credited on every photo.</p>
   <p>This site is not affiliated with or endorsed by Rockstar Games or Take-Two Interactive.</p>
   </section></main>`;
   write("about/index.html", layout({ url: "/about/", title: "About", description: "About this fan-made GTA 6 guide: where the information comes from and how the tracker is built.", body }));
@@ -393,10 +460,9 @@ pages.pop(); // 404 is not in the sitemap
 /* ======================= static files ======================= */
 copyDir(path.join(ROOT, "src/assets"), path.join(OUT, "assets"));
 fs.copyFileSync(path.join(ROOT, "data.json"), path.join(OUT, "data.json"));
-write("tracker/index.html", fs.readFileSync(path.join(ROOT, "src/tracker.html"), "utf8"));
+write("tracker/index.html", fs.readFileSync(path.join(ROOT, "src/tracker.html"), "utf8").replace("</head>", `<meta name="color-scheme" content="dark"><style>html{background:#1b1d24}@view-transition{navigation:auto}::view-transition-old(root){animation:vtOut .16s ease both}::view-transition-new(root){animation:vtIn .26s cubic-bezier(.2,.7,.2,1) both}@keyframes vtOut{to{opacity:0}}@keyframes vtIn{from{opacity:0;transform:translateY(8px)}}.fx body{animation:vtIn .24s ease-out both}.fx.leaving body{opacity:0;transition:opacity .14s}@media (prefers-reduced-motion:reduce){::view-transition-old(root),::view-transition-new(root),.fx body{animation:none}}</style>${HEAD_FX}</head>`));
 pages.push("/tracker/");
-write("countdown/index.html", fs.readFileSync(path.join(ROOT, "src/countdown.html"), "utf8"));
-pages.push("/countdown/");
+write("countdown/index.html", `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Moved to the Launch page</title><meta name="robots" content="noindex"><link rel="canonical" href="${SITE}/launch/"><meta http-equiv="refresh" content="0;url=/launch/"><style>html{background:#1b1d24;color:#f7f4ee;font-family:system-ui}</style></head><body><p>The countdown now lives on the <a style="color:#f7c318" href="/launch/">Launch page</a>.</p></body></html>`);
 
 const today = new Date().toISOString().slice(0, 10);
 write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map((u) => `  <url><loc>${SITE}${u}</loc><lastmod>${today}</lastmod></url>`).join("\n")}\n</urlset>\n`);
