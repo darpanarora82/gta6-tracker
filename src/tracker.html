@@ -611,8 +611,99 @@ footer p{margin:0 0 6px;max-width:72ch}
       img.onerror = bad; img.src = url;
     });
   }
+  function post(path, body){ return fetch(path, {method:"POST", headers:{"Content-Type":"application/json"}, credentials:"same-origin", body:body})
+    .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ if (!r.ok || !j.ok) throw new Error(j.error || ("HTTP " + r.status)); return j; }); }); }
+
+  /* ---------- quick add with AI ---------- */
+  var QA = [], SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  function words(s){ return (s || "").toLowerCase().replace(/[^a-z0-9 ]+/g, " ").split(" ").filter(function(w){ return w.length > 2; }); }
+  function dupOf(name, cat){
+    var a = words(name); if (!a.length) return null; var best = null;
+    allItems().forEach(function(it){ if (it.cat !== cat) return; var b = words(it.name), hit = 0;
+      a.forEach(function(w){ if (b.indexOf(w) > -1) hit++; });
+      var score = hit / Math.max(a.length, b.length); if (score >= 0.6 && (!best || score > best.s)) best = {s:score, it:it}; });
+    return best && best.it;
+  }
+  function listen(q, box, btn){
+    var r = new SR(); r.lang = navigator.language || "en-IN"; r.interimResults = false; r.maxAlternatives = 1;
+    btn.classList.add("on"); btn.textContent = "Listening…";
+    r.onresult = function(e){ box.value = (box.value ? box.value + " " : "") + e.results[0][0].transcript; q.hint = box.value; };
+    r.onerror = function(){ toast("Couldn't hear that. Try again or type it."); };
+    r.onend = function(){ btn.classList.remove("on"); btn.textContent = "🎤 Speak"; };
+    r.start();
+  }
+  function opt(sel, value, label){ var o = el("option", null, label); o.value = value; sel.appendChild(o); }
+  function qaRender(){
+    var box = $("qaList"); box.innerHTML = ""; $("qaActions").hidden = !QA.length;
+    $("qaDraft").textContent = QA.some(function(q){ return q.d; }) ? "Redraft with AI" : "Draft with AI";
+    QA.forEach(function(q, i){
+      var c = el("div", "qa-card" + (q.busy ? " busy" : ""));
+      var im = el("img"); im.src = q.url; im.alt = ""; c.appendChild(im);
+      var f = el("div", "qa-fields");
+      var hw = el("div", "qa-hint"), h = el("textarea"); h.rows = 2; h.placeholder = "A few words: what it is, where, is it missable?"; h.value = q.hint || "";
+      h.addEventListener("input", function(){ q.hint = h.value; }); hw.appendChild(h);
+      if (SR){ var mic = el("button", "qa-mic", "🎤 Speak"); mic.type = "button"; mic.addEventListener("click", function(){ listen(q, h, mic); }); hw.appendChild(mic); }
+      f.appendChild(hw);
+      if (q.busy) f.appendChild(el("p", "qa-msg", "Drafting…"));
+      if (q.d){
+        var d = q.d, g = el("div", "qa-grid");
+        var nm = el("input"); nm.type = "text"; nm.placeholder = "Name"; nm.value = d.name; nm.className = "qa-name";
+        nm.addEventListener("input", function(){ d.name = nm.value; });
+        var cs = el("select"); S.data.categories.forEach(function(x){ opt(cs, x.id, x.name); }); cs.value = d.cat; cs.addEventListener("change", function(){ d.cat = cs.value; });
+        var rs = el("select" + ""); opt(rs, "", "No region"); (S.data.regions || []).forEach(function(r){ opt(rs, r, r); }); rs.value = d.region;
+        if (!d.regionSure) rs.classList.add("unsure");
+        rs.addEventListener("change", function(){ d.region = rs.value; d.regionSure = true; rs.classList.remove("unsure"); });
+        var nt = el("textarea"); nt.rows = 3; nt.placeholder = "How to find or complete it"; nt.value = d.note; nt.addEventListener("input", function(){ d.note = nt.value; });
+        var ck = el("div", "checks");
+        [["missable", "Missable"], ["spoiler", "Spoiler"]].forEach(function(p){ var l = el("label"), x = el("input"); x.type = "checkbox"; x.checked = !!d[p[0]];
+          x.addEventListener("change", function(){ d[p[0]] = x.checked; }); l.appendChild(x); l.appendChild(document.createTextNode(" " + p[1])); ck.appendChild(l); });
+        g.appendChild(nm); g.appendChild(cs); g.appendChild(rs); f.appendChild(g); f.appendChild(nt); f.appendChild(ck);
+        if (!d.regionSure) f.appendChild(el("p", "qa-warn", "Check the region: the AI wasn't sure."));
+        var dup = dupOf(d.name, d.cat); if (dup) f.appendChild(el("p", "qa-warn", "Looks like " + dup.id + " (" + dup.name + "). Remove this card if it's the same thing."));
+      }
+      if (q.msg) f.appendChild(el("p", "qa-err", q.msg));
+      var x = el("button", "qa-x", "×"); x.type = "button"; x.setAttribute("aria-label", "Remove this screenshot");
+      x.addEventListener("click", function(){ URL.revokeObjectURL(q.url); QA.splice(i, 1); qaRender(); });
+      c.appendChild(f); c.appendChild(x); box.appendChild(c);
+    });
+  }
+  function setupQuickAdd(){
+    $("qaFiles").addEventListener("change", function(){
+      [].slice.call(this.files || []).slice(0, 20).forEach(function(file){ QA.push({file:file, url:URL.createObjectURL(file), hint:""}); });
+      this.value = ""; qaRender();
+    });
+    $("qaClear").addEventListener("click", function(){ QA.forEach(function(q){ URL.revokeObjectURL(q.url); }); QA = []; qaRender(); });
+    $("qaDraft").addEventListener("click", function(){
+      var b = this; b.disabled = true;
+      var cats = S.data.categories.map(function(c){ return {id:c.id, name:c.name, desc:c.desc || ""}; });
+      QA.reduce(function(chain, q){ return chain.then(function(){
+        q.busy = true; q.msg = ""; qaRender();
+        return shrink(q.file, 768).then(function(img){ return post("/edit/draft", JSON.stringify({image:img, hint:q.hint || "", categories:cats, regions:S.data.regions || []})); })
+          .then(function(j){ q.d = j.draft; if (!q.d.cat) q.d.cat = S.cat !== "all" ? S.cat : S.data.categories[0].id; })
+          .catch(function(err){ q.msg = err.message; if (!q.d) q.d = {name:"", cat:S.cat !== "all" ? S.cat : S.data.categories[0].id, region:"", note:q.hint || "", missable:false, spoiler:false, regionSure:false}; })
+          .then(function(){ q.busy = false; qaRender(); });
+      }); }, Promise.resolve()).then(function(){ b.disabled = false; toast("Drafts ready. Check them, then Publish all."); });
+    });
+    $("qaPublish").addEventListener("click", function(){
+      var ready = QA.filter(function(q){ return q.d && q.d.name.trim(); });
+      if (!ready.length){ toast("Draft the screenshots first, and give each one a name."); return; }
+      if (ready.length < QA.length && !confirm((QA.length - ready.length) + " card(s) have no name and will stay here. Publish the rest?")) return;
+      var b = this; b.disabled = true;
+      ready.reduce(function(chain, q){ return chain.then(function(){
+        return shrink(q.file, 1280).then(function(full){ return shrink(q.file, 480).then(function(th){
+          var d = q.d; S.drafts.push({id:nextId(d.cat), cat:d.cat, name:d.name.trim(), region:d.region, note:(d.note || "").trim(), missable:d.missable, spoiler:d.spoiler, added:today(), img:full, thumb:th});
+        }); });
+      }); }, Promise.resolve()).then(function(){
+        try { localStorage.setItem(DKEY, JSON.stringify(S.drafts)); } catch(err){}
+        QA = QA.filter(function(q){ return ready.indexOf(q) === -1; }); qaRender(); render();
+        b.disabled = false; $("publish").click();
+      }, function(){ b.disabled = false; toast("Couldn't read one of the photos"); });
+    });
+  }
+
   function setupEdit(){
     $("edit").hidden = false;
+    setupQuickAdd();
     var fc = $("fCat"), fr = $("fRegion");
     S.data.categories.forEach(function(c){ var o = el("option", null, c.name); o.value = c.id; fc.appendChild(o); });
     var none = el("option", null, "No region"); none.value = ""; fr.appendChild(none);
@@ -632,8 +723,6 @@ footer p{margin:0 0 6px;max-width:72ch}
     $("publish").addEventListener("click", function(){
       if (!S.drafts.length){ toast("No drafts to publish"); return; }
       var b = this; b.disabled = true; b.textContent = "Publishing…";
-      function post(path, body){ return fetch(path, {method:"POST", headers:{"Content-Type":"application/json"}, credentials:"same-origin", body:body})
-        .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ if (!r.ok || !j.ok) throw new Error(j.error || ("HTTP " + r.status)); return j; }); }); }
       function upload(dataUrl){ return dataUrl && dataUrl.indexOf("data:") === 0 ? post("/edit/blob", JSON.stringify({content:dataUrl.slice(dataUrl.indexOf(",") + 1), encoding:"base64"})).then(function(j){ return j.sha; }) : Promise.resolve(null); }
       var out = [];
       S.drafts.reduce(function(chain, d){ return chain.then(function(){

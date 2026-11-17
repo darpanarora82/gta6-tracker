@@ -503,6 +503,13 @@ fs.copyFileSync(path.join(ROOT, "data.json"), path.join(OUT, "data.json"));
     <section class="tk-work" id="edit" hidden aria-labelledby="editTitle">
       <h2 id="editTitle">Edit mode</h2>
       <p>Only you see this. Add items as drafts, then press Publish drafts: they go straight to GitHub and are live in about a minute. Never change an item ID once it's published, or visitors lose their ticks.</p>
+      <div class="qa">
+        <div class="qa-top"><div><h3>Quick add with AI</h3><p>Pick screenshots, add a few words to each (or tap the mic), then let AI draft them. Check, fix, publish.</p></div>
+          <label class="tk-btn solid qa-pick"><input type="file" id="qaFiles" accept="image/*" multiple>Add screenshots</label></div>
+        <div id="qaList" class="qa-list"></div>
+        <div class="tk-btns" id="qaActions" hidden><button class="tk-btn solid" type="button" id="qaDraft">Draft with AI</button><button class="tk-btn solid" type="button" id="qaPublish">Publish all</button><button class="tk-btn ghost" type="button" id="qaClear">Clear</button></div>
+      </div>
+      <p class="qa-or">Or add one by hand</p>
       <form class="tk-form" id="addForm" autocomplete="off">
         <select id="fCat" aria-label="Category"></select>
         <select id="fRegion" aria-label="Region"></select>
