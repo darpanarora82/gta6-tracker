@@ -37,7 +37,18 @@
       "id": "activities",
       "name": "Side activities",
       "desc": "Optional activities, hobbies and side jobs.",
-      "items": []
+      "items": [
+        {
+          "id": "activities-001",
+          "name": "Greenriver Boat",
+          "region": "Grassrivers",
+          "note": "This boat is available as a side quest. It can be missed for good.",
+          "missable": true,
+          "img": "/assets/img/items/activities-001.jpg",
+          "thumb": "/assets/img/items/activities-001-t.jpg",
+          "added": "2026-11-18"
+        }
+      ]
     },
     {
       "id": "trophies",
