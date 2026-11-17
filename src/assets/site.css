@@ -775,3 +775,15 @@ a.thumb{display:block;cursor:zoom-in}
 .qa-or{margin:14px 0 0;color:var(--muted);font-size:14px;font-weight:700}
 .qa-fields .checks{display:flex;gap:16px;font-size:14px}
 @media (max-width:700px){.qa-card{grid-template-columns:1fr}.qa-grid{grid-template-columns:1fr 1fr}.qa-name{grid-column:1/-1}.qa-hint{flex-direction:column}.qa-mic{align-self:flex-start}}
+/* publish status in /edit */
+.pub-status{margin:14px 0;padding:14px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04)}
+.pub-status[hidden]{display:none}
+.pub-status .pub-msg{margin:0 0 6px;font-weight:700}
+.pub-status .pub-list{margin:0;padding-left:18px;color:var(--soft);font-size:14px}
+.pub-status.busy .pub-msg::before{content:"";display:inline-block;width:12px;height:12px;margin-right:8px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;vertical-align:-1px;animation:pubspin .8s linear infinite}
+.pub-status.ok{border-color:rgba(80,220,140,.5);background:rgba(80,220,140,.08)}
+.pub-status.ok .pub-msg{color:#7ee2a8}
+.pub-status.warn{border-color:rgba(255,190,80,.5);background:rgba(255,190,80,.08)}
+.pub-status.warn .pub-msg{color:#ffc870}
+@keyframes pubspin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.pub-status.busy .pub-msg::before{animation:none}}
