@@ -110,7 +110,7 @@ Rules:
 - category: one of these ids:
 ${cats}
 - region: exactly one of ${JSON.stringify(regions || [])}, or "" if unknown. Use the hint first. Set regionSure to false if you are guessing.
-- note: 1-2 plain sentences telling another player how to find or complete it. Use the hint's facts; add only what the screenshot clearly shows. Never invent map locations.
+- note: 1-2 plain sentences telling another player how to find or complete it. Use the hint's facts; add only what the screenshot clearly shows. Never invent map locations, and don't name a region in the note unless the hint names it.
 - missable: true only if the hint says it can be missed for good.
 - spoiler: true if it names a mission, a story event or a character twist. Collectibles and general activities are not spoilers.`;
   const run = () => env.AI.run(VISION, { messages: [{ role: "system", content: system }, { role: "user", content: `Player's hint: ${clean(hint, 500) || "(none)"}` }], image, max_tokens: 300, temperature: 0.2 });
@@ -121,10 +121,11 @@ ${cats}
     if (/neuron|limit|quota|429|4006/i.test(m)) return json({ ok: false, error: "Today's free AI allowance is used up. It resets at 05:30 IST." }, 429);
     throw e;
   }
-  const text = String(out && (out.response ?? out.result?.response) || "");
-  const match = text.match(/\{[\s\S]*\}/);
+  // Workers AI may return the answer already parsed into an object, or as text containing JSON.
+  const raw = out && (out.response ?? out.result?.response);
   let d = {};
-  try { d = match ? JSON.parse(match[0]) : {}; } catch { d = {}; }
+  if (raw && typeof raw === "object") d = raw;
+  else { const m = String(raw || "").match(/\{[\s\S]*\}/); try { d = m ? JSON.parse(m[0]) : {}; } catch { d = {}; } }
   const catIds = (categories || []).map((c) => c.id);
   const res = {
     name: clean(d.name, 80),
@@ -133,7 +134,8 @@ ${cats}
     note: clean(d.note, 600),
     missable: d.missable === true,
     spoiler: d.spoiler === true,
-    regionSure: d.regionSure !== false && (regions || []).includes(d.region),
+    // Only trust the region if the player's hint actually names it; the model guesses confidently.
+    regionSure: (regions || []).includes(d.region) && String(hint || "").toLowerCase().includes(String(d.region).toLowerCase()),
   };
   if (!res.name && !res.note) return json({ ok: false, error: "The AI couldn't read this one. Fill it in by hand." }, 502);
   return json({ ok: true, draft: res });
