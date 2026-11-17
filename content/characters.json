@@ -28,7 +28,8 @@
         "brian-heder",
         "cal-hampton"
       ],
-      "status": "Confirmed"
+      "status": "Confirmed",
+      "photoFocus": "58% 28%"
     },
     {
       "id": "lucia-caminos",
@@ -45,7 +46,8 @@
       "connections": [
         "jason-duval"
       ],
-      "status": "Confirmed"
+      "status": "Confirmed",
+      "photoFocus": "76% 25%"
     },
     {
       "id": "cal-hampton",
@@ -63,7 +65,8 @@
         "jason-duval",
         "brian-heder"
       ],
-      "status": "Confirmed"
+      "status": "Confirmed",
+      "photoFocus": "70% 20%"
     },
     {
       "id": "brian-heder",
@@ -81,7 +84,8 @@
         "jason-duval",
         "cal-hampton"
       ],
-      "status": "Confirmed"
+      "status": "Confirmed",
+      "photoFocus": "60% 22%"
     },
     {
       "id": "lori-heder",
@@ -97,7 +101,8 @@
       "connections": [
         "brian-heder"
       ],
-      "status": "Confirmed"
+      "status": "Confirmed",
+      "photoFocus": "68% 22%"
     },
     {
       "id": "boobie-ike",
@@ -114,7 +119,8 @@
         "dre-quan-priest",
         "real-dimez"
       ],
-      "status": "Confirmed"
+      "status": "Confirmed",
+      "photoFocus": "62% 20%"
     },
     {
       "id": "dre-quan-priest",
@@ -131,7 +137,8 @@
         "boobie-ike",
         "real-dimez"
       ],
-      "status": "Confirmed"
+      "status": "Confirmed",
+      "photoFocus": "75% 18%"
     },
     {
       "id": "real-dimez",
@@ -148,7 +155,8 @@
         "dre-quan-priest",
         "boobie-ike"
       ],
-      "status": "Confirmed"
+      "status": "Confirmed",
+      "photoFocus": "63% 28%"
     },
     {
       "id": "raul-bautista",
@@ -165,7 +173,8 @@
         "jason-duval",
         "lucia-caminos"
       ],
-      "status": "Confirmed"
+      "status": "Confirmed",
+      "photoFocus": "62% 15%"
     }
   ]
 }

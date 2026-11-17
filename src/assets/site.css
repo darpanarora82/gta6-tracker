@@ -321,3 +321,24 @@ h1,h2,h3,.sign h1,.plate h1,.sec-head h2,.bigcard h3,.fgroup h2,.dial h3,.tl b,.
 .gallery .ph{aspect-ratio:16/9;border-radius:12px}
 @media (max-width:560px){ .chero,.phero{min-height:520px} .chero::after{background:linear-gradient(180deg,rgba(14,10,28,.1) 20%,rgba(14,10,28,.85) 62%,var(--asphalt))} .pcard h3{font-size:34px} .cast{grid-template-columns:1fr 1fr;gap:10px} .pcard .txt{padding:12px} .pcard h3{font-size:26px} .pcard p{display:none} .pcard .role{font-size:11px} }
 .pcard .credit{top:8px;bottom:auto}
+/* header fits on desktop: wider bar, no fade unless it scrolls (phones) */
+.bar .wrap{max-width:1240px}
+@media (min-width:1200px){ .nav{mask-image:none;overflow:visible;flex-wrap:nowrap} }
+@media (min-width:900px) and (max-width:1199px){ .nav{gap:6px} .nav a{font-size:17px;padding:5px 9px 4px} .logo b{font-size:23px} }
+
+/* videos */
+.vids{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.vid{background:var(--asphalt-2);border-radius:16px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.3)}
+.vid .frame{position:relative;aspect-ratio:16/9;background:#000}
+.vid .frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vid .play{position:absolute;inset:0;width:100%;height:100%;border:0;padding:0;cursor:pointer;background:#000}
+.vid .play img{width:100%;height:100%;object-fit:cover;display:block;opacity:.85;transition:opacity .2s}
+.vid .play:hover img{opacity:1}
+.vid .play::after{content:"";position:absolute;left:50%;top:50%;width:72px;height:72px;margin:-36px 0 0 -36px;border-radius:50%;background:var(--warn) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 5v14l11-7z' fill='%231b1d24'/%3E%3C/svg%3E") 55% 50%/34px no-repeat;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+.vid .len{position:absolute;right:10px;bottom:10px;z-index:1;background:rgba(0,0,0,.8);color:#fff;font-size:13px;font-weight:700;border-radius:4px;padding:2px 7px}
+.vid .info{padding:14px 16px 16px}
+.vid .info time{color:var(--muted);font-size:13px;font-weight:700}
+.vid .info h3{margin:2px 0 6px;font-size:28px;font-weight:900;line-height:1}
+.vid .info p{margin:0;color:var(--soft);font-size:15px}
+.vids.feature{grid-template-columns:1fr}
+@media (min-width:900px){ .vids.feature .vid{display:grid;grid-template-columns:1.6fr 1fr} .vids.feature .info{padding:24px} .vids.feature .info h3{font-size:44px} .vids.feature .info p{font-size:17px} }

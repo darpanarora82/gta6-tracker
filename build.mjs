@@ -19,7 +19,9 @@ const C = {
   editions: read("content/editions.json"),
   launch: read("content/launch.json"),
   faq: read("content/faq.json"),
+  videos: read("content/videos.json"),
 };
+const VIDEOS = C.videos.items.filter((v) => v.youtube);
 const charById = Object.fromEntries(C.characters.items.map((c) => [c.id, c]));
 const placeById = Object.fromEntries(C.places.items.map((p) => [p.id, p]));
 
@@ -64,10 +66,10 @@ function photos(kind, id) {
     .sort((a, b) => (+(a.match(re)[2] || 1)) - (+(b.match(re)[2] || 1)))
     .map((f) => `/assets/img/${kind}/${f}`);
 }
-function photo(kind, id, fallback, alt, { eager = false, index = 0 } = {}) {
+function photo(kind, id, fallback, alt, { eager = false, index = 0, focus = "" } = {}) {
   const src = photos(kind, id)[index];
   if (!src) return `<div class="ph">${fallback}</div>`;
-  return `<div class="ph"><img src="${src}" alt="${esc(alt)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"><span class="credit">Image: Rockstar Games</span></div>`;
+  return `<div class="ph"><img src="${src}" alt="${esc(alt)}"${focus ? ` style="object-position:${esc(focus)}"` : ""} ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"><span class="credit">Image: Rockstar Games</span></div>`;
 }
 function poster(c) {
   const palettes = { "Leads": ["#3b1f5c", "#f06a5f", "#ffb35c"], "Jason's circle": ["#0d3b4f", "#1f8f8a", "#bfe6c9"], "Only Raw Records": ["#2a1240", "#7b4bd1", "#ff7ab8"], "Heists": ["#3a1a12", "#d9572b", "#ffd27a"] };
@@ -109,7 +111,7 @@ const HERO = `<svg class="scene" viewBox="0 0 1200 600" preserveAspectRatio="xMi
 
 /* ======================= layout ======================= */
 const NAV = [
-  ["/", "Home"], ["/tracker/", "100% Tracker"], ["/launch/", "Launch times"], ["/editions/", "Editions & prices"],
+  ["/tracker/", "100% Tracker"], ["/launch/", "Launch"], ["/editions/", "Editions"], ["/videos/", "Videos"],
   ["/characters/", "Characters"], ["/places/", "Places"], ["/features/", "Gameplay"], ["/radio/", "Radio"], ["/faq/", "FAQ"],
 ];
 
@@ -143,7 +145,7 @@ ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld).replace(
 <header class="bar"><div class="wrap"><a class="logo" href="/" aria-label="${SITE_NAME} home"><span><b>GTA 6 Guide</b><small>Leonida field guide</small></span></a><nav class="nav" aria-label="Main">${nav}</nav></div></header>
 ${body}
 <footer class="site"><div class="wrap">
-  <div class="cols"><nav aria-label="Footer">${NAV.map(([h, l]) => `<a href="${h}">${l}</a>`).join("")}<a href="/countdown/">Countdown</a><a href="/about/">About</a></nav></div>
+  <div class="cols"><nav aria-label="Footer"><a href="/">Home</a>${NAV.map(([h, l]) => `<a href="${h}">${l}</a>`).join("")}<a href="/countdown/">Countdown</a><a href="/about/">About</a></nav></div>
   <p>Fan-made and unofficial. Not affiliated with or endorsed by Rockstar Games or Take-Two Interactive. Grand Theft Auto and related names are trademarks of their owners. All illustrations on this site are original. Every fact links to its source.</p>
 </div></footer>
 ${script ? `<script>${script}</script>` : ""}
@@ -161,13 +163,16 @@ const sources = (list) => list && list.length ? `<section class="sources"><h2>So
 const status = (s) => s === "Reported" ? '<span class="chip rep">Reported</span>' : `<span class="chip ok">${s === "Confirmed" ? "Confirmed by Rockstar" : "Shown by Rockstar"}</span>`;
 const breadcrumbLd = (items) => ({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: items.map(([u, n], i) => ({ "@type": "ListItem", position: i + 1, name: n, item: SITE + u })) });
 
-const personCard = (c) => `<a class="pcard" href="/characters/${c.id}/">${photo("characters", c.id, poster(c), `${c.name}, official GTA VI image`)}<div class="txt"><span class="role">${esc(c.role)}</span><h3>${esc(c.name)}</h3><p>${esc(c.summary)}</p></div></a>`;
+const personCard = (c) => `<a class="pcard" href="/characters/${c.id}/">${photo("characters", c.id, poster(c), `${c.name}, official GTA VI image`, { focus: c.photoFocus })}<div class="txt"><span class="role">${esc(c.role)}</span><h3>${esc(c.name)}</h3><p>${esc(c.summary)}</p></div></a>`;
 const cast = (list, compact) => `<div class="cast${compact ? " compact" : ""}">${list.map(personCard).join("")}</div>`;
 const placeCard = (p, i) => `<a class="card" href="/places/${p.id}/">${photo("places", p.id, art(p.name, "c" + i), `${p.name}, official GTA VI screenshot`)}<div class="cl"><b>${esc(p.name)}</b><span>${esc(p.tagline)}</span></div></a>`;
 const gallery = (kind, id, name) => {
   const list = photos(kind, id).slice(1);
   return list.length ? `<section class="sec"><div class="sec-head"><h2>Gallery</h2></div><div class="gallery">${list.map((src, i) => `<a class="ph" href="${src}" target="_blank" rel="noopener"><img src="${src}" alt="${esc(name)}, official GTA VI screenshot ${i + 2}" loading="lazy" decoding="async"><span class="credit">Image: Rockstar Games</span></a>`).join("")}</div></section>` : "";
 };
+
+const vidCard = (v) => `<article class="vid" id="${v.id}"><div class="frame"><button class="play" type="button" data-yt="${esc(v.youtube)}" aria-label="Play ${esc(v.title)}"><img src="https://i.ytimg.com/vi/${esc(v.youtube)}/hqdefault.jpg" alt="" loading="lazy"></button>${v.length ? `<span class="len">${esc(v.length)}</span>` : ""}</div><div class="info">${v.date ? `<time datetime="${v.date}">${fmtDate(v.date)}</time>` : ""}<h3>${esc(v.title)}</h3><p>${esc(v.text)}</p></div></article>`;
+const YT_SCRIPT = `document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".play[data-yt]");if(!b)return;var f=document.createElement("iframe");f.src="https://www.youtube-nocookie.com/embed/"+b.dataset.yt+"?autoplay=1&rel=0";f.title=b.getAttribute("aria-label");f.allow="autoplay; encrypted-media; picture-in-picture; fullscreen";f.allowFullscreen=true;b.replaceWith(f)});`;
 
 /* ======================= pages ======================= */
 // HOME
@@ -198,6 +203,11 @@ const gallery = (kind, id, name) => {
     </div>
   </section>
 
+  ${VIDEOS.length ? `<section class="sec">
+    <div class="sec-head"><div><h2>Watch the trailers</h2><p>Official videos from Rockstar.</p></div><a href="/videos/">All videos</a></div>
+    <div class="vids feature">${vidCard(VIDEOS[0])}</div>
+  </section>` : ""}
+
   <section class="sec">
     <div class="sec-head"><div><h2>Explore Leonida</h2><p>${esc(C.places.items.length)} regions Rockstar has named so far.</p></div><a href="/places/">All places</a></div>
     <div class="cards">${C.places.items.map(placeCard).join("")}</div>
@@ -223,7 +233,7 @@ const gallery = (kind, id, name) => {
     <div class="faq">${C.faq.items.slice(0, 4).map((f) => `<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join("")}</div>
   </section>
 </main>`;
-  const script = `(function(){var t=Date.parse("2026-11-18T18:30:00Z"),a=document.getElementById("unlock");function f(){var l=t-Date.now();if(l<=0){a.textContent="Out now in India";return}var h=Math.floor(l/36e5),m=Math.floor(l%36e5/6e4);a.textContent="Unlocks in India in "+(h?h+"h ":"")+m+"m"}f();setInterval(f,3e4)})();`;
+  const script = YT_SCRIPT + `(function(){var t=Date.parse("2026-11-18T18:30:00Z"),a=document.getElementById("unlock");function f(){var l=t-Date.now();if(l<=0){a.textContent="Out now in India";return}var h=Math.floor(l/36e5),m=Math.floor(l%36e5/6e4);a.textContent="Unlocks in India in "+(h?h+"h ":"")+m+"m"}f();setInterval(f,3e4)})();`;
   write("index.html", layout({ url: "/", title: "Home", description: "GTA 6 guide for India and everywhere: unlock times, ₹ prices and editions, characters, every region of Leonida, radio stations, gameplay details and a free 100% completion tracker.", body, script,
     jsonld: { "@context": "https://schema.org", "@type": "WebSite", name: SITE_NAME, url: SITE + "/" } }));
 }
@@ -240,7 +250,7 @@ const gallery = (kind, id, name) => {
     const place = c.place && placeById[c.place];
     const prev = arr[(i - 1 + arr.length) % arr.length], next = arr[(i + 1) % arr.length];
     const conns = (c.connections || []).map((id) => charById[id]).filter(Boolean);
-    const body = `<section class="chero">${photo("characters", c.id, poster(c), `${c.name}, official GTA VI image`, { eager: true })}<div class="wrap">
+    const body = `<section class="chero">${photo("characters", c.id, poster(c), `${c.name}, official GTA VI image`, { eager: true, focus: c.photoFocus })}<div class="wrap">
       <div class="crumbs"><a href="/">Home</a> / <a href="/characters/">Characters</a> / ${esc(c.name)}</div>
       ${status(c.status)}
       <h1>${esc(c.name)}</h1>
@@ -348,6 +358,12 @@ const gallery = (kind, id, name) => {
   ${sources(L.sources)}</main>`;
   const script = `(function(){var f=new Intl.DateTimeFormat(undefined,{weekday:"short",day:"numeric",month:"short",hour:"numeric",minute:"2-digit"});document.querySelectorAll("[data-utc]").forEach(function(td){td.textContent=f.format(new Date(td.dataset.utc))});var now=Date.now(),marked=false;document.querySelectorAll(".tl li").forEach(function(li){var d=Date.parse(li.dataset.date+"T23:59:59");if(d<now)li.classList.add("past");else if(!marked){li.classList.add("next");marked=true}})})();`;
   write("launch/index.html", layout({ url: "/launch/", title: "Launch times by country (India 12 AM IST)", description: "Exactly when GTA 6 unlocks: 12:00 AM IST on 19 November in India, plus New Zealand, Japan, UK, US and more in your own time, pre-load, install size and the full release timeline.", body, script, jsonld: breadcrumbLd([["/", "Home"], ["/launch/", "Launch times"]]) }));
+}
+
+// VIDEOS
+{
+  const body = pageHead([["/", "Home"], [null, "Videos"]], "GTA 6 trailers and videos", C.videos.intro) + `<main class="wrap"><section class="sec"><div class="vids">${VIDEOS.map(vidCard).join("")}</div></section>${sources(C.videos.sources)}</main>`;
+  write("videos/index.html", layout({ url: "/videos/", title: "Trailers and videos", description: "Watch every official GTA 6 video: the Launch Trailer, An Extended Look, Trailer 2, Trailer 1 and the cover art reveal, with dates and what each one shows.", body, script: YT_SCRIPT, jsonld: breadcrumbLd([["/", "Home"], ["/videos/", "Videos"]]) }));
 }
 
 // FAQ

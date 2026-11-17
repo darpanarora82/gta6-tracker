@@ -1,0 +1,75 @@
+{
+  "intro": "Every official GTA 6 video from Rockstar, newest first. Videos play here from Rockstar's own YouTube channel.",
+  "sources": [
+    {
+      "title": "Rockstar Games – GTA VI official videos",
+      "url": "https://www.rockstargames.com/VI/media/videos"
+    },
+    {
+      "title": "Wikily – GTA 6 trailers (dates and lengths)",
+      "url": "https://wikily.gg/gta-6/trailers"
+    },
+    {
+      "title": "Game Informer – pre-order date and cover art video",
+      "url": "https://gameinformer.com/2026/06/18/grand-theft-auto-vi-pre-order-date-and-cover-art-revealed"
+    },
+    {
+      "title": "eGamers – launch trailer released 15 Oct 2026",
+      "url": "https://egamers.io/rockstar-drops-gta-vi-launch-trailer-as-november-19-release-nears/"
+    },
+    {
+      "title": "Comic Basics – launch trailer music",
+      "url": "https://www.comicbasics.com/?p=196976"
+    }
+  ],
+  "items": [
+    {
+      "id": "pre-load-now",
+      "title": "Pre-Load Now",
+      "date": "",
+      "length": "",
+      "youtube": "",
+      "text": "Rockstar's reminder that you can download the game ahead of launch. Pre-loading opened on 12 November."
+    },
+    {
+      "id": "launch-trailer",
+      "title": "Launch Trailer",
+      "date": "2026-10-15",
+      "length": "1:30",
+      "youtube": "",
+      "text": "The final trailer before release, captured in-game on PS5. It debuts \"Flower in a Hurricane\" by Justice with Tame Impala, SZA and King Gizzard & The Lizard Wizard."
+    },
+    {
+      "id": "extended-look",
+      "title": "An Extended Look",
+      "date": "2026-08-27",
+      "length": "26:48",
+      "youtube": "",
+      "text": "26 minutes of in-game footage: switching between Jason and Lucia, six wanted stars, combat, racing, diving and more. It premiered on Netflix, then YouTube."
+    },
+    {
+      "id": "cover-art",
+      "title": "Cover Art and Pre-Order Reveal",
+      "date": "2026-06-18",
+      "length": "",
+      "youtube": "",
+      "text": "The official cover art is revealed, and pre-orders are announced for 25 June."
+    },
+    {
+      "id": "trailer-2",
+      "title": "Trailer 2",
+      "date": "2025-05-06",
+      "length": "2:47",
+      "youtube": "VQRLujxTm3c",
+      "text": "Jason and Lucia's story: an easy score goes wrong and drags them into a conspiracy across Vice City and Leonida."
+    },
+    {
+      "id": "trailer-1",
+      "title": "Trailer 1",
+      "date": "2023-12-04",
+      "length": "1:31",
+      "youtube": "QdBZY2fkU-0",
+      "text": "The reveal of Vice City and Leonida, set to Tom Petty's \"Love Is a Long Road\". It set a record for the most-viewed game trailer in 24 hours."
+    }
+  ]
+}
