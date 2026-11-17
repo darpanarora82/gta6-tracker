@@ -347,7 +347,7 @@ footer p{margin:0 0 6px;max-width:72ch}
 (function(){
   "use strict";
   var KEY = "gta6-tracker-v1", DKEY = "gta6-tracker-drafts-v1", PKEY = "gta6-tracker-prefs-v1";
-  // Edit mode only on /edit, which Vercel password-protects (see middleware.js).
+  // Edit mode only on /edit, which the Cloudflare Worker password-protects (see worker.js).
   var EDIT = /^\/edit\/?$/.test(location.pathname);
 
   /* ---------- original artwork ---------- */
@@ -507,6 +507,7 @@ footer p{margin:0 0 6px;max-width:72ch}
     var body = el("div", "body");
     var nm = el("div", "nm" + (hidden ? " hidden-text" : ""), it.name); if (hidden) nm.setAttribute("aria-hidden", "true"); body.appendChild(nm);
     var meta = el("div", "meta");
+    if (it.added && Date.now() - Date.parse(it.added + "T00:00:00Z") < 36 * 3600 * 1000) meta.appendChild(el("span", "badge new", "New"));
     if (it.missable){ var m = el("span", "badge miss"); m.appendChild(el("span", "diamond")); m.appendChild(document.createTextNode("Missable")); meta.appendChild(m); }
     if (it.spoiler) meta.appendChild(el("span", "badge spoil", "Spoiler"));
     if (it.region) meta.appendChild(el("span", "region", it.region));
@@ -516,8 +517,9 @@ footer p{margin:0 0 6px;max-width:72ch}
     if (hidden){ var rv = el("button", "reveal", "Show this spoiler"); rv.type = "button"; rv.dataset.reveal = it.id; body.appendChild(rv); }
     row.appendChild(body);
     if (it.img){
-      var th = el("span", "thumb" + (hidden ? " hidden-img" : ""));
-      var im = el("img"); im.src = it.img; im.alt = hidden ? "" : it.name; im.loading = "lazy"; im.decoding = "async";
+      var th = el(hidden ? "span" : "a", "thumb" + (hidden ? " hidden-img" : ""));
+      if (!hidden){ th.href = it.img; th.dataset.lb = "items"; th.setAttribute("aria-label", "View photo: " + it.name); }
+      var im = el("img"); im.src = it.thumb || it.img; im.alt = hidden ? "" : it.name; im.loading = "lazy"; im.decoding = "async";
       th.appendChild(im); row.appendChild(th);
     }
     return row;
@@ -562,6 +564,7 @@ footer p{margin:0 0 6px;max-width:72ch}
   });
   $("list").addEventListener("click", function(e){
     var t = e.target;
+    if (t.closest && t.closest("a.thumb")) return;
     if (t.dataset && t.dataset.reveal){ e.preventDefault(); S.revealed[t.dataset.reveal] = true; render(); }
     if (t.dataset && t.dataset.del){ e.preventDefault(); S.drafts = S.drafts.filter(function(d){ return d.id !== t.dataset.del; }); save(DKEY, S.drafts); render(); toast("Draft deleted"); }
   });
@@ -591,12 +594,22 @@ footer p{margin:0 0 6px;max-width:72ch}
     S.drafts.forEach(function(d){
       var c = null; out.categories.forEach(function(x){ if (x.id === d.cat) c = x; }); if (!c) return;
       var it = {id:d.id, name:d.name};
-      if (d.region) it.region = d.region; if (d.note) it.note = d.note; if (d.img) it.img = d.img;
+      if (d.region) it.region = d.region; if (d.note) it.note = d.note; if (d.img && d.img.indexOf("data:") !== 0) it.img = d.img;
+      it.added = d.added || today();
       if (d.missable) it.missable = true; if (d.spoiler) it.spoiler = true;
       c.items = c.items || []; c.items.push(it);
     });
     out.updated = today();
     return JSON.stringify(out, null, 2) + "\n";
+  }
+  function shrink(file, max){
+    return new Promise(function(ok, bad){
+      var img = new Image(), url = URL.createObjectURL(file);
+      img.onload = function(){ var k = Math.min(1, max / img.width), c = document.createElement("canvas");
+        c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+        c.getContext("2d").drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url); ok(c.toDataURL("image/jpeg", 0.8)); };
+      img.onerror = bad; img.src = url;
+    });
   }
   function setupEdit(){
     $("edit").hidden = false;
@@ -607,10 +620,30 @@ footer p{margin:0 0 6px;max-width:72ch}
     if (S.cat !== "all") fc.value = S.cat;
     $("addForm").addEventListener("submit", function(e){
       e.preventDefault(); var name = $("fName").value.trim(); if (!name) return;
-      var d = {id:nextId(fc.value), cat:fc.value, name:name, region:fr.value, note:$("fNote").value.trim(), img:$("fImg").value.trim(), missable:$("fMiss").checked, spoiler:$("fSpoil").checked};
-      S.drafts.push(d); save(DKEY, S.drafts);
-      $("fName").value = ""; $("fNote").value = ""; $("fImg").value = ""; $("fMiss").checked = false; $("fSpoil").checked = false;
-      $("fName").focus(); render(); toast("Added " + d.id);
+      var d = {id:nextId(fc.value), cat:fc.value, name:name, region:fr.value, note:$("fNote").value.trim(), missable:$("fMiss").checked, spoiler:$("fSpoil").checked, added:today()};
+      var file = $("fPhoto").files && $("fPhoto").files[0];
+      (file ? shrink(file, 1280).then(function(full){ return shrink(file, 480).then(function(th){ d.img = full; d.thumb = th; }); }) : Promise.resolve()).then(function(){
+        S.drafts.push(d);
+        try { localStorage.setItem(DKEY, JSON.stringify(S.drafts)); } catch(err){ S.drafts.pop(); toast("Browser storage is full. Publish your drafts first."); return; }
+        $("fName").value = ""; $("fNote").value = ""; $("fPhoto").value = ""; $("fMiss").checked = false; $("fSpoil").checked = false;
+        $("fName").focus(); render(); toast("Added " + d.id + (d.img ? " with photo" : ""));
+      }, function(){ toast("Couldn't read that photo"); });
+    });
+    $("publish").addEventListener("click", function(){
+      if (!S.drafts.length){ toast("No drafts to publish"); return; }
+      var b = this; b.disabled = true; b.textContent = "Publishing…";
+      function post(path, body){ return fetch(path, {method:"POST", headers:{"Content-Type":"application/json"}, credentials:"same-origin", body:body})
+        .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ if (!r.ok || !j.ok) throw new Error(j.error || ("HTTP " + r.status)); return j; }); }); }
+      function upload(dataUrl){ return dataUrl && dataUrl.indexOf("data:") === 0 ? post("/edit/blob", JSON.stringify({content:dataUrl.slice(dataUrl.indexOf(",") + 1), encoding:"base64"})).then(function(j){ return j.sha; }) : Promise.resolve(null); }
+      var out = [];
+      S.drafts.reduce(function(chain, d){ return chain.then(function(){
+          return upload(d.img).then(function(a){ return upload(d.thumb).then(function(t){
+            var x = {id:d.id, cat:d.cat, name:d.name, region:d.region, note:d.note, missable:d.missable, spoiler:d.spoiler, added:d.added};
+            if (a) x.imgBlob = a; if (t) x.thumbBlob = t; out.push(x); }); }); }); }, Promise.resolve())
+        .then(function(){ return post("/edit/publish", JSON.stringify({items:out})); })
+        .then(function(j){ S.drafts = []; save(DKEY, S.drafts); render(); toast("Published " + j.ids.length + " item" + (j.ids.length === 1 ? "" : "s") + ". Live in about a minute."); })
+        .catch(function(err){ toast("Publish failed: " + err.message); })
+        .then(function(){ b.disabled = false; b.textContent = "Publish drafts"; });
     });
     $("dlData").addEventListener("click", function(){ download("data.json", merged()); toast("data.json downloaded"); });
     $("copyData").addEventListener("click", function(){ var txt = merged();

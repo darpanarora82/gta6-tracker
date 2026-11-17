@@ -743,3 +743,8 @@ h1,h2,h3,.sign h1,.plate h1,.sec-head h2,.bigcard h3,.fgroup h2,.dial h3,.tl b,.
 
 .tk .item .note{background:none;border:0;padding:0;border-radius:0;margin-top:6px;font-size:14px}
 .tk-hero h1{font-size:clamp(52px,7.4vw,104px)}
+.badge.new{color:#59e39a;background:rgba(89,227,154,.12)}
+a.thumb{display:block;cursor:zoom-in}
+.tk-file{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--soft)}
+.tk-file input{font:inherit;color:var(--soft)}
+.tk-btn:disabled{opacity:.6;cursor:wait}
