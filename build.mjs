@@ -148,7 +148,7 @@ ${body}
   <div class="cols"><nav aria-label="Footer"><a href="/">Home</a>${NAV.map(([h, l]) => `<a href="${h}">${l}</a>`).join("")}<a href="/countdown/">Countdown</a><a href="/about/">About</a></nav></div>
   <p>Fan-made and unofficial. Not affiliated with or endorsed by Rockstar Games or Take-Two Interactive. Grand Theft Auto and related names are trademarks of their owners. All illustrations on this site are original. Every fact links to its source.</p>
 </div></footer>
-${script ? `<script>${script}</script>` : ""}
+<script>${LB_SCRIPT}${script || ""}</script>
 </body>
 </html>`;
 }
@@ -168,10 +168,11 @@ const cast = (list, compact) => `<div class="cast${compact ? " compact" : ""}">$
 const placeCard = (p, i) => `<a class="card" href="/places/${p.id}/">${photo("places", p.id, art(p.name, "c" + i), `${p.name}, official GTA VI screenshot`)}<div class="cl"><b>${esc(p.name)}</b><span>${esc(p.tagline)}</span></div></a>`;
 const gallery = (kind, id, name) => {
   const list = photos(kind, id).slice(1);
-  return list.length ? `<section class="sec"><div class="sec-head"><h2>Gallery</h2></div><div class="gallery">${list.map((src, i) => `<a class="ph" href="${src}" target="_blank" rel="noopener"><img src="${src}" alt="${esc(name)}, official GTA VI screenshot ${i + 2}" loading="lazy" decoding="async"><span class="credit">Image: Rockstar Games</span></a>`).join("")}</div></section>` : "";
+  if (!list.length) return "";
+  return `<section class="pics"><div class="sec-head"><div><h2>In pictures</h2><p>${list.length} official ${list.length === 1 ? "shot" : "shots"} from Rockstar. Tap one to view it full size.</p></div></div><div class="mosaic" data-count="${Math.min(list.length, 9)}">${list.map((src, i) => `<a class="ph" href="${src}" data-lb="${kind}-${id}" aria-label="View ${esc(name)} photo ${i + 1} of ${list.length}"><img src="${src}" alt="${esc(name)}, official GTA VI screenshot ${i + 2}" loading="lazy" decoding="async"><span class="credit">Image: Rockstar Games</span></a>`).join("")}</div></section>`;
 };
-
 const vidCard = (v) => `<article class="vid" id="${v.id}"><div class="frame"><button class="play" type="button" data-yt="${esc(v.youtube)}" aria-label="Play ${esc(v.title)}"><img src="https://i.ytimg.com/vi/${esc(v.youtube)}/hqdefault.jpg" alt="" loading="lazy"></button>${v.length ? `<span class="len">${esc(v.length)}</span>` : ""}</div><div class="info">${v.date ? `<time datetime="${v.date}">${fmtDate(v.date)}</time>` : ""}<h3>${esc(v.title)}</h3><p>${esc(v.text)}</p></div></article>`;
+const LB_SCRIPT = `(function(){var set=[],i=0,box,img,cap,last;function build(){box=document.createElement("div");box.className="lb";box.setAttribute("role","dialog");box.setAttribute("aria-modal","true");box.setAttribute("aria-label","Photo viewer");box.hidden=true;box.innerHTML='<button class="lb-x" type="button" aria-label="Close (Esc)">&times;</button><button class="lb-nav prev" type="button" aria-label="Previous photo">&#8249;</button><figure><img alt=""><figcaption></figcaption></figure><button class="lb-nav next" type="button" aria-label="Next photo">&#8250;</button>';document.body.appendChild(box);img=box.querySelector("img");cap=box.querySelector("figcaption");box.addEventListener("click",function(e){if(e.target===box||e.target.tagName==="FIGURE")close();else if(e.target.closest(".lb-x"))close();else if(e.target.closest(".prev"))go(-1);else if(e.target.closest(".next"))go(1)});}function show(){var a=set[i];img.src=a.getAttribute("href");img.alt=a.querySelector("img").alt;cap.textContent=(i+1)+" / "+set.length+"  ·  Image: Rockstar Games";box.classList.toggle("single",set.length<2);}function go(d){i=(i+d+set.length)%set.length;show();}function open(a){if(!box)build();set=[].slice.call(document.querySelectorAll('[data-lb="'+a.dataset.lb+'"]'));i=set.indexOf(a);last=a;show();box.hidden=false;document.documentElement.classList.add("lb-on");box.querySelector(".lb-x").focus();}function close(){box.hidden=true;img.removeAttribute("src");document.documentElement.classList.remove("lb-on");if(last)last.focus();}document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-lb]");if(!a||e.metaKey||e.ctrlKey)return;e.preventDefault();open(a)});document.addEventListener("keydown",function(e){if(!box||box.hidden)return;if(e.key==="Escape")close();else if(e.key==="ArrowLeft")go(-1);else if(e.key==="ArrowRight")go(1);});var sx=0;document.addEventListener("touchstart",function(e){if(box&&!box.hidden)sx=e.touches[0].clientX},{passive:true});document.addEventListener("touchend",function(e){if(!box||box.hidden)return;var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50)go(dx<0?1:-1)});})();`;
 const YT_SCRIPT = `document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".play[data-yt]");if(!b)return;var f=document.createElement("iframe");f.src="https://www.youtube-nocookie.com/embed/"+b.dataset.yt+"?autoplay=1&rel=0";f.title=b.getAttribute("aria-label");f.allow="autoplay; encrypted-media; picture-in-picture; fullscreen";f.allowFullscreen=true;b.replaceWith(f)});`;
 
 /* ======================= pages ======================= */
@@ -262,6 +263,7 @@ const YT_SCRIPT = `document.addEventListener("click",function(e){var b=e.target.
       <article>
         <div class="sec-head" style="margin-top:6px"><h2>Who they are</h2></div>
         <div class="story">${c.bio.map((p) => `<p>${esc(p)}</p>`).join("")}</div>
+        ${gallery("characters", c.id, c.name)}
       </article>
       <aside class="side">
         <div class="kf"><div><span>Role</span><b>${esc(c.role)}</b></div><div><span>Based in</span><b>${place ? `<a href="/places/${place.id}/">${esc(place.name)}</a>` : "Not stated yet"}</b></div><div><span>Circle</span><b>${esc(c.group)}</b></div><div><span>Revealed</span><b>6 May 2025</b></div></div>
@@ -269,7 +271,6 @@ const YT_SCRIPT = `document.addEventListener("click",function(e){var b=e.target.
       </aside>
     </div>
     ${conns.length ? `<section class="sec"><div class="sec-head"><div><h2>Connected to</h2><p>The people ${esc(c.name.split(" ")[0])} is tied to.</p></div></div>${cast(conns, true)}</section>` : ""}
-    ${gallery("characters", c.id, c.name)}
     <nav class="pager" aria-label="More characters"><a href="/characters/${prev.id}/"><span>Previous</span><b>${esc(prev.name)}</b></a><a class="next" href="/characters/${next.id}/"><span>Next</span><b>${esc(next.name)}</b></a></nav>
     ${sources(C.characters.sources)}</main>`;
     write(`characters/${c.id}/index.html`, layout({ url: `/characters/${c.id}/`, title: `${c.name} in GTA 6`, description: `${c.name} in GTA 6: ${c.summary} Who they are, where they're based and who they're connected to.`, body,
@@ -295,6 +296,7 @@ const YT_SCRIPT = `document.addEventListener("click",function(e){var b=e.target.
     <div class="detail">
       <article>
         <div class="story">${p.about.map((t) => `<p>${esc(t)}</p>`).join("")}</div>
+        ${gallery("places", p.id, p.name)}
         ${p.spots.length ? `<section class="sec"><div class="sec-head"><h2>Spots to know</h2></div><ul class="spots">${p.spots.map((s) => `<li><b>${esc(s.name)}</b><span>${esc(s.note)}</span></li>`).join("")}</ul></section>` : ""}
       </article>
       <aside class="side">
@@ -303,7 +305,6 @@ const YT_SCRIPT = `document.addEventListener("click",function(e){var b=e.target.
       </aside>
     </div>
     ${people.length ? `<section class="sec"><div class="sec-head"><h2>Who you'll meet here</h2></div>${cast(people, true)}</section>` : ""}
-    ${gallery("places", p.id, p.name)}
     <nav class="pager" aria-label="More places"><a href="/places/${prev.id}/"><span>Previous</span><b>${esc(prev.name)}</b></a><a class="next" href="/places/${next.id}/"><span>Next</span><b>${esc(next.name)}</b></a></nav>
     ${sources(C.places.sources)}</main>`;
     write(`places/${p.id}/index.html`, layout({ url: `/places/${p.id}/`, title: `${p.name} in GTA 6`, description: `${p.name} in GTA 6: ${p.about[0]} Landmarks, characters and what to track there.`, body,
