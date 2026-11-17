@@ -1,0 +1,39 @@
+{
+  "siteName": "GTA 6 100% Tracker",
+  "tagline": "Fan-made checklist for collectibles, side activities and missables. Progress saves on this device.",
+  "updated": "2026-11-19",
+  "regions": [
+    "Vice City",
+    "Leonida Keys",
+    "Grassrivers",
+    "Port Gellhorn",
+    "Ambrosia",
+    "Mount Kalaga"
+  ],
+  "categories": [
+    {
+      "id": "missables",
+      "name": "Missables",
+      "desc": "Things you can permanently miss. Check these first.",
+      "items": []
+    },
+    {
+      "id": "collectibles",
+      "name": "Collectibles",
+      "desc": "Rename or split this once the real collectible types are known.",
+      "items": []
+    },
+    {
+      "id": "activities",
+      "name": "Side activities",
+      "desc": "Optional activities, hobbies and side jobs.",
+      "items": []
+    },
+    {
+      "id": "trophies",
+      "name": "Trophies",
+      "desc": "Trophy checklist with tips. Story trophies are marked as spoilers.",
+      "items": []
+    }
+  ]
+}

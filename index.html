@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GTA 6 100% Tracker – Collectibles, Missables &amp; Activities Checklist</title>
+<meta name="description" content="Free fan-made GTA 6 checklist. Tick off collectibles, side activities, missables and trophies. Progress saves on your device, with spoiler protection.">
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+<style>
+/* Layout: sticky header with overall progress → category chips → filters → checklist. Phone-first: people use it beside the console. */
+:root{
+  --ink:#0a1519; --surface:#11232a; --surface2:#162d35; --line:#22404a;
+  --text:#f4ede5; --muted:#8ea6ac; --coral:#ff6a5c; --amber:#ffb45a; --good:#5fe0a8;
+  --body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ink);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px}
+a{color:var(--amber)}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+button,select,input,textarea{font:inherit;color:inherit}
+
+/* header */
+header{position:sticky;top:0;z-index:5;background:rgba(10,21,25,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.hrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0 8px}
+h1{margin:0;font-size:18px;font-weight:800;letter-spacing:.02em}
+.pct{font-variant-numeric:tabular-nums;font-weight:700;color:var(--amber);white-space:nowrap}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-bottom:10px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--amber),var(--coral));transition:width .3s}
+.intro{color:var(--muted);font-size:14px;margin:14px 0 4px}
+.updated{color:var(--muted);font-size:12px;margin:0 0 14px}
+
+/* chips */
+.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 12px;font-size:14px;cursor:pointer;white-space:nowrap}
+.chip[aria-pressed=true]{border-color:var(--amber);background:var(--surface2)}
+.chip small{color:var(--muted);margin-left:6px;font-variant-numeric:tabular-nums}
+
+/* filters */
+.filters{display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:8px}
+.filters input,.filters select{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 11px;min-width:0}
+.toggles{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14px;color:var(--muted);margin-bottom:14px}
+.toggles label{display:flex;align-items:center;gap:6px;cursor:pointer}
+
+/* list */
+.cat-head{margin:22px 0 4px;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.cat-head h2{margin:0;font-size:17px}
+.cat-head span{color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
+.cat-desc{color:var(--muted);font-size:13px;margin:0 0 8px}
+.item{display:flex;gap:12px;align-items:flex-start;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);margin-bottom:6px}
+.item.done{opacity:.55}
+.item.done .nm{text-decoration:line-through}
+.item input[type=checkbox]{width:22px;height:22px;margin:1px 0 0;accent-color:var(--good);flex:0 0 auto;cursor:pointer}
+.body{flex:1;min-width:0}
+.nm{font-weight:600;overflow-wrap:anywhere}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.tag{font-size:11px;border:1px solid var(--line);border-radius:999px;padding:1px 8px;color:var(--muted)}
+.tag.miss{border-color:var(--coral);color:var(--coral)}
+.tag.draft{border-color:var(--amber);color:var(--amber)}
+.note{color:var(--muted);font-size:14px;margin-top:4px;overflow-wrap:anywhere}
+.spoiler{filter:blur(6px);user-select:none}
+.reveal{background:none;border:1px solid var(--line);border-radius:6px;padding:2px 8px;font-size:12px;color:var(--amber);cursor:pointer;margin-top:4px}
+.empty{color:var(--muted);border:1px dashed var(--line);border-radius:10px;padding:14px;font-size:14px}
+
+/* tools */
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 8px}
+.btn{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer;font-size:14px}
+.btn.primary{background:var(--amber);border-color:var(--amber);color:var(--ink);font-weight:700}
+.btn.danger{color:var(--coral)}
+
+/* edit panel (only with ?edit=1) */
+.edit{border:1px solid var(--amber);border-radius:12px;padding:14px;margin:14px 0;background:#13262c}
+.edit h2{margin:0 0 4px;font-size:16px;color:var(--amber)}
+.edit p{margin:0 0 10px;color:var(--muted);font-size:13px}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.form .full{grid-column:1/-1}
+.form input[type=text],.form select,.form textarea{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 11px}
+.form textarea{min-height:60px;resize:vertical}
+.form .checks{display:flex;gap:16px;font-size:14px}
+.form .checks label{display:flex;gap:6px;align-items:center}
+.draft-x{background:none;border:0;color:var(--coral);cursor:pointer;font-size:13px;padding:0 0 0 6px}
+
+footer{margin-top:30px;padding:18px 0 40px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+footer p{margin:0 0 6px}
+.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--text);color:var(--ink);padding:8px 14px;border-radius:8px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (min-width:640px){ h1{font-size:20px} }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="hrow">
+      <h1 id="siteName">GTA 6 100% Tracker</h1>
+      <span class="pct" id="pct" aria-live="polite">0%</span>
+    </div>
+    <div class="bar" role="progressbar" aria-label="Overall progress" aria-valuemin="0" aria-valuemax="100" id="barWrap"><i id="bar"></i></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="intro" id="tagline"></p>
+  <p class="updated" id="updated"></p>
+
+  <section class="edit" id="edit" hidden aria-labelledby="editTitle">
+    <h2 id="editTitle">Edit mode</h2>
+    <p>Items you add here are drafts saved only in this browser. When you're done, download <b>data.json</b>, replace the file in your project and redeploy. Never rename or reuse an item ID after publishing, or visitors lose their ticks.</p>
+    <form class="form" id="addForm" autocomplete="off">
+      <select id="fCat" aria-label="Category"></select>
+      <select id="fRegion" aria-label="Region"></select>
+      <input class="full" type="text" id="fName" placeholder="Item name, e.g. Collectible #12 – rooftop near the pier" required aria-label="Item name">
+      <textarea class="full" id="fNote" placeholder="How to find or complete it (optional)" aria-label="Note"></textarea>
+      <div class="checks full">
+        <label><input type="checkbox" id="fMiss"> Missable</label>
+        <label><input type="checkbox" id="fSpoil"> Spoiler</label>
+      </div>
+      <button class="btn primary full" type="submit">Add item</button>
+    </form>
+    <div class="tools">
+      <button class="btn primary" type="button" id="dlData">Download data.json</button>
+      <button class="btn" type="button" id="copyData">Copy JSON</button>
+      <button class="btn danger" type="button" id="clearDrafts">Clear drafts</button>
+    </div>
+  </section>
+
+  <nav class="chips" id="chips" aria-label="Categories"></nav>
+
+  <div class="filters">
+    <input type="search" id="q" placeholder="Search items" aria-label="Search items">
+    <select id="region" aria-label="Filter by region"></select>
+  </div>
+  <div class="toggles">
+    <label><input type="checkbox" id="hideDone"> Hide completed</label>
+    <label><input type="checkbox" id="showSpoilers"> Show spoilers</label>
+  </div>
+
+  <div id="list"></div>
+
+  <div class="tools">
+    <button class="btn" type="button" id="backup">Back up my progress</button>
+    <button class="btn" type="button" id="restoreBtn">Restore progress</button>
+    <input type="file" id="restore" accept="application/json,.json" hidden>
+    <button class="btn danger" type="button" id="reset">Reset progress</button>
+  </div>
+
+  <footer>
+    <p>Fan-made and unofficial. Not affiliated with or endorsed by Rockstar Games or Take-Two Interactive. Grand Theft Auto and related names are trademarks of their owners.</p>
+    <p>Your ticks are stored only in this browser. Use "Back up my progress" to move them to another device.</p>
+  </footer>
+</main>
+<div class="toast" id="toast" role="status"></div>
+
+<!-- Used only if data.json can't be fetched (e.g. opening the file directly from disk). Keep in sync with data.json. -->
+<script type="application/json" id="fallback">
+{"siteName":"GTA 6 100% Tracker","tagline":"Fan-made checklist for collectibles, side activities and missables. Progress saves on this device.","updated":"2026-11-19","regions":["Vice City","Leonida Keys","Grassrivers","Port Gellhorn","Ambrosia","Mount Kalaga"],"categories":[{"id":"missables","name":"Missables","desc":"Things you can permanently miss. Check these first.","items":[]},{"id":"collectibles","name":"Collectibles","desc":"Rename or split this once the real collectible types are known.","items":[]},{"id":"activities","name":"Side activities","desc":"Optional activities, hobbies and side jobs.","items":[]},{"id":"trophies","name":"Trophies","desc":"Trophy checklist with tips. Story trophies are marked as spoilers.","items":[]}]}
+</script>
+
+<script>
+(function(){
+  "use strict";
+  var KEY = "gta6-tracker-v1", DKEY = "gta6-tracker-drafts-v1", PKEY = "gta6-tracker-prefs-v1";
+  var EDIT = /[?&]edit=1(&|$)/.test(location.search);
+
+  function load(k, d){ try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e){ return d; } }
+  function save(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+  function $(id){ return document.getElementById(id); }
+  function el(tag, cls, text){ var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+  function toast(msg){ var t = $("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toast._t); toast._t = setTimeout(function(){ t.classList.remove("show"); }, 1800); }
+
+  var prefs = load(PKEY, {});
+  var S = {
+    data: null,
+    done: load(KEY, {}),
+    drafts: EDIT ? load(DKEY, []) : [],
+    cat: prefs.cat || "all",
+    region: "",
+    q: "",
+    hideDone: !!prefs.hideDone,
+    spoilers: !!prefs.spoilers,
+    revealed: {}
+  };
+
+  function savePrefs(){ save(PKEY, {cat:S.cat, hideDone:S.hideDone, spoilers:S.spoilers}); }
+
+  // all items (published + drafts), each tagged with its category id
+  function allItems(){
+    var out = [];
+    S.data.categories.forEach(function(c){ (c.items || []).forEach(function(it){ out.push(Object.assign({cat:c.id}, it)); }); });
+    S.drafts.forEach(function(d){ out.push(Object.assign({draft:true}, d)); });
+    return out;
+  }
+  function catById(id){ for (var i=0;i<S.data.categories.length;i++) if (S.data.categories[i].id === id) return S.data.categories[i]; return null; }
+
+  function counts(items){
+    var t = items.length, d = 0;
+    items.forEach(function(it){ if (S.done[it.id]) d++; });
+    return {t:t, d:d};
+  }
+
+  function matches(it){
+    if (S.cat !== "all" && it.cat !== S.cat) return false;
+    if (S.region && it.region !== S.region) return false;
+    if (S.hideDone && S.done[it.id]) return false;
+    if (S.q){
+      var hay = ((it.name || "") + " " + (it.note || "") + " " + (it.region || "")).toLowerCase();
+      if (hay.indexOf(S.q) === -1) return false;
+    }
+    return true;
+  }
+
+  function renderHeader(items){
+    var c = counts(items);
+    var p = c.t ? Math.round(c.d / c.t * 100) : 0;
+    $("pct").textContent = p + "% · " + c.d + "/" + c.t;
+    $("bar").style.width = p + "%";
+    $("barWrap").setAttribute("aria-valuenow", p);
+  }
+
+  function renderChips(items){
+    var box = $("chips"); box.innerHTML = "";
+    var opts = [{id:"all", name:"All"}].concat(S.data.categories);
+    opts.forEach(function(c){
+      var sub = c.id === "all" ? items : items.filter(function(it){ return it.cat === c.id; });
+      var k = counts(sub);
+      var b = el("button", "chip", c.name);
+      b.type = "button";
+      b.setAttribute("aria-pressed", String(S.cat === c.id));
+      b.appendChild(el("small", null, k.d + "/" + k.t));
+      b.addEventListener("click", function(){ S.cat = c.id; savePrefs(); render(); });
+      box.appendChild(b);
+    });
+  }
+
+  function renderItem(it){
+    var row = el("div", "item" + (S.done[it.id] ? " done" : ""));
+    var cb = el("input"); cb.type = "checkbox"; cb.checked = !!S.done[it.id];
+    cb.setAttribute("aria-label", it.spoiler && !S.spoilers && !S.revealed[it.id] ? "Spoiler item" : it.name);
+    cb.dataset.id = it.id;
+    row.appendChild(cb);
+
+    var body = el("div", "body");
+    var hidden = it.spoiler && !S.spoilers && !S.revealed[it.id];
+    var nm = el("div", "nm" + (hidden ? " spoiler" : ""), it.name);
+    if (hidden) nm.setAttribute("aria-hidden", "true");
+    body.appendChild(nm);
+
+    var meta = el("div", "meta");
+    if (it.region) meta.appendChild(el("span", "tag", it.region));
+    if (it.missable) meta.appendChild(el("span", "tag miss", "Missable"));
+    if (it.spoiler) meta.appendChild(el("span", "tag", "Spoiler"));
+    if (it.draft){
+      meta.appendChild(el("span", "tag draft", "Draft · " + it.id));
+      var x = el("button", "draft-x", "Delete"); x.type = "button"; x.dataset.del = it.id; meta.appendChild(x);
+    }
+    if (meta.childNodes.length) body.appendChild(meta);
+
+    if (it.note){
+      var note = el("div", "note" + (hidden ? " spoiler" : ""), it.note);
+      if (hidden) note.setAttribute("aria-hidden", "true");
+      body.appendChild(note);
+    }
+    if (hidden){
+      var rv = el("button", "reveal", "Reveal spoiler"); rv.type = "button"; rv.dataset.reveal = it.id; body.appendChild(rv);
+    }
+    row.appendChild(body);
+    return row;
+  }
+
+  function renderList(items){
+    var list = $("list"); list.innerHTML = "";
+    var cats = S.cat === "all" ? S.data.categories : [catById(S.cat)].filter(Boolean);
+    var shown = 0;
+    cats.forEach(function(c){
+      var inCat = items.filter(function(it){ return it.cat === c.id; });
+      var vis = inCat.filter(matches);
+      var k = counts(inCat);
+      var head = el("div", "cat-head");
+      head.appendChild(el("h2", null, c.name));
+      head.appendChild(el("span", null, k.d + "/" + k.t));
+      list.appendChild(head);
+      if (c.desc) list.appendChild(el("p", "cat-desc", c.desc));
+      if (!inCat.length){
+        list.appendChild(el("div", "empty", "Being mapped live from launch night. Check back soon."));
+        return;
+      }
+      if (!vis.length){
+        list.appendChild(el("div", "empty", "Nothing matches your filters here."));
+        return;
+      }
+      vis.forEach(function(it){ list.appendChild(renderItem(it)); shown++; });
+    });
+    return shown;
+  }
+
+  function render(){
+    var items = allItems();
+    renderHeader(items);
+    renderChips(items);
+    renderList(items);
+  }
+
+  // checklist interactions (delegated)
+  $("list").addEventListener("change", function(e){
+    var id = e.target && e.target.dataset && e.target.dataset.id;
+    if (!id) return;
+    if (e.target.checked) S.done[id] = 1; else delete S.done[id];
+    save(KEY, S.done);
+    render();
+  });
+  $("list").addEventListener("click", function(e){
+    var t = e.target;
+    if (t.dataset && t.dataset.reveal){ S.revealed[t.dataset.reveal] = true; render(); }
+    if (t.dataset && t.dataset.del){
+      S.drafts = S.drafts.filter(function(d){ return d.id !== t.dataset.del; });
+      save(DKEY, S.drafts); render(); toast("Draft deleted");
+    }
+  });
+
+  $("q").addEventListener("input", function(){ S.q = this.value.trim().toLowerCase(); render(); });
+  $("region").addEventListener("change", function(){ S.region = this.value; render(); });
+  $("hideDone").addEventListener("change", function(){ S.hideDone = this.checked; savePrefs(); render(); });
+  $("showSpoilers").addEventListener("change", function(){ S.spoilers = this.checked; savePrefs(); render(); });
+
+  function download(name, text){
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([text], {type:"application/json"}));
+    a.download = name; document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  }
+
+  // progress backup / restore / reset
+  $("backup").addEventListener("click", function(){
+    download("gta6-tracker-progress.json", JSON.stringify({v:1, done:S.done}, null, 2));
+  });
+  $("restoreBtn").addEventListener("click", function(){ $("restore").click(); });
+  $("restore").addEventListener("change", function(){
+    var f = this.files && this.files[0]; if (!f) return;
+    var r = new FileReader();
+    r.onload = function(){
+      try {
+        var j = JSON.parse(r.result);
+        var d = j && j.done && typeof j.done === "object" ? j.done : null;
+        if (!d) throw new Error("bad");
+        Object.keys(d).forEach(function(k){ if (d[k]) S.done[k] = 1; });
+        save(KEY, S.done); render(); toast("Progress restored");
+      } catch(e){ toast("That file isn't a tracker backup"); }
+    };
+    r.readAsText(f); this.value = "";
+  });
+  $("reset").addEventListener("click", function(){
+    if (!confirm("Untick everything on this device?")) return;
+    S.done = {}; save(KEY, S.done); render(); toast("Progress reset");
+  });
+
+  // edit mode
+  function today(){ var d = new Date(); return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0"); }
+  function nextId(catId){
+    var max = 0, re = new RegExp("^" + catId + "-(\\d+)$");
+    allItems().forEach(function(it){ var m = re.exec(it.id); if (m) max = Math.max(max, +m[1]); });
+    return catId + "-" + String(max + 1).padStart(3, "0");
+  }
+  function merged(){
+    var out = JSON.parse(JSON.stringify(S.data));
+    S.drafts.forEach(function(d){
+      var c = null;
+      out.categories.forEach(function(x){ if (x.id === d.cat) c = x; });
+      if (!c) return;
+      var it = {id:d.id, name:d.name};
+      if (d.region) it.region = d.region;
+      if (d.note) it.note = d.note;
+      if (d.missable) it.missable = true;
+      if (d.spoiler) it.spoiler = true;
+      c.items = c.items || []; c.items.push(it);
+    });
+    out.updated = today();
+    return JSON.stringify(out, null, 2) + "\n";
+  }
+  function setupEdit(){
+    $("edit").hidden = false;
+    var fc = $("fCat"), fr = $("fRegion");
+    S.data.categories.forEach(function(c){ var o = el("option", null, c.name); o.value = c.id; fc.appendChild(o); });
+    var none = el("option", null, "No region"); none.value = ""; fr.appendChild(none);
+    (S.data.regions || []).forEach(function(r){ var o = el("option", null, r); o.value = r; fr.appendChild(o); });
+    if (S.cat !== "all") fc.value = S.cat;
+    $("addForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      var name = $("fName").value.trim(); if (!name) return;
+      var d = {id: nextId(fc.value), cat: fc.value, name: name, region: fr.value,
+               note: $("fNote").value.trim(), missable: $("fMiss").checked, spoiler: $("fSpoil").checked};
+      S.drafts.push(d); save(DKEY, S.drafts);
+      $("fName").value = ""; $("fNote").value = ""; $("fMiss").checked = false; $("fSpoil").checked = false;
+      $("fName").focus(); render(); toast("Added " + d.id);
+    });
+    $("dlData").addEventListener("click", function(){ download("data.json", merged()); });
+    $("copyData").addEventListener("click", function(){
+      var txt = merged();
+      if (navigator.clipboard) navigator.clipboard.writeText(txt).then(function(){ toast("JSON copied"); }, function(){ toast("Copy failed – use Download"); });
+      else toast("Copy not supported – use Download");
+    });
+    $("clearDrafts").addEventListener("click", function(){
+      if (!S.drafts.length) return;
+      if (!confirm("Delete all " + S.drafts.length + " drafts? Download data.json first if you need them.")) return;
+      S.drafts = []; save(DKEY, S.drafts); render();
+    });
+  }
+
+  function init(data){
+    S.data = data;
+    if (data.siteName){ $("siteName").textContent = data.siteName; }
+    $("tagline").textContent = data.tagline || "";
+    $("updated").textContent = data.updated ? "Last updated " + data.updated : "";
+    var rs = $("region");
+    var all = el("option", null, "All regions"); all.value = ""; rs.appendChild(all);
+    (data.regions || []).forEach(function(r){ var o = el("option", null, r); o.value = r; rs.appendChild(o); });
+    if (S.cat !== "all" && !catById(S.cat)) S.cat = "all";
+    $("hideDone").checked = S.hideDone;
+    $("showSpoilers").checked = S.spoilers;
+    if (EDIT) setupEdit();
+    render();
+  }
+
+  function fallback(){ return JSON.parse($("fallback").textContent); }
+  if (location.protocol === "file:") init(fallback());
+  else fetch("data.json", {cache:"no-cache"})
+    .then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); })
+    .catch(fallback)
+    .then(init);
+})();
+</script>
+</body>
+</html>
