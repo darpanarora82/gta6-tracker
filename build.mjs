@@ -468,8 +468,80 @@ pages.pop(); // 404 is not in the sitemap
 /* ======================= static files ======================= */
 copyDir(path.join(ROOT, "src/assets"), path.join(OUT, "assets"));
 fs.copyFileSync(path.join(ROOT, "data.json"), path.join(OUT, "data.json"));
-write("tracker/index.html", fs.readFileSync(path.join(ROOT, "src/tracker.html"), "utf8").replace("</head>", `<meta name="color-scheme" content="dark"><style>html{background:#1b1d24}@view-transition{navigation:auto}::view-transition-old(root){animation:vtOut .16s ease both}::view-transition-new(root){animation:vtIn .26s cubic-bezier(.2,.7,.2,1) both}@keyframes vtOut{to{opacity:0}}@keyframes vtIn{from{opacity:0;transform:translateY(8px)}}.fx body{animation:vtIn .24s ease-out both}.fx.leaving body{opacity:0;transition:opacity .14s}@media (prefers-reduced-motion:reduce){::view-transition-old(root),::view-transition-new(root),.fx body{animation:none}}</style>${HEAD_FX}</head>`));
-pages.push("/tracker/");
+// TRACKER: same engine as src/tracker.html, new design inside the site layout
+{
+  const src = fs.readFileSync(path.join(ROOT, "src/tracker.html"), "utf8");
+  const fallback = src.match(/<script type="application\/json" id="fallback">[\s\S]*?<\/script>/)[0];
+  let js = src.slice(src.lastIndexOf("<script>") + 8, src.lastIndexOf("</script>"));
+  const patch = (a, b2) => { if (!js.includes(a)) throw new Error("tracker patch missing: " + a); js = js.replace(a, b2); };
+  patch('b.innerHTML = art(r, i);', 'b.innerHTML = TK_IMG[r] ? \'<img src="\' + TK_IMG[r] + \'" alt="" loading="lazy" decoding="async">\' : art(r, i);');
+  patch('$("bar").style.width = p + "%";', '$("bar").style.width = p + "%"; $("hero").style.setProperty("--p", p);');
+  const IMG = { "Vice City": "vice-city", "Leonida Keys": "leonida-keys", "Grassrivers": "grassrivers", "Port Gellhorn": "port-gellhorn", "Ambrosia": "ambrosia", "Mount Kalaga": "mount-kalaga" };
+  const TK_IMG = Object.fromEntries(Object.entries(IMG).map(([k, v]) => [k, photos("places", v)[0] || ""]));
+  const body = `<div class="tk">
+  <div class="tk-float" id="mini" aria-hidden="true"><span class="ring-s"></span><strong id="miniName">100% Tracker</strong><span id="miniPct">0%</span></div>
+  <section class="tk-hero" id="hero">
+    <img class="tk-bg" src="${photos("places", "vice-city")[3] || ""}" alt="" fetchpriority="high" decoding="async"><span class="hero2-credit">Image: Rockstar Games</span>
+    <div class="wrap tk-hero-in">
+      <div>
+        ${crumbBar([["/", "Home"], [null, "100% Tracker"]])}
+        <p class="hero2-kick"><span class="pulse" aria-hidden="true"></span>Mapped live from launch night</p>
+        <h1 id="siteName">100% Tracker</h1>
+        <p class="tk-tag" id="tagline"></p>
+        <p class="tk-upd" id="updated"></p>
+      </div>
+      <div class="tk-ring" aria-live="polite"><div class="tk-ring-in"><b id="pct">0%</b><span id="count">0 of 0 done</span></div></div>
+    </div>
+    <div class="wrap"><div class="tk-meter" role="progressbar" aria-label="Overall completion" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="road"><i id="bar"></i></div></div>
+  </section>
+  <main class="wrap">
+    <section class="tk-work" id="edit" hidden aria-labelledby="editTitle">
+      <h2 id="editTitle">Edit mode</h2>
+      <p>Only you see this. New items are drafts saved in this browser. To publish, download data.json and commit it to GitHub. Never change an item ID once it's published, or visitors lose their ticks.</p>
+      <form class="tk-form" id="addForm" autocomplete="off">
+        <select id="fCat" aria-label="Category"></select>
+        <select id="fRegion" aria-label="Region"></select>
+        <input class="full" type="text" id="fName" placeholder="Name, e.g. #12 – rooftop above the pier diner" required aria-label="Item name">
+        <textarea class="full" id="fNote" placeholder="How to find or complete it" aria-label="Note"></textarea>
+        <input class="full" type="text" id="fImg" placeholder="Image path (optional), e.g. img/collectibles-012.jpg" aria-label="Image path">
+        <div class="checks full"><label><input type="checkbox" id="fMiss"> Missable</label><label><input type="checkbox" id="fSpoil"> Spoiler</label></div>
+        <button class="tk-btn solid full" type="submit">Add item</button>
+      </form>
+      <div class="tk-btns"><button class="tk-btn solid" type="button" id="dlData">Download data.json</button><button class="tk-btn" type="button" id="copyData">Copy JSON</button><button class="tk-btn ghost" type="button" id="clearDrafts">Clear drafts</button></div>
+    </section>
+
+    <section class="tk-sec" aria-labelledby="catTitle">
+      <div class="sec-head"><div><h2 id="catTitle">What are you hunting?</h2><p>Pick a category, or keep everything in view.</p></div></div>
+      <div class="tk-tiles" id="tiles"></div>
+    </section>
+
+    <section class="tk-sec" aria-labelledby="regTitle">
+      <div class="sec-head"><div><h2 id="regTitle">Explore Leonida</h2><p>Tap a region to see only what's there. Tap it again to see everywhere.</p></div></div>
+      <div class="tk-cards" id="cards"></div>
+    </section>
+
+    <section class="tk-sec" aria-labelledby="listTitle">
+      <div class="sec-head"><div><h2 id="listTitle">Checklist</h2><p>Tick things off as you go. Missables are marked so you don't lose them for good.</p></div></div>
+      <div class="tk-filters">
+        <label class="sr" for="q">Search items</label>
+        <div class="tk-search"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="9" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M14 14l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><input type="search" id="q" placeholder="Search items or places"></div>
+        <label class="tk-switch"><input type="checkbox" id="hideDone"><span></span>Hide completed</label>
+        <label class="tk-switch"><input type="checkbox" id="showSpoilers"><span></span>Show spoilers</label>
+      </div>
+      <div class="tk-active" id="active"></div>
+      <div id="list"></div>
+    </section>
+
+    <section class="tk-mine" aria-labelledby="mineTitle">
+      <div><h2 id="mineTitle">Your progress</h2><p>Ticks are saved in this browser. Back them up to move them to another phone or computer.</p></div>
+      <div class="tk-btns"><button class="tk-btn" type="button" id="backup">Back up progress</button><button class="tk-btn" type="button" id="restoreBtn">Restore progress</button><input type="file" id="restore" accept="application/json,.json" hidden><button class="tk-btn ghost" type="button" id="reset">Reset progress</button></div>
+    </section>
+  </main>
+  <div class="tk-toast" id="toast" role="status"></div>
+  ${fallback}
+  </div>`;
+  write("tracker/index.html", layout({ url: "/tracker/", title: "100% completion tracker", description: "Free GTA 6 100% completion tracker: tick off missables, collectibles, side activities and trophies by region. Progress saves on your device.", body, script: `var TK_IMG = ${JSON.stringify(TK_IMG)};` + js, jsonld: breadcrumbLd([["/", "Home"], ["/tracker/", "100% Tracker"]]) }));
+}
 write("countdown/index.html", `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Moved to the Launch page</title><meta name="robots" content="noindex"><link rel="canonical" href="${SITE}/launch/"><meta http-equiv="refresh" content="0;url=/launch/"><style>html{background:#1b1d24;color:#f7f4ee;font-family:system-ui}</style></head><body><p>The countdown now lives on the <a style="color:#f7c318" href="/launch/">Launch page</a>.</p></body></html>`);
 
 const today = new Date().toISOString().slice(0, 10);

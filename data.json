@@ -20,7 +20,7 @@
     {
       "id": "collectibles",
       "name": "Collectibles",
-      "desc": "Rename or split this once the real collectible types are known.",
+      "desc": "Hidden items scattered around Leonida, added one by one as they're found.",
       "items": []
     },
     {
