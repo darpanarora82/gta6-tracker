@@ -1,7 +1,7 @@
 {
   "siteName": "GTA 6 100% Tracker",
   "tagline": "Fan-made checklist for collectibles, side activities and missables. Progress saves on this device.",
-  "updated": "2026-11-17",
+  "updated": "2026-11-18",
   "regions": [
     "Vice City",
     "Leonida Keys",
@@ -15,17 +15,7 @@
       "id": "missables",
       "name": "Missables",
       "desc": "Things you can permanently miss. Check these first.",
-      "items": [
-        {
-          "id": "missables-001",
-          "name": "Jacket for this dude. Missable from a side mission in grassrivers  with a ? on the map after prologue",
-          "region": "Grassrivers",
-          "missable": true,
-          "img": "/assets/img/items/missables-001.jpg",
-          "thumb": "/assets/img/items/missables-001-t.jpg",
-          "added": "2026-11-18"
-        }
-      ]
+      "items": []
     },
     {
       "id": "collectibles",
@@ -37,18 +27,7 @@
       "id": "activities",
       "name": "Side activities",
       "desc": "Optional activities, hobbies and side jobs.",
-      "items": [
-        {
-          "id": "activities-001",
-          "name": "Greenriver Boat",
-          "region": "Grassrivers",
-          "note": "This boat is available as a side quest. It can be missed for good.",
-          "missable": true,
-          "img": "/assets/img/items/activities-001.jpg",
-          "thumb": "/assets/img/items/activities-001-t.jpg",
-          "added": "2026-11-18"
-        }
-      ]
+      "items": []
     },
     {
       "id": "trophies",
