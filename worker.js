@@ -57,7 +57,7 @@ async function publish(request, env) {
     const data = JSON.parse(b64ToText(file.content));
     const taken = new Set(data.categories.flatMap((c) => (c.items || []).map((i) => i.id)));
     const today = new Date().toISOString().slice(0, 10);
-    const tree = [], ids = [];
+    const tree = [], ids = [], names = [];
 
     for (const d of items) {
       const cat = data.categories.find((c) => c.id === d.cat);
@@ -79,7 +79,7 @@ async function publish(request, env) {
       if (/^[0-9a-f]{40}$/.test(d.thumbBlob || "")) { tree.push({ path: `src/assets/img/items/${id}-t.jpg`, mode: "100644", type: "blob", sha: d.thumbBlob }); it.thumb = `/assets/img/items/${id}-t.jpg`; }
       it.added = /^\d{4}-\d{2}-\d{2}$/.test(d.added || "") ? d.added : today;
       (cat.items = cat.items || []).push(it);
-      ids.push(id);
+      ids.push(id); names.push(name);
     }
     if (!ids.length) return json({ ok: false, error: "Nothing valid to publish" }, 400);
     data.updated = today;
@@ -89,7 +89,7 @@ async function publish(request, env) {
     const newTree = await ghJson(env, "/git/trees", { method: "POST", body: JSON.stringify({ base_tree: commit.tree.sha, tree }) });
     const newCommit = await ghJson(env, "/git/commits", { method: "POST", body: JSON.stringify({ message: `Tracker: add ${ids.join(", ")}`, tree: newTree.sha, parents: [head] }) });
     const move = await gh(env, "/git/refs/heads/main", { method: "PATCH", body: JSON.stringify({ sha: newCommit.sha }) });
-    if (move.ok) return json({ ok: true, ids });
+    if (move.ok) return json({ ok: true, ids, names });
     if (move.status !== 422) throw new Error(`GitHub ${move.status}: couldn't update main`);
     // main moved while we were working (someone else pushed): start again on top of it
   }

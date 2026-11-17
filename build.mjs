@@ -519,6 +519,7 @@ fs.copyFileSync(path.join(ROOT, "data.json"), path.join(OUT, "data.json"));
         <div class="checks full"><label><input type="checkbox" id="fMiss"> Missable</label><label><input type="checkbox" id="fSpoil"> Spoiler</label></div>
         <button class="tk-btn solid full" type="submit">Add item</button>
       </form>
+      <div class="pub-status" id="pubStatus" role="status" aria-live="polite" hidden></div>
       <div class="tk-btns"><button class="tk-btn solid" type="button" id="publish">Publish drafts</button><button class="tk-btn" type="button" id="dlData">Download data.json</button><button class="tk-btn" type="button" id="copyData">Copy JSON</button><button class="tk-btn ghost" type="button" id="clearDrafts">Clear drafts</button></div>
     </section>
 

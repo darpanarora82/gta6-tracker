@@ -701,6 +701,39 @@ footer p{margin:0 0 6px;max-width:72ch}
     });
   }
 
+  // After publishing, the site rebuilds (about 40-90 s). Poll data.json until the new IDs appear.
+  function watchLive(ids, list){
+    var box = $("pubStatus"), names = {}, t0 = Date.now(), timer;
+    ids.forEach(function(id, i){ names[id] = list[i] || ""; });
+    function paint(state, msg){
+      box.hidden = false; box.className = "pub-status " + state; box.innerHTML = "";
+      box.appendChild(el("p", "pub-msg", msg));
+      var ul = el("ul", "pub-list");
+      ids.forEach(function(id){ ul.appendChild(el("li", null, id + " · " + (names[id] || ""))); });
+      box.appendChild(ul);
+    }
+    function secs(){ return Math.round((Date.now() - t0) / 1000); }
+    paint("busy", "Publishing " + ids.length + " item" + (ids.length === 1 ? "" : "s") + "… the site is rebuilding, usually under a minute.");
+    function check(){
+      fetch("/data.json?t=" + Date.now(), {cache:"no-store"}).then(function(r){ return r.json(); }).then(function(d){
+        var have = {}; (d.categories || []).forEach(function(c){ (c.items || []).forEach(function(x){ have[x.id] = 1; }); });
+        if (ids.every(function(id){ return have[id]; })){
+          paint("ok", "Live ✓ Visitors can see " + (ids.length === 1 ? "it" : "them") + " now (took " + secs() + " s).");
+          toast("Live ✓");
+          setTimeout(function(){ box.hidden = true; }, 60000);
+          return;
+        }
+        next();
+      }, next);
+    }
+    function next(){
+      if (Date.now() - t0 > 5 * 60000){ paint("warn", "Still not live after 5 minutes. The build may have failed. Check Cloudflare → Workers → gta6-guide → Deployments."); return; }
+      paint("busy", "Publishing… rebuilding the site (" + secs() + " s so far).");
+      clearTimeout(timer); timer = setTimeout(check, 5000);
+    }
+    timer = setTimeout(check, 15000);
+  }
+
   function setupEdit(){
     $("edit").hidden = false;
     setupQuickAdd();
@@ -730,7 +763,7 @@ footer p{margin:0 0 6px;max-width:72ch}
             var x = {id:d.id, cat:d.cat, name:d.name, region:d.region, note:d.note, missable:d.missable, spoiler:d.spoiler, added:d.added};
             if (a) x.imgBlob = a; if (t) x.thumbBlob = t; out.push(x); }); }); }); }, Promise.resolve())
         .then(function(){ return post("/edit/publish", JSON.stringify({items:out})); })
-        .then(function(j){ S.drafts = []; save(DKEY, S.drafts); render(); toast("Published " + j.ids.length + " item" + (j.ids.length === 1 ? "" : "s") + ". Live in about a minute."); })
+        .then(function(j){ S.drafts = []; save(DKEY, S.drafts); render(); watchLive(j.ids, j.names || []); })
         .catch(function(err){ toast("Publish failed: " + err.message); })
         .then(function(){ b.disabled = false; b.textContent = "Publish drafts"; });
     });
