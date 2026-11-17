@@ -11,6 +11,7 @@ Fan-made GTA 6 guide with a 100% tracker. Vercel builds it on every commit by ru
 | `src/tracker.html` | The tracker page (`/tracker/`, and `/edit` behind a password) | Changing the tracker itself |
 | `src/countdown.html` | The country-by-country countdown (`/countdown/`) | Rarely |
 | `src/assets/` | Shared styles and favicon | Changing the look |
+| `src/assets/img/` | Official photos for characters and places (see IMAGES.md) | Adding photos |
 | `build.mjs` | Turns the content into pages | Adding a new kind of page |
 | `middleware.js` | Password check for `/edit` (needs `EDIT_PASSWORD` in Vercel) | Rarely |
 

@@ -52,6 +52,35 @@ const ICON = {
   money: '<svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24" fill="#f28c28"/><rect x="11" y="17" width="30" height="18" rx="3" fill="#f7f4ee"/><circle cx="26" cy="26" r="5" fill="#f28c28"/></svg>',
 };
 
+/* ---------- photos: drop files into src/assets/img/<kind>/ named by id ----------
+   e.g. src/assets/img/characters/jason-duval.jpg, extra shots jason-duval-2.jpg, -3.jpg …
+   Supported: .jpg .jpeg .webp .png. Anything not found falls back to original artwork. */
+const IMG_EXT = /\.(jpe?g|webp|png)$/i;
+function photos(kind, id) {
+  const dir = path.join(ROOT, "src/assets/img", kind);
+  if (!fs.existsSync(dir)) return [];
+  const re = new RegExp("^" + id.replace(/[-]/g, "\\-") + "(-(\\d+))?\\.(jpe?g|webp|png)$", "i");
+  return fs.readdirSync(dir).filter((f) => re.test(f))
+    .sort((a, b) => (+(a.match(re)[2] || 1)) - (+(b.match(re)[2] || 1)))
+    .map((f) => `/assets/img/${kind}/${f}`);
+}
+function photo(kind, id, fallback, alt, { eager = false, index = 0 } = {}) {
+  const src = photos(kind, id)[index];
+  if (!src) return `<div class="ph">${fallback}</div>`;
+  return `<div class="ph"><img src="${src}" alt="${esc(alt)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"><span class="credit">Image: Rockstar Games</span></div>`;
+}
+function poster(c) {
+  const palettes = { "Leads": ["#3b1f5c", "#f06a5f", "#ffb35c"], "Jason's circle": ["#0d3b4f", "#1f8f8a", "#bfe6c9"], "Only Raw Records": ["#2a1240", "#7b4bd1", "#ff7ab8"], "Heists": ["#3a1a12", "#d9572b", "#ffd27a"] };
+  const [a, b, s] = palettes[c.group] || ["#1b1d24", "#4b5266", "#a3a9b8"];
+  const initials = c.name.split(/\s+/).map((w) => w[0]).join("").replace(/[^A-Z]/g, "").slice(0, 2);
+  const g = "po-" + c.id;
+  return `<div class="poster"><svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="${g}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/><stop offset=".7" stop-color="${b}"/><stop offset="1" stop-color="${s}"/></linearGradient><mask id="${g}m"><rect width="400" height="500" fill="#fff"/><g fill="#000"><rect y="250" width="400" height="5"/><rect y="266" width="400" height="7"/><rect y="285" width="400" height="9"/></g></mask></defs>`+
+    `<rect width="400" height="500" fill="url(#${g})"/><circle cx="270" cy="250" r="110" fill="${s}" opacity=".85" mask="url(#${g}m)"/>`+
+    `<text x="-8" y="250" font-family="Big Shoulders Display,Impact,sans-serif" font-weight="900" font-size="260" fill="#fff" opacity=".13">${esc(initials)}</text>`+
+    `<path d="M120 500c0-70 30-118 80-130-28-14-44-40-44-72 0-44 32-78 74-78s74 34 74 78c0 32-16 58-44 72 50 12 80 60 80 130z" fill="#0e0a1c" opacity=".78"/>`+
+    `<path d="M352 500c2-60 6-110-2-170" stroke="#0e0a1c" stroke-width="9" fill="none"/><g fill="#0e0a1c"><path d="M350 330c-18-20-44-20-58 0 18-10 38-10 58 4zM350 330c-6-24 4-44 20-52-10 14-14 30-16 52zM350 330c14-20 40-22 56-6-18-6-36-4-54 10z"/></g></svg></div>`;
+}
+
 function avatar(c) {
   const palettes = { "Leads": ["#ff7a59", "#d6457a"], "Jason's circle": ["#2a8fb8", "#0e6b41"], "Only Raw Records": ["#7b4bd1", "#d6457a"], "Heists": ["#f7c318", "#f28c28"] };
   const [a, b] = palettes[c.group] || ["#4b5266", "#323848"];
@@ -106,12 +135,12 @@ function layout({ url, title, description, body, jsonld, script }) {
 <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
 <script defer src="/_vercel/insights/script.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css">
 ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld).replace(/</g, "\\u003c")}</script>` : ""}
 </head>
 <body>
-<header class="bar"><div class="wrap"><a class="logo" href="/" aria-label="${SITE_NAME} home"><span>GTA 6 Guide</span></a><nav class="nav" aria-label="Main">${nav}</nav></div></header>
+<header class="bar"><div class="wrap"><a class="logo" href="/" aria-label="${SITE_NAME} home"><span><b>GTA 6 Guide</b><small>Leonida field guide</small></span></a><nav class="nav" aria-label="Main">${nav}</nav></div></header>
 ${body}
 <footer class="site"><div class="wrap">
   <div class="cols"><nav aria-label="Footer">${NAV.map(([h, l]) => `<a href="${h}">${l}</a>`).join("")}<a href="/countdown/">Countdown</a><a href="/about/">About</a></nav></div>
@@ -132,8 +161,13 @@ const sources = (list) => list && list.length ? `<section class="sources"><h2>So
 const status = (s) => s === "Reported" ? '<span class="chip rep">Reported</span>' : `<span class="chip ok">${s === "Confirmed" ? "Confirmed by Rockstar" : "Shown by Rockstar"}</span>`;
 const breadcrumbLd = (items) => ({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: items.map(([u, n], i) => ({ "@type": "ListItem", position: i + 1, name: n, item: SITE + u })) });
 
-const personCard = (c, withBio) => `<a class="person" href="/characters/${c.id}/">${avatar(c)}<div><b>${esc(c.name)}</b><span>${esc(c.role)}</span>${withBio ? `<p>${esc(c.summary)}</p>` : ""}</div></a>`;
-const placeCard = (p, i) => `<a class="card" href="/places/${p.id}/">${art(p.name, "c" + i)}<div class="cl"><b>${esc(p.name)}</b><span>${esc(p.tagline)}</span></div></a>`;
+const personCard = (c) => `<a class="pcard" href="/characters/${c.id}/">${photo("characters", c.id, poster(c), `${c.name}, official GTA VI image`)}<div class="txt"><span class="role">${esc(c.role)}</span><h3>${esc(c.name)}</h3><p>${esc(c.summary)}</p></div></a>`;
+const cast = (list, compact) => `<div class="cast${compact ? " compact" : ""}">${list.map(personCard).join("")}</div>`;
+const placeCard = (p, i) => `<a class="card" href="/places/${p.id}/">${photo("places", p.id, art(p.name, "c" + i), `${p.name}, official GTA VI screenshot`)}<div class="cl"><b>${esc(p.name)}</b><span>${esc(p.tagline)}</span></div></a>`;
+const gallery = (kind, id, name) => {
+  const list = photos(kind, id).slice(1);
+  return list.length ? `<section class="sec"><div class="sec-head"><h2>Gallery</h2></div><div class="gallery">${list.map((src, i) => `<a class="ph" href="${src}" target="_blank" rel="noopener"><img src="${src}" alt="${esc(name)}, official GTA VI screenshot ${i + 2}" loading="lazy" decoding="async"><span class="credit">Image: Rockstar Games</span></a>`).join("")}</div></section>` : "";
+};
 
 /* ======================= pages ======================= */
 // HOME
@@ -171,7 +205,7 @@ const placeCard = (p, i) => `<a class="card" href="/places/${p.id}/">${art(p.nam
 
   <section class="sec">
     <div class="sec-head"><div><h2>Meet the cast</h2><p>Two playable leads and the people around them.</p></div><a href="/characters/">All characters</a></div>
-    <div class="people">${C.characters.items.slice(0, 8).map((c) => personCard(c, false)).join("")}</div>
+    ${cast(C.characters.items.slice(0, 8), true)}
   </section>
 
   <section class="sec">
@@ -198,7 +232,7 @@ const placeCard = (p, i) => `<a class="card" href="/places/${p.id}/">${art(p.nam
 {
   const groups = [...new Set(C.characters.items.map((c) => c.group))];
   const body = pageHead([["/", "Home"], [null, "Characters"]], "GTA 6 characters", C.characters.intro) + `<main class="wrap">
-  ${groups.map((g) => `<section class="sec"><div class="sec-head"><h2>${esc(g)}</h2></div><div class="people lg">${C.characters.items.filter((c) => c.group === g).map((c) => personCard(c, true)).join("")}</div></section>`).join("")}
+  ${groups.map((g) => `<section class="sec"><div class="sec-head"><h2>${esc(g)}</h2></div>${cast(C.characters.items.filter((c) => c.group === g), false)}</section>`).join("")}
   ${sources(C.characters.sources)}</main>`;
   write("characters/index.html", layout({ url: "/characters/", title: "Characters", description: "Every GTA 6 character Rockstar has revealed: Jason Duval, Lucia Caminos, Cal Hampton, Boobie Ike, Raul Bautista and more, with who they are and how they connect.", body, jsonld: breadcrumbLd([["/", "Home"], ["/characters/", "Characters"]]) }));
 
@@ -206,18 +240,26 @@ const placeCard = (p, i) => `<a class="card" href="/places/${p.id}/">${art(p.nam
     const place = c.place && placeById[c.place];
     const prev = arr[(i - 1 + arr.length) % arr.length], next = arr[(i + 1) % arr.length];
     const conns = (c.connections || []).map((id) => charById[id]).filter(Boolean);
-    const body = pageHead([["/", "Home"], ["/characters/", "Characters"], [null, c.name]], c.name, null) + `<main class="wrap">
+    const body = `<section class="chero">${photo("characters", c.id, poster(c), `${c.name}, official GTA VI image`, { eager: true })}<div class="wrap">
+      <div class="crumbs"><a href="/">Home</a> / <a href="/characters/">Characters</a> / ${esc(c.name)}</div>
+      ${status(c.status)}
+      <h1>${esc(c.name)}</h1>
+      <p class="say">${esc(c.summary)}</p>
+      <div class="meta"><span>${esc(c.role)}</span>${place ? `<span>${esc(place.name)}</span>` : ""}<span>${esc(c.group)}</span></div>
+    </div></section>
+    <main class="wrap">
     <div class="detail">
       <article>
-        <div class="portrait">${avatar(c)}<div><div style="margin-bottom:6px">${status(c.status)}</div><p class="prose" style="margin:0;font-size:19px;font-weight:700">${esc(c.summary)}</p></div></div>
-        <div class="prose" style="margin-top:22px">${c.bio.map((p) => `<p>${esc(p)}</p>`).join("")}</div>
-        ${conns.length ? `<section class="sec"><div class="sec-head"><h2>Connected to</h2></div><div class="people">${conns.map((x) => personCard(x, false)).join("")}</div></section>` : ""}
+        <div class="sec-head" style="margin-top:6px"><h2>Who they are</h2></div>
+        <div class="story">${c.bio.map((p) => `<p>${esc(p)}</p>`).join("")}</div>
       </article>
       <aside class="side">
-        <div class="box"><h2>At a glance</h2><dl><dt>Role</dt><dd>${esc(c.role)}</dd><dt>Group</dt><dd>${esc(c.group)}</dd><dt>Based in</dt><dd>${place ? `<a href="/places/${place.id}/">${esc(place.name)}</a>` : "Not stated yet"}</dd><dt>Revealed</dt><dd>6 May 2025</dd></dl></div>
-        ${place ? `<a class="card" href="/places/${place.id}/">${art(place.name, "s" + i)}<div class="cl"><b>${esc(place.name)}</b><span>${esc(place.tagline)}</span></div></a>` : ""}
+        <div class="kf"><div><span>Role</span><b>${esc(c.role)}</b></div><div><span>Based in</span><b>${place ? `<a href="/places/${place.id}/">${esc(place.name)}</a>` : "Not stated yet"}</b></div><div><span>Circle</span><b>${esc(c.group)}</b></div><div><span>Revealed</span><b>6 May 2025</b></div></div>
+        ${place ? placeCard(place, "s" + i) : ""}
       </aside>
     </div>
+    ${conns.length ? `<section class="sec"><div class="sec-head"><div><h2>Connected to</h2><p>The people ${esc(c.name.split(" ")[0])} is tied to.</p></div></div>${cast(conns, true)}</section>` : ""}
+    ${gallery("characters", c.id, c.name)}
     <nav class="pager" aria-label="More characters"><a href="/characters/${prev.id}/"><span>Previous</span><b>${esc(prev.name)}</b></a><a class="next" href="/characters/${next.id}/"><span>Next</span><b>${esc(next.name)}</b></a></nav>
     ${sources(C.characters.sources)}</main>`;
     write(`characters/${c.id}/index.html`, layout({ url: `/characters/${c.id}/`, title: `${c.name} in GTA 6`, description: `${c.name} in GTA 6: ${c.summary} Who they are, where they're based and who they're connected to.`, body,
@@ -233,19 +275,25 @@ const placeCard = (p, i) => `<a class="card" href="/places/${p.id}/">${art(p.nam
   C.places.items.forEach((p, i, arr) => {
     const people = C.characters.items.filter((c) => c.place === p.id);
     const prev = arr[(i - 1 + arr.length) % arr.length], next = arr[(i + 1) % arr.length];
-    const body = pageHead([["/", "Home"], ["/places/", "Places"], [null, p.name]], p.name, p.tagline) + `<main class="wrap">
-    <div class="banner" style="margin-top:28px">${art(p.name, "b" + i).replace('viewBox="0 0 300 180"', 'viewBox="0 30 300 120"')}</div>
+    const body = `<section class="phero">${photo("places", p.id, art(p.name, "b" + i), `${p.name}, official GTA VI screenshot`, { eager: true })}<div class="wrap">
+      <div class="crumbs"><a href="/">Home</a> / <a href="/places/">Places</a> / ${esc(p.name)}</div>
+      ${status("Confirmed")}
+      <h1>${esc(p.name)}</h1>
+      <p class="say">${esc(p.tagline)}</p>
+    </div></section>
+    <main class="wrap">
     <div class="detail">
       <article>
-        <div class="prose">${p.about.map((t) => `<p>${esc(t)}</p>`).join("")}</div>
+        <div class="story">${p.about.map((t) => `<p>${esc(t)}</p>`).join("")}</div>
         ${p.spots.length ? `<section class="sec"><div class="sec-head"><h2>Spots to know</h2></div><ul class="spots">${p.spots.map((s) => `<li><b>${esc(s.name)}</b><span>${esc(s.note)}</span></li>`).join("")}</ul></section>` : ""}
-        ${people.length ? `<section class="sec"><div class="sec-head"><h2>Who you'll meet here</h2></div><div class="people">${people.map((c) => personCard(c, false)).join("")}</div></section>` : ""}
       </article>
       <aside class="side">
         <div class="box"><h2>On the 100% tracker</h2><p style="margin:0 0 12px;color:var(--soft)">Collectibles, activities and missables found in ${esc(p.name)}, added as they're found from launch night.</p><a class="btn primary" href="/tracker/?region=${encodeURIComponent(p.tracker)}">Track ${esc(p.tracker)}</a></div>
-        <div class="box"><h2>Status</h2>${status("Confirmed")}<p style="margin:10px 0 0;color:var(--soft);font-size:14px">Named and described on Rockstar's official site. Exact map position comes with the game.</p></div>
+        <div class="box"><h2>Status</h2><p style="margin:0;color:var(--soft);font-size:15px">Named and described on Rockstar's official site. Exact map position comes with the game.</p></div>
       </aside>
     </div>
+    ${people.length ? `<section class="sec"><div class="sec-head"><h2>Who you'll meet here</h2></div>${cast(people, true)}</section>` : ""}
+    ${gallery("places", p.id, p.name)}
     <nav class="pager" aria-label="More places"><a href="/places/${prev.id}/"><span>Previous</span><b>${esc(prev.name)}</b></a><a class="next" href="/places/${next.id}/"><span>Next</span><b>${esc(next.name)}</b></a></nav>
     ${sources(C.places.sources)}</main>`;
     write(`places/${p.id}/index.html`, layout({ url: `/places/${p.id}/`, title: `${p.name} in GTA 6`, description: `${p.name} in GTA 6: ${p.about[0]} Landmarks, characters and what to track there.`, body,
