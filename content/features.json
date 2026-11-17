@@ -1,0 +1,156 @@
+{
+  "intro": "What Rockstar has actually shown or stated about how GTA 6 plays, mostly from the 26-minute Extended Look released in late August 2026. \"Shown\" means it appeared in official footage or was stated by Rockstar. \"Reported\" means it comes from press previews or interviews and may change.",
+  "sources": [
+    {
+      "title": "Red Bull – GTA 6 Extended Look: everything revealed",
+      "url": "https://www.redbull.com/int-en/gta-6-extended-look-everything-revealed"
+    },
+    {
+      "title": "KeenGamer – Extended Look recap",
+      "url": "https://www.keengamer.com/articles/news/gta-6-extended-look-recap-all-gameplay-details/"
+    },
+    {
+      "title": "All Things How – every feature revealed",
+      "url": "https://allthings.how/?p=129412"
+    },
+    {
+      "title": "91mobiles – 7 details from the Extended Look",
+      "url": "https://www.91mobiles.com/gaming/gta-6-extended-look-gameplay-reveal/"
+    },
+    {
+      "title": "Dexerto – everything in the Netflix Extended Look",
+      "url": "https://www.dexerto.com/gta/everything-revealed-in-gta-6-netflix-extended-look-3403132/"
+    },
+    {
+      "title": "ARY News – Extended Look gameplay upgrades",
+      "url": "https://arynews.tv/gta-6-extended-look-on-netflix-reveals-massive-gameplay-upgrades"
+    }
+  ],
+  "groups": [
+    {
+      "name": "Story and characters",
+      "icon": "story",
+      "items": [
+        {
+          "title": "Two leads you can swap between",
+          "text": "Jason and Lucia are both playable, and the Extended Look showed switching between them at any time.",
+          "status": "Shown"
+        },
+        {
+          "title": "Talking to people, Red Dead style",
+          "text": "An interaction system carried over from Red Dead Redemption 2 lets you talk to the people you meet.",
+          "status": "Shown"
+        },
+        {
+          "title": "A long main story",
+          "text": "Previews put the main story at roughly 80 hours. Rockstar hasn't given an official figure.",
+          "status": "Reported"
+        }
+      ]
+    },
+    {
+      "name": "Combat and the police",
+      "icon": "combat",
+      "items": [
+        {
+          "title": "Six wanted stars are back",
+          "text": "The maximum wanted level returns to six stars, up from five in GTA V.",
+          "status": "Shown"
+        },
+        {
+          "title": "Cover-based gunfights",
+          "text": "Footage shows Jason taking cover behind walls before firing back, inside a skyscraper.",
+          "status": "Shown"
+        },
+        {
+          "title": "Slow-motion aiming",
+          "text": "A slowed-down aiming mode highlights enemies' weak spots in red.",
+          "status": "Shown"
+        },
+        {
+          "title": "Split health bar",
+          "text": "Health is shown as a split bar rather than one meter.",
+          "status": "Reported"
+        }
+      ]
+    },
+    {
+      "name": "Things to do",
+      "icon": "activities",
+      "items": [
+        {
+          "title": "Racing of every kind",
+          "text": "Dirt-bike racing, drag racing and track and street races were all shown.",
+          "status": "Shown"
+        },
+        {
+          "title": "Diving and base jumping",
+          "text": "Scuba diving and base jumping appear among the side activities.",
+          "status": "Shown"
+        },
+        {
+          "title": "Pool, mini-golf and the zoo",
+          "text": "Previews mention pool returning, mini-golf as a new pastime, and a zoo you can visit.",
+          "status": "Reported"
+        },
+        {
+          "title": "The gym",
+          "text": "Jason and Lucia can work out, and previews describe visible changes to their bodies.",
+          "status": "Reported"
+        },
+        {
+          "title": "Exploring pays off",
+          "text": "Rockstar says the game rewards time spent in the open world, not just rushing between missions.",
+          "status": "Reported"
+        }
+      ]
+    },
+    {
+      "name": "Phone, social and music",
+      "icon": "phone",
+      "items": [
+        {
+          "title": "Social media in the game",
+          "text": "In-game social media plays a bigger role, with livestream challenges and chat popping up during police chases.",
+          "status": "Shown"
+        },
+        {
+          "title": "Music on foot",
+          "text": "Radio and on-demand podcasts keep playing through headphones when you're out of the car.",
+          "status": "Shown"
+        },
+        {
+          "title": "Phone-to-phone chat",
+          "text": "One scene shows Jason and Lucia messaging each other.",
+          "status": "Shown"
+        }
+      ]
+    },
+    {
+      "name": "Business model",
+      "icon": "money",
+      "items": [
+        {
+          "title": "No microtransactions in story mode",
+          "text": "Rockstar says single-player launches without microtransactions, and that no generative AI was used to make it.",
+          "status": "Shown"
+        },
+        {
+          "title": "Single-player at launch",
+          "text": "Rockstar calls GTA 6 a single-player experience. No online mode has been announced.",
+          "status": "Shown"
+        },
+        {
+          "title": "No disc, even in the box",
+          "text": "Physical copies contain a download code, not a disc.",
+          "status": "Shown"
+        },
+        {
+          "title": "Not on Game Pass at launch",
+          "text": "Take-Two has said GTA 6 won't be on Xbox Game Pass at launch.",
+          "status": "Shown"
+        }
+      ]
+    }
+  ]
+}

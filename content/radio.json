@@ -1,0 +1,22 @@
+{
+  "intro": "Rockstar revealed the first six GTA 6 radio stations on 8 October 2026 and says this is the widest mix of radio and podcasts in any GTA, covering everything from classic rock to talk radio. So more stations are coming; these are the six with names and hosts so far.",
+  "sources": [
+    {"title": "All Things How – every confirmed GTA 6 station and host", "url": "https://allthings.how/gta-6-radio-stations-every-confirmed-host-and-track-so-far/"},
+    {"title": "GTA Intel – GTA 6 radio stations revealed (Rockstar Newswire, 8 Oct 2026)", "url": "https://gtaintel.com/news/gta-6-radio-stations-revealed"},
+    {"title": "Alviran – station list and The Album", "url": "https://alviran.net/blog/gta-6-radio-stations-list-hosts-soundtrack-2026/"}
+  ],
+  "stations": [
+    {"id": "flash-fm", "name": "Flash FM", "genre": "Pop", "hosts": [{"name": "Robyn", "voice": "Robyn"}, {"name": "Alex", "voice": "Alex Consani"}], "note": "The returning pop station from GTA Vice City.", "color": "#d6457a"},
+    {"id": "the-chamber", "name": "The Chamber 106.6", "genre": "Metal, from classic '80s onward", "hosts": [{"name": "DJ Kerry", "voice": "Kerry King"}, {"name": "DJ Tom", "voice": "Tom Araya"}], "note": "Hosted by two members of Slayer.", "color": "#4b5266"},
+    {"id": "cocoteo-fm", "name": "Cocoteo FM", "genre": "Latin: reggaeton, bachata, merengue, dembow", "hosts": [{"name": "El Martillo", "voice": "Bad Bunny"}, {"name": "La Gata", "voice": "RaiNao"}], "note": "Modern Latin party music.", "color": "#f28c28"},
+    {"id": "dirty-south-classics", "name": "Dirty South Classics", "genre": "Southern rap and hip-hop", "hosts": [{"name": "Trick", "voice": "Trick Daddy"}, {"name": "Trina", "voice": "Trina"}], "note": "Classic Southern hip-hop.", "color": "#7b4bd1"},
+    {"id": "afrobank-fm", "name": "AfroBank FM", "genre": "African music", "hosts": [{"name": "Burna", "voice": "Burna Boy"}, {"name": "Palmsy", "voice": "Palms Trax"}], "note": "Afrobeats and wider African music.", "color": "#0e6b41"},
+    {"id": "back-country-radio", "name": "Back Country Radio", "genre": "Country", "hosts": [{"name": "MW", "voice": "Morgan Wallen"}, {"name": "Delta Dawne", "voice": "Lana Del Rey"}, {"name": "Mud Dog Mike", "voice": "Jeremy Dufrene"}], "note": "Renegade country from the swamps.", "color": "#2a8fb8"}
+  ],
+  "howItWorks": [
+    "Radio keeps playing when you get out of a vehicle. Jason and Lucia's phones pair with headphones or earbuds, a first for the series.",
+    "Both leads can also play podcasts on demand.",
+    "The old radio wheel is replaced by a sliding station menu with an On-Demand option.",
+    "Grand Theft Auto VI: The Album was announced on 17 September 2026. Digital, vinyl and CD versions go on sale on 19 November 2026, launch day."
+  ]
+}

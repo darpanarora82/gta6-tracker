@@ -42,7 +42,7 @@ export default async function middleware(request) {
   if (!safeEqual(given, password)) return denied("Wrong password.");
 
   // Signed in: serve the normal page. It switches to edit mode because the path is /edit.
-  const page = await fetch(new URL("/index.html", request.url));
+  const page = await fetch(new URL("/tracker/index.html", request.url));
   return new Response(page.body, {
     status: page.status,
     headers: {

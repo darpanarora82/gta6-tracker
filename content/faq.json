@@ -1,0 +1,19 @@
+{
+  "intro": "Quick answers to what people ask most about GTA 6, especially players in India.",
+  "items": [
+    {"q": "What time does GTA 6 unlock in India?", "a": "12:00 AM IST on Thursday 19 November 2026, on PS5 and Xbox Series X|S. That's about 10 hours before players in the US can start.", "link": "/launch/"},
+    {"q": "How much does GTA 6 cost in India?", "a": "₹5,999 for the Standard Edition and ₹7,499 for the Ultimate Edition on the PlayStation Store.", "link": "/editions/"},
+    {"q": "Is GTA 6 on PC?", "a": "Not at launch, and Rockstar hasn't announced a PC date. Past Rockstar games reached PC 9 to 18 months after consoles.", "link": "/launch/"},
+    {"q": "Does GTA 6 have online multiplayer?", "a": "Not at launch. Rockstar calls GTA 6 a single-player experience and hasn't announced an online mode. Any dates you see are rumours.", "link": "/features/"},
+    {"q": "Does the physical edition come with a disc?", "a": "No. Boxed copies contain a download code instead of a disc.", "link": "/editions/"},
+    {"q": "Can I still get the pre-order bonus?", "a": "The Vintage Vice City Pack comes with every digital purchase made before 20 November 2026, and with boxed copies while stocks last.", "link": "/editions/"},
+    {"q": "Is the Ultimate Edition worth it?", "a": "It adds 16 extras: cars, weapons, outfits, shops and two side activities. Nothing in it is needed to finish the game, so Standard is enough if you only care about the story.", "link": "/editions/"},
+    {"q": "How big is the download?", "a": "Around 210 GB has been reported. Pre-loading opened on 12 November.", "link": "/launch/"},
+    {"q": "Who are the main characters?", "a": "Jason Duval and Lucia Caminos, and you can switch between them. The supporting cast includes Cal Hampton, Brian and Lori Heder, Boobie Ike, Dre'Quan Priest, Real Dimez and Raul Bautista.", "link": "/characters/"},
+    {"q": "Where is GTA 6 set?", "a": "In Leonida, Rockstar's version of Florida: Vice City, the Leonida Keys, Grassrivers, Port Gellhorn, Ambrosia and Mount Kalaga National Park.", "link": "/places/"},
+    {"q": "How many wanted stars are there?", "a": "Six, up from five in GTA V.", "link": "/features/"},
+    {"q": "Are there cheat codes?", "a": "Nobody knows until people play it. GTA V had cheats but no money cheat. Any GTA 6 cheat list published before launch is made up.", "link": null},
+    {"q": "Is GTA 6 on Game Pass?", "a": "No. Take-Two has said it won't be on Xbox Game Pass at launch.", "link": "/features/"},
+    {"q": "Are there microtransactions?", "a": "Rockstar says single-player launches without microtransactions.", "link": "/features/"}
+  ]
+}

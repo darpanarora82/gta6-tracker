@@ -1,0 +1,165 @@
+{
+  "intro": "GTA 6 launches on Thursday 19 November 2026 on PS5 and Xbox Series X|S. It unlocks at midnight local time, country by country, so the launch rolls around the world over about 19 hours.",
+  "sources": [
+    {
+      "title": "Digit – GTA 6 India unlock time",
+      "url": "https://www.digit.in/news/gaming/gta-6-will-launch-seven-hours-early-in-this-country-indian-gamers-will-have-to-wait.html"
+    },
+    {
+      "title": "Outlook Respawn – release times by region",
+      "url": "https://respawn.outlookindia.com/amp/story/gaming/gaming-guides/how-to-play-gta-6-early-release-times-explained"
+    },
+    {
+      "title": "GTA BOOM – release date and delay history",
+      "url": "https://www.gtaboom.com/gta-6-release-date-platforms-and-what-is-locked-in-aa48"
+    },
+    {
+      "title": "Beebom – review embargo date (reported)",
+      "url": "https://beebom.com/gta-6-review-embargo-date-revealed/"
+    },
+    {
+      "title": "NoobFeed – install size (reported)",
+      "url": "https://www.noobfeed.com/articles/gta-6-know-before-launch"
+    },
+    {
+      "title": "PC Gamer – PC release outlook",
+      "url": "https://pcgamer.com/games/grand-theft-auto/gta-6-pc-release-date/"
+    }
+  ],
+  "facts": [
+    {
+      "label": "Release date",
+      "value": "19 Nov 2026"
+    },
+    {
+      "label": "Platforms",
+      "value": "PS5, Xbox Series X|S"
+    },
+    {
+      "label": "Unlocks in India",
+      "value": "12:00 AM IST"
+    },
+    {
+      "label": "Pre-load",
+      "value": "From 12 Nov"
+    },
+    {
+      "label": "Install size",
+      "value": "About 210 GB (reported)"
+    },
+    {
+      "label": "PC",
+      "value": "Not announced"
+    }
+  ],
+  "unlocks": [
+    {
+      "where": "New Zealand (first)",
+      "local": "12:00 AM, 19 Nov",
+      "ist": "4:30 PM, 18 Nov",
+      "utc": "2026-11-18T11:00:00Z"
+    },
+    {
+      "where": "Japan, South Korea",
+      "local": "12:00 AM, 19 Nov",
+      "ist": "8:30 PM, 18 Nov",
+      "utc": "2026-11-18T15:00:00Z"
+    },
+    {
+      "where": "India",
+      "local": "12:00 AM, 19 Nov",
+      "ist": "12:00 AM, 19 Nov",
+      "utc": "2026-11-18T18:30:00Z"
+    },
+    {
+      "where": "United Kingdom",
+      "local": "12:00 AM, 19 Nov",
+      "ist": "5:30 AM, 19 Nov",
+      "utc": "2026-11-19T00:00:00Z"
+    },
+    {
+      "where": "USA and Canada (one nationwide time)",
+      "local": "12:00 AM Eastern, 19 Nov",
+      "ist": "10:30 AM, 19 Nov",
+      "utc": "2026-11-19T05:00:00Z"
+    },
+    {
+      "where": "Mexico, Central America (last)",
+      "local": "12:00 AM, 19 Nov",
+      "ist": "11:30 AM, 19 Nov",
+      "utc": "2026-11-19T06:00:00Z"
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2023-12-05",
+      "title": "Trailer 1",
+      "text": "First trailer, with a 2025 release window."
+    },
+    {
+      "date": "2025-05-02",
+      "title": "First delay",
+      "text": "Moved to 26 May 2026."
+    },
+    {
+      "date": "2025-05-06",
+      "title": "Trailer 2",
+      "text": "Character and place profiles go up on Rockstar's site."
+    },
+    {
+      "date": "2025-11-06",
+      "title": "Second delay",
+      "text": "Moved to 19 November 2026."
+    },
+    {
+      "date": "2026-06-25",
+      "title": "Pre-orders open",
+      "text": "Standard and Ultimate editions go on sale."
+    },
+    {
+      "date": "2026-08-27",
+      "title": "Extended Look",
+      "text": "26 minutes of gameplay, premiered on Netflix."
+    },
+    {
+      "date": "2026-09-10",
+      "title": "Mod guidelines",
+      "text": "Rockstar publishes rules for mods across its games."
+    },
+    {
+      "date": "2026-09-17",
+      "title": "The Album announced",
+      "text": "Official soundtrack album, out on launch day."
+    },
+    {
+      "date": "2026-10-08",
+      "title": "Radio stations revealed",
+      "text": "The first six stations and their hosts."
+    },
+    {
+      "date": "2026-10-15",
+      "title": "Launch trailer",
+      "text": "Reconfirms 19 November."
+    },
+    {
+      "date": "2026-11-12",
+      "title": "Pre-load opens",
+      "text": "Download ahead of launch."
+    },
+    {
+      "date": "2026-11-18",
+      "title": "Reviews (reported)",
+      "text": "Review embargo reported for the day before launch."
+    },
+    {
+      "date": "2026-11-19",
+      "title": "Launch",
+      "text": "GTA 6 unlocks at midnight local time."
+    }
+  ],
+  "notes": [
+    "Online: Rockstar describes GTA 6 as a single-player experience. No online mode has been announced, and dates you see elsewhere are rumours.",
+    "PC: no date or window yet. GTA V took about 18 months to reach PC; PC Gamer's best guess is not before November 2027.",
+    "Playing early: some players switch to a New Zealand account or region. On PlayStation that needs a separate NZ account and a copy bought from that store."
+  ]
+}

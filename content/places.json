@@ -1,0 +1,129 @@
+{
+  "intro": "GTA 6 is set in Leonida, Rockstar's take on Florida. Rockstar has named six destinations so far, from the neon of Vice City to the swamps and backwoods up north. Everything here comes from official descriptions; the full map arrives with the game.",
+  "sources": [
+    {
+      "title": "Rockstar Games – Grand Theft Auto VI official site",
+      "url": "https://www.rockstargames.com/VI"
+    },
+    {
+      "title": "Gematsu – Trailer 2, characters and places detailed (reproduces Rockstar's descriptions)",
+      "url": "https://www.gematsu.com/2025/05/grand-theft-auto-vi-second-trailer-characters-and-places-detailed"
+    },
+    {
+      "title": "MeowDB – GTA 6 editions (Ultimate Edition locations)",
+      "url": "https://meowdb.com/gta6/editions"
+    }
+  ],
+  "items": [
+    {
+      "id": "vice-city",
+      "name": "Vice City",
+      "tracker": "Vice City",
+      "tagline": "Sun, money and bad decisions.",
+      "about": [
+        "Vice City is the sunny, glamorous and greedy heart of Leonida.",
+        "Its neighbourhoods range from Art Deco hotels and white sand at Ocean Beach to the bakeries of Little Cuba, the Tisha-Wocka flea market, and VC Port, a major cruise hub."
+      ],
+      "spots": [
+        {
+          "name": "Ocean Beach",
+          "note": "Art Deco hotels and white sand. The pre-order pack's garage sits here."
+        },
+        {
+          "name": "Little Cuba",
+          "note": "Known for its bakeries."
+        },
+        {
+          "name": "Tisha-Wocka flea market",
+          "note": "Named by Rockstar as a local landmark."
+        },
+        {
+          "name": "VC Port",
+          "note": "A major cruise-ship hub."
+        },
+        {
+          "name": "Washington Beach",
+          "note": "Where the Ultimate Edition's Shitzu Squalo boat is docked."
+        },
+        {
+          "name": "Stockyard",
+          "note": "Home to the Stock 305 streetwear store and the Electric Fang tattoo bar (Ultimate Edition)."
+        },
+        {
+          "name": "Southside",
+          "note": "The PTT Youngin$ gang compound (Ultimate Edition raid)."
+        }
+      ]
+    },
+    {
+      "id": "leonida-keys",
+      "name": "Leonida Keys",
+      "tracker": "Leonida Keys",
+      "tagline": "Island time, with sharks.",
+      "about": [
+        "A chain of tropical islands with a slow pace of life and plenty of good bars.",
+        "The water is beautiful, but Rockstar warns it is also dangerous. This is where Jason lives and works."
+      ],
+      "spots": [
+        {
+          "name": "Brian Heder's boat yard",
+          "note": "Run by Brian and Lori. Jason lives on one of Brian's properties."
+        }
+      ]
+    },
+    {
+      "id": "grassrivers",
+      "name": "Grassrivers",
+      "tracker": "Grassrivers",
+      "tagline": "The wildest part of Leonida.",
+      "about": [
+        "A vast wetland and the most untamed corner of the state.",
+        "Alligators are the famous attraction, but Rockstar hints at worse predators and stranger things hidden among the mangroves."
+      ],
+      "spots": []
+    },
+    {
+      "id": "port-gellhorn",
+      "name": "Port Gellhorn",
+      "tracker": "Port Gellhorn",
+      "tagline": "A holiday town that's seen better days.",
+      "about": [
+        "Once a popular stretch of vacation coast, Port Gellhorn has slid into decline.",
+        "Empty motels and closed-down attractions have made way for a shadow economy running on malt liquor, painkillers and cheap energy drinks."
+      ],
+      "spots": []
+    },
+    {
+      "id": "ambrosia",
+      "name": "Ambrosia",
+      "tracker": "Ambrosia",
+      "tagline": "A company town with a biker problem.",
+      "about": [
+        "An industrial town built around the Allied Crystal sugar refinery, which supplies most of the local jobs.",
+        "Most of what the refinery doesn't control belongs to a local biker gang."
+      ],
+      "spots": [
+        {
+          "name": "Allied Crystal sugar refinery",
+          "note": "The town's main employer."
+        }
+      ]
+    },
+    {
+      "id": "mount-kalaga",
+      "name": "Mount Kalaga National Park",
+      "tracker": "Mount Kalaga",
+      "tagline": "Hunting, fishing, mud and paranoia.",
+      "about": [
+        "A huge, remote park in the north of Leonida with hunting, fishing and off-road trails.",
+        "Its backwoods are home to isolated, suspicious and sometimes mystical locals who want nothing to do with the government."
+      ],
+      "spots": [
+        {
+          "name": "Mud Club off-road trails",
+          "note": "The Ultimate Edition's '67 Vapid Dominator Buggy is built for them."
+        }
+      ]
+    }
+  ]
+}

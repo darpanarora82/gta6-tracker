@@ -180,8 +180,7 @@ footer p{margin:0 0 6px;max-width:72ch}
 .card .cl{flex-wrap:wrap}
 @media (max-width:560px){
   .hero{min-height:620px}
-  .topline .wrap > span:first-child{display:none}
-  .topline .wrap{justify-content:flex-end}
+  .topline .live{display:none}
   .tiles{grid-template-columns:1fr 1fr;gap:8px}
   .tile{grid-template-columns:36px 1fr;gap:2px 10px;padding:12px 12px 11px}
   .tile .ic{width:36px;height:36px}
@@ -253,7 +252,7 @@ footer p{margin:0 0 6px;max-width:72ch}
     <use href="#palm" x="1040" y="180" width="180" height="420" transform="translate(2260 0) scale(-1 1)"/>
   </svg>
 
-  <div class="topline"><div class="wrap"><span>Leonida field guide</span><span class="live"><i></i>Mapped live from launch night</span></div></div>
+  <div class="topline"><div class="wrap"><a href="/" style="color:inherit;text-decoration:none">&larr; GTA 6 Guide home</a><span class="live"><i></i>Mapped live from launch night</span></div></div>
 
   <div class="wrap stand">
     <section class="sign" aria-labelledby="siteName">
@@ -633,6 +632,7 @@ footer p{margin:0 0 6px;max-width:72ch}
     $("updated").textContent = data.updated ? "Last updated " + data.updated : "";
     if (S.cat !== "all" && !catById(S.cat)) S.cat = "all";
     $("hideDone").checked = S.hideDone; $("showSpoilers").checked = S.spoilers;
+    try { var rq = new URLSearchParams(location.search).get("region"); if (rq && (data.regions || []).indexOf(rq) > -1) S.region = rq; } catch(e){}
     if (EDIT) setupEdit();
     render();
   }

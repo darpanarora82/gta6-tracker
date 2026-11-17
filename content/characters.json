@@ -1,0 +1,171 @@
+{
+  "intro": "Rockstar has named two playable leads and a supporting cast so far. Profiles below are written from Rockstar's official character bios, published with Trailer 2 on 6 May 2025. Expect much more once the game is out.",
+  "sources": [
+    {
+      "title": "Rockstar Games – Grand Theft Auto VI official site",
+      "url": "https://www.rockstargames.com/VI"
+    },
+    {
+      "title": "Gematsu – Trailer 2, characters and places detailed (reproduces Rockstar's bios)",
+      "url": "https://www.gematsu.com/2025/05/grand-theft-auto-vi-second-trailer-characters-and-places-detailed"
+    }
+  ],
+  "items": [
+    {
+      "id": "jason-duval",
+      "name": "Jason Duval",
+      "role": "Playable lead",
+      "group": "Leads",
+      "summary": "Ex-Army, now doing jobs for drug runners down in the Keys.",
+      "bio": [
+        "Jason grew up surrounded by small-time crooks and later served in the Army.",
+        "He now works for drug runners in the Leonida Keys. Brian Heder lets him live at one of his properties for free, as long as Jason helps out with local shakedowns.",
+        "His relationship with Lucia is the centre of the story, and you can switch between the two of them during play."
+      ],
+      "place": "leonida-keys",
+      "connections": [
+        "lucia-caminos",
+        "brian-heder",
+        "cal-hampton"
+      ],
+      "status": "Confirmed"
+    },
+    {
+      "id": "lucia-caminos",
+      "name": "Lucia Caminos",
+      "role": "Playable lead",
+      "group": "Leads",
+      "summary": "Just out of Leonida Penitentiary and determined not to go back.",
+      "bio": [
+        "Lucia ended up in Leonida Penitentiary after fighting to protect her family. The game opens with her newly released.",
+        "She wants the life her mother hoped for when the family lived in Liberty City, and she sees a future with Jason as her way to get it.",
+        "She is the second playable lead, and the Extended Look showed you can swap between her and Jason at any time."
+      ],
+      "place": "vice-city",
+      "connections": [
+        "jason-duval"
+      ],
+      "status": "Confirmed"
+    },
+    {
+      "id": "cal-hampton",
+      "name": "Cal Hampton",
+      "role": "Jason's friend",
+      "group": "Jason's circle",
+      "summary": "Stays home, listens in on the Coast Guard, trusts nobody.",
+      "bio": [
+        "Cal is one of Jason's closest friends and, like him, works with Brian Heder.",
+        "He spends most of his time at home monitoring Coast Guard radio traffic and has strong conspiracy-minded views.",
+        "Unlike Jason, he is perfectly happy where he is."
+      ],
+      "place": "leonida-keys",
+      "connections": [
+        "jason-duval",
+        "brian-heder"
+      ],
+      "status": "Confirmed"
+    },
+    {
+      "id": "brian-heder",
+      "name": "Brian Heder",
+      "role": "Old-school smuggler",
+      "group": "Jason's circle",
+      "summary": "Runs a boat yard in the Keys and gives Jason a roof, for a price.",
+      "bio": [
+        "Brian has been running drugs since the Keys' old smuggling days and never really stopped.",
+        "He runs a boat yard with his third wife, Lori, and lets Jason stay at one of his properties in return for help with shakedowns."
+      ],
+      "place": "leonida-keys",
+      "connections": [
+        "lori-heder",
+        "jason-duval",
+        "cal-hampton"
+      ],
+      "status": "Confirmed"
+    },
+    {
+      "id": "lori-heder",
+      "name": "Lori Heder",
+      "role": "Brian's wife",
+      "group": "Jason's circle",
+      "summary": "Co-runs the boat yard. Famous locally for her sangria.",
+      "bio": [
+        "Lori is Brian's third wife and helps him run the boat yard in the Keys.",
+        "Rockstar singles out one detail about her: her sangria."
+      ],
+      "place": "leonida-keys",
+      "connections": [
+        "brian-heder"
+      ],
+      "status": "Confirmed"
+    },
+    {
+      "id": "boobie-ike",
+      "name": "Boobie Ike",
+      "role": "Vice City businessman",
+      "group": "Only Raw Records",
+      "summary": "Turned street money into real estate, a strip club and a studio.",
+      "bio": [
+        "Boobie built a business empire in Vice City out of money made on the street: property, a strip club and a recording studio.",
+        "He co-runs the label Only Raw Records with Dre'Quan Priest. The Extended Look opens with Jason and Lucia picking up a shipment tied to him."
+      ],
+      "place": "vice-city",
+      "connections": [
+        "dre-quan-priest",
+        "real-dimez"
+      ],
+      "status": "Confirmed"
+    },
+    {
+      "id": "dre-quan-priest",
+      "name": "Dre'Quan Priest",
+      "role": "Music executive",
+      "group": "Only Raw Records",
+      "summary": "Former street dealer chasing a name in Vice City's music scene.",
+      "bio": [
+        "Dre'Quan sold on the street before deciding he wanted to run a record label instead.",
+        "He co-runs Only Raw Records with Boobie Ike and signed the rap duo Real Dimez."
+      ],
+      "place": "vice-city",
+      "connections": [
+        "boobie-ike",
+        "real-dimez"
+      ],
+      "status": "Confirmed"
+    },
+    {
+      "id": "real-dimez",
+      "name": "Real Dimez",
+      "role": "Rap duo (Bae-Luxe and Roxy)",
+      "group": "Only Raw Records",
+      "summary": "School friends with a social following, hunting a second hit.",
+      "bio": [
+        "Bae-Luxe and Roxy have been friends since high school and make rap music while building a following on social media.",
+        "They had an early hit on a track with DWNPLY and are now signed to Only Raw Records, trying to land the next one."
+      ],
+      "place": "vice-city",
+      "connections": [
+        "dre-quan-priest",
+        "boobie-ike"
+      ],
+      "status": "Confirmed"
+    },
+    {
+      "id": "raul-bautista",
+      "name": "Raul Bautista",
+      "role": "Bank robber",
+      "group": "Heists",
+      "summary": "Veteran robber who recruits people for big, risky scores.",
+      "bio": [
+        "Raul is an experienced, charming and reckless bank robber who is always looking for people willing to take big risks.",
+        "With each job the stakes get higher, and anyone on his crew has to decide whether to go all in or walk away."
+      ],
+      "place": null,
+      "connections": [
+        "jason-duval",
+        "lucia-caminos"
+      ],
+      "status": "Confirmed"
+    }
+  ]
+}
