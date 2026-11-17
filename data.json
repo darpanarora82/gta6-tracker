@@ -47,6 +47,17 @@
           "img": "/assets/img/items/activities-001.jpg",
           "thumb": "/assets/img/items/activities-001-t.jpg",
           "added": "2026-11-18"
+        },
+        {
+          "id": "activities-002",
+          "name": "Hunting Rifle",
+          "region": "Ambrosia",
+          "note": "Available in a side mission in chapter 2.",
+          "missable": true,
+          "spoiler": true,
+          "img": "/assets/img/items/activities-002.jpg",
+          "thumb": "/assets/img/items/activities-002-t.jpg",
+          "added": "2026-11-18"
         }
       ]
     },
