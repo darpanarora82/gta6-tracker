@@ -45,10 +45,11 @@
     document.querySelectorAll('[data-r="note"]').forEach(function (el) { el.hidden = pr.known; });
     document.querySelectorAll("select[data-region-picker]").forEach(function (s) {
       if (!s.options.length) {
+        var ph = document.createElement("option"); ph.value = ""; ph.textContent = "🌐 Choose your country"; s.appendChild(ph);
         LIST.forEach(function (c) { var o = document.createElement("option"); o.value = c; o.textContent = flag(c) + "  " + Z[c].name; s.appendChild(o); });
-        s.addEventListener("change", function () { R.set(s.value); });
+        s.addEventListener("change", function () { if (s.value) R.set(s.value); });
       }
-      if (cc) s.value = cc;
+      s.value = cc || "";
     });
     document.querySelectorAll("[data-price-region]").forEach(function (el) { el.classList.toggle("me", el.getAttribute("data-price-region") === (priceKey(cc) || "")); });
     document.dispatchEvent(new CustomEvent("gta-region"));
