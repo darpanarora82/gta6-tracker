@@ -502,17 +502,17 @@ fs.copyFileSync(path.join(ROOT, "data.json"), path.join(OUT, "data.json"));
   <main class="wrap">
     <section class="tk-work" id="edit" hidden aria-labelledby="editTitle">
       <h2 id="editTitle">Edit mode</h2>
-      <p>Only you see this. New items are drafts saved in this browser. To publish, download data.json and commit it to GitHub. Never change an item ID once it's published, or visitors lose their ticks.</p>
+      <p>Only you see this. Add items as drafts, then press Publish drafts: they go straight to GitHub and are live in about a minute. Never change an item ID once it's published, or visitors lose their ticks.</p>
       <form class="tk-form" id="addForm" autocomplete="off">
         <select id="fCat" aria-label="Category"></select>
         <select id="fRegion" aria-label="Region"></select>
         <input class="full" type="text" id="fName" placeholder="Name, e.g. #12 – rooftop above the pier diner" required aria-label="Item name">
         <textarea class="full" id="fNote" placeholder="How to find or complete it" aria-label="Note"></textarea>
-        <input class="full" type="text" id="fImg" placeholder="Image path (optional), e.g. img/collectibles-012.jpg" aria-label="Image path">
+        <label class="full tk-file"><span>Screenshot (optional)</span><input type="file" id="fPhoto" accept="image/*"></label>
         <div class="checks full"><label><input type="checkbox" id="fMiss"> Missable</label><label><input type="checkbox" id="fSpoil"> Spoiler</label></div>
         <button class="tk-btn solid full" type="submit">Add item</button>
       </form>
-      <div class="tk-btns"><button class="tk-btn solid" type="button" id="dlData">Download data.json</button><button class="tk-btn" type="button" id="copyData">Copy JSON</button><button class="tk-btn ghost" type="button" id="clearDrafts">Clear drafts</button></div>
+      <div class="tk-btns"><button class="tk-btn solid" type="button" id="publish">Publish drafts</button><button class="tk-btn" type="button" id="dlData">Download data.json</button><button class="tk-btn" type="button" id="copyData">Copy JSON</button><button class="tk-btn ghost" type="button" id="clearDrafts">Clear drafts</button></div>
     </section>
 
     <section class="tk-sec" aria-labelledby="catTitle">
