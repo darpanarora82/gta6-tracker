@@ -1,6 +1,348 @@
 {
-  "updated": "2026-11-18T07:04:35.254Z",
+  "updated": "2026-11-18T10:17:45.426Z",
   "items": [
+    {
+      "kind": "news",
+      "id": "gn-6N1hrQTdvdEV5bUFydC1CTlk",
+      "title": "‘Grand Theft Auto VI’ is a cultural and economic earthquake. Brace yourself.",
+      "source": "The Washington Post",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxNdml2aXIyREpwckNnYWJTdC1FRzNTb2VGUVY4c2ViX0RoS3RlRXlWY2s5S2ZYVzF6TUxKX2UwOVpXbTlDWVRpbGdjMWZvSmNuTXF6T04yWE94RUpPQXdHZ245cVhaTzV4Rndhc0owYW00YzVPcEt2MGJLOERKdXF1LTJwVzhWYXZvcE05YzEtNXAyMGJCZmFaWWh6N1hrQTdvdEV5bUFydC1CTlk?oc=5",
+      "date": "2026-11-18T10:06:21.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-tHUTFjbFVPVkxiWjhqRjJKZw",
+      "title": "After a 13-year wait, 'Grand Theft Auto VI' arrives with enormous hype and expectations",
+      "source": "WRAL",
+      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQZkQ3M09LdkZHVlFUZXhiUVo1X2k5VjY2MElEV2tfeVpSeTlPanNWUGxydU9mWFBNUmpWRFBXU3Z2RWluNkNQMnJvaEp6eHh3X0VpWDFjMDFJOUdRQUZTbjhGMHpaRjRucTR2WFY4SzJXWWktQWx2TW9DSVVXZUtvR3J4Vjd4RDUzTXVZd1N5NDBnZ3JSdjFYcHAwSTc5YVgxOG9hWHU0eENnRWtHUTFjbFVPVkxiWjhqRjJKZw?oc=5",
+      "date": "2026-11-18T10:04:35.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-tRFVPWUh0VHVWSzBzS290aGY",
+      "title": "The Real-Life City That Inspires Grand Theft Auto VI",
+      "source": "The New York Times",
+      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxPVEJwZEhEVE4xMWIyWEgzNGdJRWNwZHROdDlHcmhfQnhZLXAxWTBpWW9NeGxSX1dkWGpmdHJxYXJYc1JudThVdmd5cDVKdHJpV2VuY09tY3o3eElvVUh6aE5TSWstRGhHdzl3QWxyZVZtalZtRFVPWUh0VHVWSzBzS290aGY?oc=5",
+      "date": "2026-11-18T10:02:04.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-NFVUloZ2Q4SWZfRzlrU3RaUQ",
+      "title": "The Sound of G.T.A. VI Was Born on the Dance Floor",
+      "source": "The New York Times",
+      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOTHo5VWtVLTZVc2FDNW9wVzVPSk1mbmlzRUd6MkV2TU9FaHR4RjZBN0tEUEU0amdNU3ljTFNQZ2hDYlY0dkk2RHJVUGxIaVhHYWRhcHAzd0EwZ3NraTJ6YmE1bXpfazBwdWRzS2dCT05xeVZwNXpTR2ZoRDRUTVVrd0NFVUloZ2Q4SWZfRzlrU3RaUQ?oc=5",
+      "date": "2026-11-18T10:00:35.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-TR1RaQV9wNTI3Q0N3Z1A5UFE",
+      "title": "You Don't Have to Wait: This Console Trick Gets You Into GTA 6 Today",
+      "source": "PCMag",
+      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOWkMteTZ6cGF1RTBRNHFJTTlZam9xblIzT2drdkhUYlJUaTFvNS1QMjMwaHhVTGtOUW9mc2s1S0lYcDBuazhLLS1YM3ZLNld5ZWRramRBeFFqbTdoSUFUVVFSVHlXdFktaU5CME8wdFhyVk9LOFJHMFZUM1FkRTRvd3ZPSExTR1RaQV9wNTI3Q0N3Z1A5UFE?oc=5",
+      "date": "2026-11-18T09:59:16.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-M5WjRiZUpMd195ME1WY0Z6Zw",
+      "title": "'GTA 6' on PC: What we know about the PC release",
+      "source": "Mashable",
+      "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE1tMVl1NzVTX2JPWXB4WlhNMlNaQlQtVTk1Z2JBVUtHcTc5OXJrbmNVY29yN0lfcC1GSEM5Q2c0YUl4a0FGTjVGRDVuUGtyUlVuaEV5V3M5WjRiZUpMd195ME1WY0Z6Zw?oc=5",
+      "date": "2026-11-18T09:58:36.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-KODhtWlBORHVGMEh1Vkd3WUY",
+      "title": "'GTA 6' players on PS5: Update your consoles now to avoid delays",
+      "source": "Mashable",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9VR3p4b1BpYTdlQ3laRjJuSnhCYmNCWGZ4VFFOVzJaLUs1NENGX3FYYllzYUdnNFZlOXdMTk9XVmx5cEthSm5wZzhxenF4V2hfZHAyYTlNNU1yTVdfV3dKODhtWlBORHVGMEh1Vkd3WUY?oc=5",
+      "date": "2026-11-18T09:56:15.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-1jeG5mZ2NqYTZlaGZEb25Sdw",
+      "title": "Grand Theft Auto VI is satirizing dozens of brands—how should they respond?",
+      "source": "Ad Age",
+      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNblQ4MXRkZ1JmR0FNcTdYM0JDNVkteDN5YlZtOGoyVHhmWlhCVWxNbzBHWDgwU2VlS2daeDNXVmpDQ0JVZU9kQWZjVkhVbDZiNFI1OElJSjVZSFk0aE53WGQ2Y0lFaHhaZ3VlUU9GVW5WdmJDRy1jeG5mZ2NqYTZlaGZEb25Sdw?oc=5",
+      "date": "2026-11-18T09:55:00.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-JRzcxb1FrR3dwTWxhSVRfN1E",
+      "title": "Will GTA 6 be on Xbox Game Pass at launch? Everything you need to know.",
+      "source": "Mashable",
+      "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1sZlBxQnA0c19nVXFvN3lqTmJ4RWRSR1RlZ2h3M3ZFeDQzR2IzWEJLTFlUbm5HOUhWQVZVOG5WM3I3MEZTclVwdFdENmV4bjhMcV9Ub2RZYVFNd21jZFVSOGlDVjlJRzcxb1FrR3dwTWxhSVRfN1E?oc=5",
+      "date": "2026-11-18T09:47:49.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-bl9hdmdsUG9ZYUpXTmlyY1Yt",
+      "title": "'GTA 6' merch: Where to buy shirts, hats, and more on launch day",
+      "source": "Mashable",
+      "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE0tbkVwZHV4MlRsRFFUZjVZa2J2N1Jub2FGMWY4eUs5ZE11bnhpQWlqUXlFdHBnMk96SE05WXFQRTNjeTh3UzdQaUxLdzh2U3VTUi1tdG03bl9hdmdsUG9ZYUpXTmlyY1Yt?oc=5",
+      "date": "2026-11-18T09:47:37.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-cnNSbGw1UUZMRVNJWk9wTnF3",
+      "title": "PS5 Pro stock updates: Where to buy Sony's console for 'GTA 6' (without overpaying)",
+      "source": "Mashable",
+      "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE1ncWRGLVFRVUFqM3BHWUpIdTkwSExuMzItLXE5ZldVeGpYSUFEajloSV95ZWx2SWU3aHBfUjBFZWdNR01hVUVLczQwM2ozTjNwcnNSbGw1UUZMRVNJWk9wTnF3?oc=5",
+      "date": "2026-11-18T09:47:37.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-tOE1HSkVGYXVLbXk2QnN3VFE",
+      "title": "EXPLAINER – Why GTA VI is one of the biggest game launches ever",
+      "source": "Anadolu Ajansı",
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOdTgwS3J3c2RRUExXS3ExU29CVTlhSUhGQldpd1hYN1hwV1ZTb09sWmVPTmNFYjRKSl9pYk1xWDNsMDhLR2ZwcF9HYTJvcjdwM1FyNldpeHhJMFprNmhRLW5YZnBWdUtsNWxnLTlPRTlaSGRwSVMybFc5SHRzNW8xaGplTkJDd29KeU45SWZtWjc0VlNHUWltMUF0ZjMtOE1HSkVGYXVLbXk2QnN3VFE?oc=5",
+      "date": "2026-11-18T09:44:13.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-pyMGlXaFR5aXZBVWdrMzc4SA",
+      "title": "Grand Theft Auto VI launch day could see UK broadband records shattered",
+      "source": "Yahoo Finance UK",
+      "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQY1FPckw1b1VnN3BWNmNlelBSUEtlSG45ZjVLZ0lvd29rcVRKMDJPcnE4SkNna1hrZm5VdENVcnB6NHkyUW52RkRycVE3UjJUcHl2NEdST1FpV3lCeVVvUWJTUU1YVjNXM3M2YV9QaFpyMGlXaFR5aXZBVWdrMzc4SA?oc=5",
+      "date": "2026-11-18T09:36:49.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-X1ZMaTdVZGR2eldraFVKZm9n",
+      "title": "GTA 6 leads The Game Awards 2026 with eight nominations",
+      "source": "GamesIndustry.biz",
+      "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxONUdnTFo4U19Pa3RCdjFLYjBFQnp5cGNxLUs4cHI4Tm92Zkp3eWtFSEdzdlhvNFAtUmNkZ21yODZfaWIwdU1HdlpUeFhwaVNmTDFIbmdCWU5obXd3MDlzaDNXNVlTU2NlMHh5OUNQcVpIU084eWJKMWxNbUdPX1ZMaTdVZGR2eldraFVKZm9n?oc=5",
+      "date": "2026-11-18T09:12:10.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-R3owM25ZRXBoVHRWMFZ5Q1pB",
+      "title": "'GTA 6' New Zealand release time: The internet goes completely Kiwi",
+      "source": "Mashable",
+      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxOUnlZdVdvQ2pLY1lhaDdxeEMzNnEybG5Tc1lydFd1Ymw0NzAyMk04b09ZNmxUVm9KM1JJSm5fVWZCOEZuclRYc1RiRmRlT2p3ME9jSkVrZG5peENNUDlKVEJPLUlnNDhaTU5FODRfUUVyR3owM25ZRXBoVHRWMFZ5Q1pB?oc=5",
+      "date": "2026-11-18T09:11:15.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-ZmQxNzlsdmdhbW11ZG50ek9j",
+      "title": "I’m one of ‘millions’ taking time off work to play GTA 6. Here’s why",
+      "source": "The Independent",
+      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNVlRkaVZQM1RPV0NKRDRmMWtYdEJXM0JKRDhSdUlfSkNTV2JCSzhmSWhUQ3R0d3R0NVJCZWxRNFNTcEx5WHd0UFUxdXVRcWVjenFzNVBEaFRFaUlzZ2IzR1F2SkFiRzVMUXgtUnU3ZkpiSUladVF2bnJyZXpDcXQtM2g0ZVRwTU9SUEdhR3dVbVhIZmQxNzlsdmdhbW11ZG50ek9j?oc=5",
+      "date": "2026-11-18T08:59:00.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-NkSEZQWVVwUzlzTkRDLVFVQQ",
+      "title": "GTA VI: How Scotland made one of the world’s biggest game franchises",
+      "source": "Yahoo Finance UK",
+      "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE5LV1VqRG5fWFRWd3JXeFNkaHRITFBrbThxWFRtLWR4czN3RjJrVzgxR2I3RDBnNW5VdmdrY2lZeFRHVFduTGZ5bUtYTEs0dndGN2ZNU1lEa0JpbTEyelh3dmlmV0lPdFdaM1JMeXNkSEZQWVVwUzlzTkRDLVFVQQ?oc=5",
+      "date": "2026-11-18T08:44:44.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-1VF9NeHFYamQxSkF0c0x1a28",
+      "title": "Rockstar promotes GTA VI in China despite lack of sales approval",
+      "source": "Reuters",
+      "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPVmEzTWFRSTRmdDg5emtqSER1aTNfQVNMd1pWV3FzVFRZR0xGSzRBTzZ3aV9WRmN3Q2F1eDdHTlp6OW9vS0FrZll2MldBVzFaa1hFVURoSjA5cFc0cGhZN21DV2RGdTFEdHpILW5kVk5JdFNuaEdzbEhfdzJVVDY1eVpkbTRmLUxrYmliYURCSU81NV92Q2c1VF9NeHFYamQxSkF0c0x1a28?oc=5",
+      "date": "2026-11-18T07:57:00.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-pKMVk0ZU1CVjZvZ3hJNXh2dw",
+      "title": "Grand Theft Auto VI finally launches after 13 years",
+      "source": "Ynetnews",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9lcExFQmllS2NMR2J3MlYxaHNVYmJDQVh5cEFnd2VINFdTUjMzeWVUNEtSa2U0dFNxY0ktQWM4c1NLN0VQY1I4MURCeHRqclZScTMzdWt1V1kxcEpKMVk0ZU1CVjZvZ3hJNXh2dw?oc=5",
+      "date": "2026-11-18T06:18:21.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-PNFNxd19Ka0ZueHJqSE9UaGI",
+      "title": "Miami Heat Unveil \"Vice City\" Court To Match Grand Theft Auto VI-Inspired Uniforms",
+      "source": "SportsLogos.Net News",
+      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxQeklaU2tRTVJtTG9zRURMNFBWaDJGTnVvdzZXdkRndkVIeWFGaHl0dE5mbzZoUTFMWVZsUktJaUlfMVdNQndVdUtmSGt4Z3hXZ1IyVXpEdjN6azZpMEsxenh4QU11Q3FoOXFzbDAwVGpobFY1WE1NNExBV2tMY2FfN09XS0taUW9JOWxmQU1jaUFLUXdoUHZObmlQNU9jbWtDVFBmcU9PMGVWNjhfVU5uOXZ2QjZsSlo0TmhPNFNxd19Ka0ZueHJqSE9UaGI?oc=5",
+      "date": "2026-11-18T06:17:48.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-nb3h4dHhmb2dodDRoU1hYVU0",
+      "title": "GTA 6: My wife and daughter have signed a \"do not disturb\" contract",
+      "source": "BBC",
+      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE0yOXVDa3Zxb191dzlDQ1BmQ05NaHB3aHZEMjE4VmRPQUdlNWdLem1BUnpiMnVoLWJGaExKRGxNX0tXeG5SWkhwVGFnb3h4dHhmb2dodDRoU1hYVU0?oc=5",
+      "date": "2026-11-18T06:07:25.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-NzhPSU15M3RtT2RIaUJQbkNn",
+      "title": "‘Grand Theft Auto VI’ earns more than $1.5 billion before release | CNN Business",
+      "source": "CNN",
+      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxQMlppVnJwUElWb1ltdlV4c2V3RUZIMUlUcVlQbWY4MlNrOFZuLW5Oa3pTZEhZRHRyNVU5Z2pNbkpYNndILUxDZ05YUjV5dTVwMlNOaWhfblVGRUdDNHoxNkQ0MmRyVVMwVDlmSE0tUkhINzhPSU15M3RtT2RIaUJQbkNn?oc=5",
+      "date": "2026-11-18T06:00:15.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-CVU9LU2xPZmNCVVNoaUZXelY",
+      "title": "GTA 6 New Zealand time trick for Xbox, PS5: How to play hours early",
+      "source": "Mashable",
+      "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE9TYmlTM0pyNXdQRVFQR1dzXzdDZV9DS0ozalBvbU5vcnpDQnVhN3pVaTR4aWNjUG1CclZiQzlBTTVZekxJeXgwNzY3djl0TTNzYTlhUVBvcnFRZEhKQ2ZOSzhmTGJPTkpGUE9CVU9LU2xPZmNCVVNoaUZXelY?oc=5",
+      "date": "2026-11-18T05:17:58.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-WENyUWRpWXgyRjR1Q0J4ei1V",
+      "title": "Pro athletes clamor for 'Grand Theft Auto VI' release, but they insist their day jobs come first",
+      "source": "Bozeman Daily Chronicle",
+      "url": "https://news.google.com/rss/articles/CBMijwJBVV95cUxPeVJzb19GQXJWb0ZHMDktS3g1azFwR20xcGNKSkY4NFRmSnA3RGFUSEdQWHJfbWVJZmotRjVJcWxjc2poV0Z2WFg5ckp0UE1pQ2x3dUlSWTVQcTlma28yYUljeldKajkySTZGY3YxU1FOTlY4S3VjSk02V0JaYXBCRVFfdG14d2hZejJ0U2JacEVtT29mRGYyS21KTWROQmM4djF3TmRKeVV5VnFjYjVvU3ZhYjNuOU5FV1ZMdTBPWG81UkNxcDVMc1ljMWxSQlJEWmpCMTF6Mng5N1paNERKZ1lydFhnZGRKd2xFSmQzRGJFdnVXYlRCUk1zSlZLWENyUWRpWXgyRjR1Q0J4ei1V?oc=5",
+      "date": "2026-11-18T05:12:51.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-UEhERmJVaVU2c2ZyRWVhSFg0",
+      "title": "Should I buy a gaming console just to play 'GTA 6'? That depends on your FOMO.",
+      "source": "Mashable",
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQdnU4eU1yYWN6OTBycDdPZGt5RDRmenI1cW1sUHVsX1doU0I5NEFoQ1hTYUFqbUtsMUlObWJrak9kdFBkaWVIRkR3emRqeU1EdktPZ3M4NUpnWk1DMkJra2JQV3FWUk96SmFWQnZGc1dNTklJeWd3UEhERmJVaVU2c2ZyRWVhSFg0?oc=5",
+      "date": "2026-11-18T05:00:00.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-ZMQXY0M0Z5bmF2MERxQWF0dw",
+      "title": "PS5 Gets Last-Minute Software Update That’s Required To Play GTA 6",
+      "source": "Kotaku",
+      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxOWFpTdVprRWowc3ZKWlF3S3BOcTRwMXpGSmhiNHQxRWlyLU1YMDc0RWpQY09nUFB5V0NvQWRSSU1SVDItdS1JNGZoaURGS0V2eDRPb21qSk1CYWZOX1p4NnY2cFprR0Noc1VUeHpWdlpXZ2pvbXd4UnlXMjNmU28xOE9qc0pETmM5TjZMQXY0M0Z5bmF2MERxQWF0dw?oc=5",
+      "date": "2026-11-18T03:02:45.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-M2dMMGRaZWlnS3l6dV9aV1JB",
+      "title": "Miami Heat unveil 'A Night in Vice City' court, activities ahead of GTA VI release",
+      "source": "ESPN",
+      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPcEVfVW1ZMmVCUlI3V2dIYjNwdVNDTU91T25GMS1wY0s1WlpxWVFMendXQS1Fd2lpSTliZl9taFNHYVdrTUtQZC1zZncyZDNvT2E0eXdjSVV3WXRSd09wN1lPXzUwd1lnV1VKNndGWnpCM2dMMGRaZWlnS3l6dV9aV1JB?oc=5",
+      "date": "2026-11-18T00:19:00.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-Qand0R2hNQ0Z5eHdHWnhHU1k",
+      "title": "Just how gay is Grand Theft Auto VI? Depends who you ask!",
+      "source": "Queerty",
+      "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxPc19LQ2FzWW9tYW1fczFNREZnSHVIbGx0ejVFVkZ4S3hhLVpna25XZWpBRXQ3UHJscnNVZ3hFUTFmNXhVT1N0ZWlETk92ejRvNW13WVQ3QTk1M2lDZ3I3QVdwQU4weEI4VFdiQkxUdEFsYlZvZTlCY2xTajJZZFFKZXdQand0R2hNQ0Z5eHdHWnhHU1k?oc=5",
+      "date": "2026-11-18T00:00:00.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-N5QmxIblNKd0ZHZHd3LWVkcA",
+      "title": "‘Grand Theft Auto VI’ Speeds Away With Eight Game Awards Nominations For 2026",
+      "source": "Deadline",
+      "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNaXZ2NGJwYUt4Z3k3MTU1c2kzNWx0UFJFMmtpeU5WOE9DMXVBMlkzTlF4eTVqYVVLYTBTUTdaejVId3ZfajJtMU1vTE40bGVpaWJNekhzbVNIODF4Nm44aE0xMVIwX0tEeVdoVXJPT2V3X3JZV19IejhTSDN5QmxIblNKd0ZHZHd3LWVkcA?oc=5",
+      "date": "2026-11-17T23:28:00.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-1uSDZDRDBQRGhUcGxpQXA3UQ",
+      "title": "‘South Park’ and the Extended Grand Theft Auto Political Metaphor",
+      "source": "The New York Times",
+      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxOM1RUOFRSdjBYcXB0NkpIdkVpclpWRjNQVG93OTFjT1U0azJNNEt3ejllY1dkRGxjTXUtY01VY0dVV1FYLTRwN2ZYdGl2aWdmYThJdWhfMjJRRFdRZHJVZ09kMUtETEpyWHhtanNGOFJkQVdnQy1uSDZDRDBQRGhUcGxpQXA3UQ?oc=5",
+      "date": "2026-11-17T21:18:15.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-YmJjalZ5YUlDRDJ0TVd0a3hn",
+      "title": "Why Should I Care About GTA 6?",
+      "source": "Kotaku",
+      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTFB4QmJpUFhMdlF4amxVZXk5Vml3dEVCYWItV0MwMXRSSzBUa1dwRzdzS0JmWFotY250MW4ycEt6aDE4N1YyMmIxX0ZHUk9RNWxGWlc4czI5NktkYmJjalZ5YUlDRDJ0TVd0a3hn?oc=5",
+      "date": "2026-11-17T21:00:58.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-Wmp1WThLZkRMcENnbEdVZEdr",
+      "title": "I Can't Wait to Play Grand Theft Auto VI—For the Fashion (Yes, Really)",
+      "source": "Vogue",
+      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9pVHY5dmZua3pkeDdGTC1tRDU1bW1SZ1pldkpZNnEyTWp2YV9oUE1LT3JITmxCVmVJV0xEQ0RKYmw4dU9pZDNrQXlUV1hDdzhVWG1QczhSdVRxd2YtVTlPVXYwWmp1WThLZkRMcENnbEdVZEdr?oc=5",
+      "date": "2026-11-17T20:57:31.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-NG5wbVJOYjdweDB2SlpKTU5W",
+      "title": "Grand Theft Auto 6 Lucia Actress Finally Revealed — And Yes, It's Who You Probably Suspected",
+      "source": "IGN",
+      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPRktNZWZvSVNuOWprWlBqTlczTHdCeVRRaUFjVXFDUFpkZ0NrWERKNmd6dWI5UV9hb1NyNjltRnZuenBpU2d3MEp5NmpJVHpvRTB4TFVBQ1M3b1JUYW8tYkQ3WnRtMWtqdjZYcDE3Z2pGQUg3Tk5FdVYyeDl4REkxdW1vdTZ3T2RERWZLbFhnVVZIMlZRc25paWxzR1FzM2U4cDRKSkc5NG5wbVJOYjdweDB2SlpKTU5W?oc=5",
+      "date": "2026-11-17T17:29:02.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-VSVjdSX2VpRldBNzBHNEpjXw",
+      "title": "5 Tips Before You Start Playing GTA 6",
+      "source": "SVG",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTFAwVTNSNXV4TU9sbHNuNWxpbEx4OHpGZlpFZjZFaUJOWHB5WFNYdXpBbDZvejM4YnJhOXJkeFdYV01wTkVwbmhZYjc3Um5pNmdWNGZ3S3F2a2NKMkVSVjdSX2VpRldBNzBHNEpjXw?oc=5",
+      "date": "2026-11-17T17:00:00.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-CNENlS09nbUdVZlJTZG5qODA",
+      "title": "These are the films you should watch before GTA VI finally arrives",
+      "source": "Empire",
+      "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxOZmRRdFVwcmNNMzNCaWdfdXlyZnpzTi1aRFhzMFRURHJjRFZIaTRUcUJYdGNYZzZTXy12TVU3WnRPSl9VVlU0b3NnWUVzMjZkQURmTzZ2NTNvcVJrVk9VbG51a05QelNHTllXOW43TjMzMXd3V0ZoY3hPMUhVMmk5SndCNENlS09nbUdVZlJTZG5qODA?oc=5",
+      "date": "2026-11-17T16:09:15.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-HLWt6UHVZMWgxOF9JZnY3Z0c",
+      "title": "‘GTA 6’ officially launches next week and is available for pre-load now: Everything you need to know about the highly anticipated Rockstar game",
+      "source": "Yahoo Tech",
+      "url": "https://news.google.com/rss/articles/CBMioAJBVV95cUxOU2s4THFIazBPX3VyNXh0RVBwSE9icTRsOGIxYzQwc2ZkMldpY0k0NVJfbDkzNzFLNUhLSTUxSDNfbDNRcWR1czcwbnZkVW1IeWNMWTY4NjhpNERGdG5YcjRWalNtcm1XMDNTN3pNTGtUb1pMTDdsRU4zNkpJdkpmOWxzaHVsSWhrS3lBMGd3Mmlma2lGZDNoR1RoUnBOal9jeTk0WTNJMDFDRDdqNjNzc1NnVVowNGZuR2ZkUWJUYTFEVkdra3JTcGZGS09ycktNaGU1ak1nRDhkTnB0dGdDa1Vzc1g0emluZUdVYVlGZ0ZCeTNONVVWaUV5MTNTN2dGVEdQSThKWTVSWVFSRU1HLWt6UHVZMWgxOF9JZnY3Z0c?oc=5",
+      "date": "2026-11-17T16:07:15.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-RVXRndUpENE9LWmItN0hPSVE",
+      "title": "Grand Theft Auto’s ‘Vice City’ Blitz Rankles Some Residents of the Real Miami",
+      "source": "Bloomberg.com",
+      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNTXdQbnB0VGJOS0dKRmxsOWNVNWZFY2ZHTjl2cmxzU3hyM1ExYzZ1VVZsMmNWV3ZZYnhzQ3RIS0dCM2hZWGlsMlZxZEY4Ty1XY01NRTJ0VlgycG1EZ0IwSmNfeFBJcENZVjhIWW1MRWNKNTEwa25TbmJ2LVloRG1wb1lpcTVsaHNuXzBMWldSeGJ2ZzZITXVmR2hoQU9tTndpcHAtQXBrWlJRVXRndUpENE9LWmItN0hPSVE?oc=5",
+      "date": "2026-11-17T15:00:01.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-R5eEpyVGMwZzkxcV94bkVMTw",
+      "title": "‘GTA VI’ Hits Estimated $1.5 Billion In Sales—Before Launch, Report Says",
+      "source": "Forbes",
+      "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxOYUN6ckFsekVIMnBPZDBNQjZ3bzZ3S1JrMy1xWURZM0h4TVcxU3B6ZS1ES3pieDk3dFd0R3VQUGtkbW9DaHZac3BJUWIyTngwZk1PQW1iNUFCUERwZkxuSVJGdjFHS2VoUzZaTkhCTE1JS3FUXzVKMW9RV3hLUGYycjlxTzVGTDBhRVpBZm1xb2Q3allvWDZjUE1ILTBNNUduWU5wazY3RGhkVVFQbV9UeHRXelZaTkxrTDdXY3VMZkJCR3R5eEpyVGMwZzkxcV94bkVMTw?oc=5",
+      "date": "2026-11-17T14:58:28.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
+    },
     {
       "kind": "video",
       "id": "yt-_yl5ELcmugI",
@@ -9,6 +351,15 @@
       "url": "https://www.youtube.com/watch?v=_yl5ELcmugI",
       "video": "_yl5ELcmugI",
       "date": "2026-11-10T13:55:00.000Z"
+    },
+    {
+      "kind": "official",
+      "id": "gn-OFUzcEs4WFU3cXNXaVZTRWpR",
+      "title": "Pre-Load Grand Theft Auto VI Now",
+      "source": "Rockstar Games",
+      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOaG4tVTJzUTcxU1NpT05mZVpHTXlRX285MWI5VzVwc2k1UnZiQ01HbGhBOWltLVlIRm9Rb2dUM1lfTmhYcDZXbVdsWHQwdEo0NmdCbTZ4bk9qRE5MOXVfcDNGNE9oWjl6LXoxQ05TdE9zaHA3WlBNVzZxMVY3c2F3R3dVa25wdHdWOFUzcEs4WFU3cXNXaVZTRWpR?oc=5",
+      "date": "2026-11-10T08:00:00.000Z",
+      "seen": "2026-11-18T10:17:45.426Z"
     },
     {
       "kind": "official",
