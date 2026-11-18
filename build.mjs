@@ -580,7 +580,7 @@ const factHtml = (f) => `<div class="fact"><span>${esc(f.label)}</span><b${f.dyn
     // Photo: an explicit "img" in the JSON, or src/assets/img/<kind>/<id>.jpg if it exists (owner's screenshots or official Rockstar images only).
     items.forEach((it) => { if (!it.img) it.img = photos(kind, it.id)[0] || ""; });
     const card = (it) => `<article class="dbcard" id="${esc(it.id)}" data-fresh="${esc(it.added || "")}" data-changed="${esc(it.changed || "")}" data-class="${esc(it.class)}" data-status="${esc(it.status)}" data-q="${esc((it.name + " " + it.class).toLowerCase())}">
-      <div class="dbpic g-${glyphFor(it.class)}">${it.img ? `<img src="${esc(it.img)}" alt="${esc(it.name)}" loading="lazy" decoding="async">` : `<svg viewBox="0 0 52 52" aria-hidden="true">${GLYPH[glyphFor(it.class)]}</svg>`}<span class="dbst st-${esc(it.status)}">${SLABEL[it.status] || it.status}</span></div>
+      <div class="dbpic g-${glyphFor(it.class)}">${it.img ? `<img src="${esc(it.img)}" alt="${esc(it.name)}" loading="lazy" decoding="async"><span class="dbcred">Image: Rockstar Games</span>` : `<svg viewBox="0 0 52 52" aria-hidden="true">${GLYPH[glyphFor(it.class)]}</svg>`}<span class="dbst st-${esc(it.status)}">${SLABEL[it.status] || it.status}</span></div>
       <div class="dbbody"><span class="dbclass">${esc(it.class)}</span><h2>${esc(it.name)}</h2><p>${esc(it.note)}</p>
       ${it.sources && it.sources.length ? `<details class="rsrc"><summary>Sources (${it.sources.length})</summary><ul>${it.sources.map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener nofollow">${esc(s.title)}</a></li>`).join("")}</ul></details>` : ""}</div>
     </article>`;
