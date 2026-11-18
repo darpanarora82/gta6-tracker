@@ -48,6 +48,11 @@ const b64ToText = (b64) => new TextDecoder().decode(Uint8Array.from(atob(b64.rep
 async function publish(request, env) {
   const { items } = await request.json();
   if (!Array.isArray(items) || !items.length || items.length > 100) return json({ ok: false, error: "No items to publish" }, 400);
+  const r = await publishItems(env, items);
+  return r.error ? json({ ok: false, error: r.error }, r.status || 400) : json({ ok: true, ids: r.ids, names: r.names });
+}
+
+async function publishItems(env, items) {
 
   for (let attempt = 0; attempt < 2; attempt++) {
     const ref = await ghJson(env, "/git/ref/heads/main");
@@ -75,6 +80,7 @@ async function publish(request, env) {
       if (note) it.note = note;
       if (d.missable) it.missable = true;
       if (d.spoiler) it.spoiler = true;
+      const by = clean(d.by, 40); if (by) it.by = by;
       if (Array.isArray(d.pos) && d.pos.length === 2 && d.pos.every((n) => Number.isFinite(n) && Math.abs(n) <= 16384)) it.pos = d.pos.map(Math.round);
       if (/^[0-9a-f]{40}$/.test(d.imgBlob || "")) { tree.push({ path: `src/assets/img/items/${id}.jpg`, mode: "100644", type: "blob", sha: d.imgBlob }); it.img = `/assets/img/items/${id}.jpg`; }
       if (/^[0-9a-f]{40}$/.test(d.thumbBlob || "")) { tree.push({ path: `src/assets/img/items/${id}-t.jpg`, mode: "100644", type: "blob", sha: d.thumbBlob }); it.thumb = `/assets/img/items/${id}-t.jpg`; }
@@ -82,7 +88,7 @@ async function publish(request, env) {
       (cat.items = cat.items || []).push(it);
       ids.push(id); names.push(name);
     }
-    if (!ids.length) return json({ ok: false, error: "Nothing valid to publish" }, 400);
+    if (!ids.length) return { error: "Nothing valid to publish", status: 400 };
     data.updated = today;
 
     const blob = await ghJson(env, "/git/blobs", { method: "POST", body: JSON.stringify({ content: JSON.stringify(data, null, 2) + "\n", encoding: "utf-8" }) });
@@ -90,11 +96,11 @@ async function publish(request, env) {
     const newTree = await ghJson(env, "/git/trees", { method: "POST", body: JSON.stringify({ base_tree: commit.tree.sha, tree }) });
     const newCommit = await ghJson(env, "/git/commits", { method: "POST", body: JSON.stringify({ message: `Tracker: add ${ids.join(", ")}`, tree: newTree.sha, parents: [head] }) });
     const move = await gh(env, "/git/refs/heads/main", { method: "PATCH", body: JSON.stringify({ sha: newCommit.sha }) });
-    if (move.ok) return json({ ok: true, ids, names });
+    if (move.ok) return { ids, names };
     if (move.status !== 422) throw new Error(`GitHub ${move.status}: couldn't update main`);
     // main moved while we were working (someone else pushed): start again on top of it
   }
-  return json({ ok: false, error: "The site changed while publishing. Try again." }, 409);
+  return { error: "The site changed while publishing. Try again.", status: 409 };
 }
 
 
@@ -273,6 +279,76 @@ async function updateNews(env) {
   return { changed, count: added };
 }
 
+// Move pins: [{id, pos:[x,y]}] -> update data.json in one commit.
+async function movePins(request, env) {
+  const { moves } = await request.json().catch(() => ({}));
+  if (!Array.isArray(moves) || !moves.length || moves.length > 200) return json({ ok: false, error: "No pin changes" }, 400);
+  const ok = (p) => Array.isArray(p) && p.length === 2 && p.every((n) => Number.isFinite(n) && Math.abs(n) <= 16384);
+  let count = 0;
+  await commitFile(env, "data.json", (old) => {
+    const data = JSON.parse(old); count = 0;
+    const byId = new Map(data.categories.flatMap((c) => (c.items || []).map((i) => [i.id, i])));
+    for (const m of moves) { const it = byId.get(m.id); if (it && ok(m.pos)) { it.pos = m.pos.map(Math.round); count++; } }
+    if (!count) return null;
+    data.updated = new Date().toISOString().slice(0, 10);
+    return JSON.stringify(data, null, 2) + "\n";
+  }, `Tracker: move ${moves.length} pin${moves.length === 1 ? "" : "s"} on the map`);
+  return json({ ok: true, count });
+}
+
+/* ---------- visitor suggestions ----------
+   Public form -> Turnstile check -> D1 table "subs" (status pending). The owner approves (publishes it as a
+   tracker item, photo included) or rejects from /edit. Raw IPs are never stored: only a daily salted hash for rate limits. */
+const SUB_LIMIT_PER_DAY = 8;
+const dataUrlOk = (s, max) => typeof s === "string" && /^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(s) && s.length <= max;
+async function sha(text) { const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text)); return [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, "0")).join(""); }
+
+async function suggest(request, env) {
+  if (!env.SUBS || !env.TURNSTILE_SECRET) return json({ ok: false, error: "Suggestions aren't switched on yet." }, 503);
+  if (+(request.headers.get("content-length") || 0) > 900000) return json({ ok: false, error: "That photo is too big." }, 413);
+  const b = await request.json().catch(() => ({}));
+  const ip = request.headers.get("cf-connecting-ip") || "";
+  const tv = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", { method: "POST", body: new URLSearchParams({ secret: env.TURNSTILE_SECRET, response: String(b.token || ""), remoteip: ip }) }).then((r) => r.json()).catch(() => ({}));
+  if (!tv.success) return json({ ok: false, error: "The robot check didn't pass. Please try again." }, 400);
+  const data = await env.ASSETS.fetch(new Request(new URL("/data.json", request.url))).then((r) => r.json());
+  const cats = (data.categories || []).map((c) => c.id), regions = data.regions || [];
+  const name = clean(b.name, 120), note = clean(b.note, 800), cat = cats.includes(b.cat) ? b.cat : "";
+  if (name.length < 3 || !cat) return json({ ok: false, error: "Add a name and pick a category." }, 400);
+  const pos = Array.isArray(b.pos) && b.pos.length === 2 && b.pos.every((n) => Number.isFinite(n) && Math.abs(n) <= 16384) ? JSON.stringify(b.pos.map(Math.round)) : null;
+  const img = dataUrlOk(b.img, 600000) ? b.img : null, thumb = img && dataUrlOk(b.thumb, 120000) ? b.thumb : null;
+  const day = new Date().toISOString().slice(0, 10), who = await sha(ip + "|" + day + "|" + env.TURNSTILE_SECRET.slice(0, 8));
+  const n = await env.SUBS.prepare("SELECT COUNT(*) AS n FROM subs WHERE who = ?1").bind(who).first("n");
+  if (n >= SUB_LIMIT_PER_DAY) return json({ ok: false, error: "Thanks! That's the daily limit for suggestions from you. Try again tomorrow." }, 429);
+  await env.SUBS.prepare("INSERT INTO subs (created, cat, name, region, note, missable, spoiler, pos, img, thumb, credit, who) VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12)")
+    .bind(new Date().toISOString(), cat, name, regions.includes(b.region) ? b.region : "", note, b.missable ? 1 : 0, b.spoiler || cat === "story" ? 1 : 0, pos, img, thumb, clean(b.credit, 40), who).run();
+  return json({ ok: true });
+}
+
+async function listSubs(env) {
+  const r = await env.SUBS.prepare("SELECT id, created, cat, name, region, note, missable, spoiler, pos, thumb, credit, (img IS NOT NULL) AS hasImg FROM subs WHERE status = 'pending' ORDER BY created LIMIT 60").all();
+  return json({ ok: true, subs: (r.results || []).map((s) => ({ ...s, pos: s.pos ? JSON.parse(s.pos) : null })) });
+}
+
+async function decideSub(request, env) {
+  const { id, action, item } = await request.json().catch(() => ({}));
+  const row = await env.SUBS.prepare("SELECT * FROM subs WHERE id = ?1 AND status = 'pending'").bind(+id).first();
+  if (!row) return json({ ok: false, error: "That suggestion was already handled." }, 404);
+  const now = new Date().toISOString();
+  if (action === "reject") {
+    await env.SUBS.prepare("UPDATE subs SET status = 'rejected', decided = ?2, img = NULL, thumb = NULL WHERE id = ?1").bind(row.id, now).run();
+    return json({ ok: true });
+  }
+  if (action !== "approve") return json({ ok: false, error: "Unknown action" }, 400);
+  const e = item || {};
+  const blob = async (dataUrl) => { if (!dataUrl) return null; const r = await ghJson(env, "/git/blobs", { method: "POST", body: JSON.stringify({ content: dataUrl.slice(dataUrl.indexOf(",") + 1), encoding: "base64" }) }); return r.sha; };
+  const x = { id: "", cat: e.cat || row.cat, name: e.name || row.name, region: e.region ?? row.region, note: e.note ?? row.note, missable: e.missable ?? !!row.missable, spoiler: e.spoiler ?? !!row.spoiler,
+    pos: row.pos ? JSON.parse(row.pos) : null, by: e.by ?? row.credit, added: now.slice(0, 10), imgBlob: await blob(row.img), thumbBlob: await blob(row.thumb) };
+  const r = await publishItems(env, [x]);
+  if (r.error) return json({ ok: false, error: r.error }, r.status || 400);
+  await env.SUBS.prepare("UPDATE subs SET status = 'approved', decided = ?2, item_id = ?3, img = NULL, thumb = NULL WHERE id = ?1").bind(row.id, now, r.ids[0]).run();
+  return json({ ok: true, ids: r.ids, names: r.names });
+}
+
 const VISION = "@cf/meta/llama-3.2-11b-vision-instruct";
 async function draft(request, env) {
   const { image, hint, categories, regions } = await request.json();
@@ -334,6 +410,9 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const p = url.pathname;
+    if (p === "/api/suggest" && request.method === "POST") {
+      try { return await suggest(request, env); } catch (e) { return json({ ok: false, error: "Couldn't save that. Please try again." }, 500); }
+    }
     if (p !== "/edit" && !p.startsWith("/edit/")) return env.ASSETS.fetch(request);
     if (!env.EDIT_PASSWORD) return denied("Editor is locked: add the EDIT_PASSWORD secret in Cloudflare.");
     if (!authorised(request, env)) return denied("Sign in to use the editor.");
@@ -341,6 +420,14 @@ export default {
     if (request.method === "POST" && p === "/edit/draft") {
       if (!env.AI) return json({ ok: false, error: "AI isn't connected to this Worker." }, 500);
       try { return await draft(request, env); } catch (e) { return json({ ok: false, error: "AI error: " + (e.message || e) }, 502); }
+    }
+    if (p === "/edit/subs") {
+      if (!env.SUBS) return json({ ok: false, error: "Suggestions database isn't connected." }, 500);
+      try { return request.method === "POST" ? await decideSub(request, env) : await listSubs(env); } catch (e) { return json({ ok: false, error: e.message }, 502); }
+    }
+    if (request.method === "POST" && p === "/edit/move") {
+      if (!env.GITHUB_TOKEN) return json({ ok: false, error: "Publishing isn't set up." }, 500);
+      try { return await movePins(request, env); } catch (e) { return json({ ok: false, error: e.message }, 502); }
     }
     if (request.method === "POST" && p === "/edit/news") {
       if (!env.GITHUB_TOKEN) return json({ ok: false, error: "Publishing isn't set up." }, 500);
@@ -366,6 +453,11 @@ export default {
       }
     }
 
+    if (p === "/edit/map" || p === "/edit/map/") {
+      // Signed in: the public map page; map.js switches to editor mode on this path.
+      const page = await env.ASSETS.fetch(new Request(new URL("/map/", url), request));
+      return new Response(page.body, { status: page.status, headers: { "Content-Type": "text/html; charset=utf-8", ...NO_STORE } });
+    }
     if (p === "/edit" || p === "/edit/") {
       // Signed in: serve the tracker page. It switches to edit mode because the path is /edit.
       const page = await env.ASSETS.fetch(new Request(new URL("/tracker/", url), request));

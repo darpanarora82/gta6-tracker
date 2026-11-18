@@ -1,0 +1,228 @@
+{
+  "intro": "Every GTA 6 vehicle we can back up, from the cars Rockstar has named to the ones spotted in its trailers. Each one is labelled by how sure we are, and the list grows as the game is played.",
+  "updated": "2026-11-18",
+  "statuses": {
+    "named": "Named by Rockstar: the name appears in Rockstar's own material",
+    "seen": "Seen in official footage: shown in a trailer, screenshot or the Extended Look; the name comes from fans matching it to earlier GTA games",
+    "leak": "Leak: only seen in leaked footage",
+    "ingame": "In the game: checked in the released game"
+  },
+  "items": [
+    {
+      "id": "vapid-stanier-55",
+      "name": "'55 Vapid Stanier",
+      "class": "Sedan",
+      "status": "named",
+      "note": "A two-tone 1950s sedan, given to everyone who gets the Vintage Vice City Pack.",
+      "sources": [
+        {
+          "title": "MeowDB: what Rockstar named in the edition material",
+          "url": "https://meowdb.com/gta6/editions"
+        },
+        {
+          "title": "TheSixthAxis: Ultimate Edition bonus and Vintage Vice City Pack",
+          "url": "https://www.thesixthaxis.com/2026/06/24/gta-6-ultimate-edition-pre-order-bonus-and-vintage-vice-city-pack-revealed/"
+        }
+      ]
+    },
+    {
+      "id": "grotti-cheetah-95",
+      "name": "'95 Grotti Cheetah",
+      "class": "Sports",
+      "status": "named",
+      "note": "A mid-'90s sports car in a retro livery, part of the Ultimate Edition.",
+      "sources": [
+        {
+          "title": "MeowDB: what Rockstar named in the edition material",
+          "url": "https://meowdb.com/gta6/editions"
+        }
+      ]
+    },
+    {
+      "id": "vapid-dominator-buggy-67",
+      "name": "'67 Vapid Dominator Buggy",
+      "class": "Off-road",
+      "status": "named",
+      "note": "A Mud Club off-roader built for Mount Kalaga's trails, kept at the Paradise Garage (Ultimate Edition).",
+      "sources": [
+        {
+          "title": "MeowDB: what Rockstar named in the edition material",
+          "url": "https://meowdb.com/gta6/editions"
+        }
+      ]
+    },
+    {
+      "id": "vapid-ganado",
+      "name": "Vapid Ganado",
+      "class": "Pickup",
+      "status": "named",
+      "note": "Jason's own pickup. The Ultimate Edition adds a retro build of it.",
+      "sources": [
+        {
+          "title": "MeowDB: what Rockstar named in the edition material",
+          "url": "https://meowdb.com/gta6/editions"
+        },
+        {
+          "title": "PC Gamer: GTA 6 cars spotted so far",
+          "url": "https://www.pcgamer.com/gta-6-cars-list"
+        }
+      ]
+    },
+    {
+      "id": "dinka-enduro",
+      "name": "Dinka Enduro",
+      "class": "Motorcycle",
+      "status": "named",
+      "note": "A dirt bike, here in an Army-fatigue finish at Jason's safehouse (Ultimate Edition).",
+      "sources": [
+        {
+          "title": "MeowDB: what Rockstar named in the edition material",
+          "url": "https://meowdb.com/gta6/editions"
+        }
+      ]
+    },
+    {
+      "id": "crest-kayak",
+      "name": "Crest kayak",
+      "class": "Boat",
+      "status": "named",
+      "note": "A kayak kept at Jason's safehouse (Ultimate Edition). Kayaking also shows up in the Extended Look.",
+      "sources": [
+        {
+          "title": "MeowDB: what Rockstar named in the edition material",
+          "url": "https://meowdb.com/gta6/editions"
+        }
+      ]
+    },
+    {
+      "id": "shitzu-squalo",
+      "name": "Shitzu Squalo",
+      "class": "Boat",
+      "status": "named",
+      "note": "A pink-and-blue speedboat moored at Washington Beach (Ultimate Edition).",
+      "sources": [
+        {
+          "title": "MeowDB: what Rockstar named in the edition material",
+          "url": "https://meowdb.com/gta6/editions"
+        }
+      ]
+    },
+    {
+      "id": "vapid-dominator",
+      "name": "Vapid Dominator",
+      "class": "Muscle",
+      "status": "seen",
+      "note": "A modern muscle car that can be spotted in the Extended Look.",
+      "sources": [
+        {
+          "title": "PC Gamer: GTA 6 cars spotted so far",
+          "url": "https://www.pcgamer.com/gta-6-cars-list"
+        }
+      ]
+    },
+    {
+      "id": "bravado-buffalo-stx",
+      "name": "Bravado Buffalo STX",
+      "class": "Muscle",
+      "status": "seen",
+      "note": "A four-door muscle saloon from Trailer 1; a police version appears in the Extended Look.",
+      "sources": [
+        {
+          "title": "RankedBoost: vehicles seen in Rockstar media",
+          "url": "https://rankedboost.com/gta/vehicle/"
+        }
+      ]
+    },
+    {
+      "id": "declasse-burrito",
+      "name": "Declasse Burrito",
+      "class": "Van",
+      "status": "seen",
+      "note": "The classic delivery van, seen in the Extended Look.",
+      "sources": [
+        {
+          "title": "RankedBoost: vehicles seen in Rockstar media",
+          "url": "https://rankedboost.com/gta/vehicle/"
+        }
+      ]
+    },
+    {
+      "id": "karin-contender",
+      "name": "Karin Contender",
+      "class": "SUV",
+      "status": "seen",
+      "note": "A large pickup-style truck seen in the Extended Look.",
+      "sources": [
+        {
+          "title": "RankedBoost: vehicles seen in Rockstar media",
+          "url": "https://rankedboost.com/gta/vehicle/"
+        }
+      ]
+    },
+    {
+      "id": "invetero-coquette",
+      "name": "Invetero Coquette",
+      "class": "Sports",
+      "status": "seen",
+      "note": "A front-engined sports car seen in the Extended Look.",
+      "sources": [
+        {
+          "title": "RankedBoost: vehicles seen in Rockstar media",
+          "url": "https://rankedboost.com/gta/vehicle/"
+        }
+      ]
+    },
+    {
+      "id": "albany-buccaneer",
+      "name": "Albany Buccaneer",
+      "class": "Muscle",
+      "status": "seen",
+      "note": "A two-door classic muscle car spotted in Rockstar's footage.",
+      "sources": [
+        {
+          "title": "Push Square: cars and vehicles seen so far",
+          "url": "https://www.pushsquare.com/guides/gta-6-all-cars-and-vehicles-confirmed-so-far"
+        }
+      ]
+    },
+    {
+      "id": "mammoth-dodo",
+      "name": "Mammoth Dodo",
+      "class": "Plane",
+      "status": "seen",
+      "note": "A seaplane, fitting for the Keys and the Grassrivers.",
+      "sources": [
+        {
+          "title": "Push Square: cars and vehicles seen so far",
+          "url": "https://www.pushsquare.com/guides/gta-6-all-cars-and-vehicles-confirmed-so-far"
+        }
+      ]
+    },
+    {
+      "id": "marquis",
+      "name": "Marquis",
+      "class": "Boat",
+      "status": "seen",
+      "note": "A sailing yacht seen off the coast in Rockstar's footage.",
+      "sources": [
+        {
+          "title": "Push Square: cars and vehicles seen so far",
+          "url": "https://www.pushsquare.com/guides/gta-6-all-cars-and-vehicles-confirmed-so-far"
+        }
+      ]
+    },
+    {
+      "id": "ranchero-style-coupe-utility",
+      "name": "Unnamed coupe utility",
+      "class": "Pickup",
+      "status": "leak",
+      "note": "A car-based pickup resembling a 1970s Ford Ranchero, seen parked outside a diner in the 2022 leaked footage. Its in-game name isn't known.",
+      "sources": [
+        {
+          "title": "RacingGames.gg: GTA 6 car list",
+          "url": "https://racinggames.gg/grand-theft-auto/gta-6-car-list/"
+        }
+      ]
+    }
+  ]
+}

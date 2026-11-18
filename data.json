@@ -12,6 +12,18 @@
   ],
   "categories": [
     {
+      "id": "story",
+      "name": "Story missions",
+      "desc": "Main story missions in order. Hidden as spoilers until you reveal them.",
+      "items": []
+    },
+    {
+      "id": "side",
+      "name": "Side missions",
+      "desc": "Strangers, side jobs and optional missions, with where to start each one.",
+      "items": []
+    },
+    {
       "id": "missables",
       "name": "Missables",
       "desc": "Things you can permanently miss. Check these first.",

@@ -117,7 +117,7 @@ const HERO = `<svg class="scene" viewBox="0 0 1200 600" preserveAspectRatio="xMi
 /* ======================= layout ======================= */
 const NAV = [
   ["/tracker/", "100% Tracker"], ["/news/", "News"], ["/launch/", "Launch"], ["/editions/", "Editions"], ["/videos/", "Videos"],
-  ["/characters/", "Characters"], ["/places/", "Places"], ["/map/", "Map"], ["/features/", "Gameplay"], ["/radio/", "Radio"], ["/rumors/", "Rumours"], ["/faq/", "FAQ"],
+  ["/characters/", "Characters"], ["/places/", "Places"], ["/map/", "Map"], ["/vehicles/", "Vehicles"], ["/weapons/", "Weapons"], ["/features/", "Gameplay"], ["/radio/", "Radio"], ["/rumors/", "Rumours"], ["/faq/", "FAQ"],
 ];
 
 // Search engines show about 155 characters of a description: add the tail only if it fits.
@@ -153,7 +153,7 @@ function layout({ url, title, description, body, jsonld, script, image, bg, head
   const img = SITE + (image || "/assets/og.jpg");
   if (description.length > 155) description = description.slice(0, 154).replace(/\s+\S*$/, "").replace(/[,:;]$/, "") + "…";
   const lds = (Array.isArray(jsonld) ? jsonld : jsonld ? [jsonld] : []);
-  const nav = NAV.filter(([h]) => !["/tracker/", "/editions/", "/videos/", "/radio/"].includes(h)).map(([h, l]) => `<a href="${h}"${h === url || (h !== "/" && url.startsWith(h)) ? ' aria-current="page"' : ""}${h === "/tracker/" ? ' class="cta"' : ""}>${l}</a>`).join("");
+  const nav = NAV.filter(([h]) => !["/tracker/", "/editions/", "/videos/", "/radio/", "/launch/"].includes(h)).map(([h, l]) => `<a href="${h}"${h === url || (h !== "/" && url.startsWith(h)) ? ' aria-current="page"' : ""}${h === "/tracker/" ? ' class="cta"' : ""}>${l}</a>`).join("");
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -503,6 +503,7 @@ const factHtml = (f) => `<div class="fact"><span>${esc(f.label)}</span><b${f.dyn
     <label class="mtoggle"><input type="checkbox" id="mLand" checked> Fan-mapped places (zoom in)</label>
     <label class="mtoggle"><input type="checkbox" id="mHide"> Hide what I've done</label>
     <p class="mstats" id="mStats">Loading…</p>
+    <a class="msuggest" href="/tracker/#suggest-now">Found something? Suggest an item</a>
     <p class="mnote">The base map is a fan reconstruction made before launch, so some areas will move as the community maps the real game. Base map: Yanis GTA VI Community Map v18, place names from <a href="https://map.gtadb.org" rel="noopener">GTADB</a> contributors, both <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a>. We cropped the legend panel and simplified the place list.</p>
   </aside>
 </main>`;
@@ -547,6 +548,52 @@ const factHtml = (f) => `<div class="fact"><span>${esc(f.label)}</span><b${f.dyn
   const script = `document.querySelectorAll("[data-rf]").forEach(function(b){b.addEventListener("click",function(){document.querySelectorAll("[data-rf]").forEach(function(x){x.setAttribute("aria-pressed",x===b)});document.querySelectorAll(".rcard").forEach(function(c){c.hidden=b.dataset.rf!=="all"&&c.dataset.status!==b.dataset.rf})})});`;
   write("rumors/index.html", layout({ url: "/rumors/", title: "GTA 6 Rumours and Leaks, Fact-Checked", description: "Every big GTA 6 rumour and leak in one place, labelled Rumour, Leak, Reported or Debunked, with sources, and checked against the real game after launch.", body, script,
     jsonld: breadcrumbLd([["/", "Home"], ["/rumors/", "Rumours"]]) }));
+}
+
+// VEHICLES & WEAPONS: content/vehicles.json and content/weapons.json (status: named / seen / leak / ingame)
+{
+  const GLYPH = {
+    car: '<path d="M8 30l4-9c1-2 3-3 5-3h18c2 0 4 1 5 3l4 9v8h-4a4 4 0 0 1-8 0H16a4 4 0 0 1-8 0H6v-6z" fill="currentColor"/><path d="M15 21h22l3 7H12z" fill="#120a2a" opacity=".45"/>',
+    bike: '<circle cx="14" cy="34" r="7" fill="none" stroke="currentColor" stroke-width="3.5"/><circle cx="38" cy="34" r="7" fill="none" stroke="currentColor" stroke-width="3.5"/><path d="M14 34l8-12h10l6 12M22 22l-3-5h-5M30 17h5" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>',
+    boat: '<path d="M6 32h40l-6 9H12z" fill="currentColor"/><path d="M24 8v22M24 10l14 18H24z" fill="currentColor"/>',
+    plane: '<path d="M26 6c2 0 3 3 3 6v8l16 9v4l-16-4v8l5 4v3l-8-2-8 2v-3l5-4v-8L7 33v-4l16-9v-8c0-3 1-6 3-6z" fill="currentColor"/>',
+    gun: '<path d="M6 16h34v6h4v5H30l-2 4h-6l1-4h-5l-3 13H8l3-13H6z" fill="currentColor"/>',
+    melee: '<path d="M38 6l8 8-22 22-6 2-2 6-6-2 2-6 2-6z" fill="currentColor"/>',
+    thrown: '<circle cx="26" cy="30" r="13" fill="currentColor"/><path d="M22 14h8v6h-8zM30 12l7-4" stroke="currentColor" stroke-width="3" fill="currentColor"/>',
+  };
+  const glyphFor = (c) => /moto|bike/i.test(c) ? "bike" : /boat/i.test(c) ? "boat" : /plane|heli/i.test(c) ? "plane" : /melee/i.test(c) ? "melee" : /thrown/i.test(c) ? "thrown" : /gun|rifle|shotgun|handgun|smg|sniper|heavy/i.test(c) ? "gun" : "car";
+  const SLABEL = { named: "Named by Rockstar", seen: "Seen in footage", leak: "Leak", ingame: "In the game" };
+  const SORDER = ["ingame", "named", "seen", "leak"];
+  function dbPage(kind, file, url, title, lede, desc, bg) {
+    const D = JSON.parse(fs.readFileSync(path.join(ROOT, "content", file), "utf8"));
+    const items = [...D.items].sort((a, b) => SORDER.indexOf(a.status) - SORDER.indexOf(b.status) || a.name.localeCompare(b.name));
+    const classes = [...new Set(items.map((i) => i.class))].sort();
+    const statuses = SORDER.filter((k) => items.some((i) => i.status === k));
+    // Photo: an explicit "img" in the JSON, or src/assets/img/<kind>/<id>.jpg if it exists (owner's screenshots or official Rockstar images only).
+    items.forEach((it) => { if (!it.img) it.img = photos(kind, it.id)[0] || ""; });
+    const card = (it) => `<article class="dbcard" id="${esc(it.id)}" data-class="${esc(it.class)}" data-status="${esc(it.status)}" data-q="${esc((it.name + " " + it.class).toLowerCase())}">
+      <div class="dbpic g-${glyphFor(it.class)}">${it.img ? `<img src="${esc(it.img)}" alt="${esc(it.name)}" loading="lazy" decoding="async">` : `<svg viewBox="0 0 52 52" aria-hidden="true">${GLYPH[glyphFor(it.class)]}</svg>`}<span class="dbst st-${esc(it.status)}">${SLABEL[it.status] || it.status}</span></div>
+      <div class="dbbody"><span class="dbclass">${esc(it.class)}</span><h2>${esc(it.name)}</h2><p>${esc(it.note)}</p>
+      ${it.sources && it.sources.length ? `<details class="rsrc"><summary>Sources (${it.sources.length})</summary><ul>${it.sources.map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener nofollow">${esc(s.title)}</a></li>`).join("")}</ul></details>` : ""}</div>
+    </article>`;
+    const body = pageHead([["/", "Home"], [null, title]], `GTA 6 ${title.toLowerCase()}`, lede) + `<main class="wrap"><section class="sec">
+      <div class="dbtools"><input type="search" id="dbq" placeholder="Search ${kind}" aria-label="Search ${kind}">
+        <div class="rfilter" role="group" aria-label="Type"><button type="button" data-dc="" aria-pressed="true">All <span>${items.length}</span></button>${classes.map((c) => `<button type="button" data-dc="${esc(c)}" aria-pressed="false">${esc(c)} <span>${items.filter((i) => i.class === c).length}</span></button>`).join("")}</div>
+        <div class="rfilter" role="group" aria-label="How sure">${statuses.map((k) => `<button type="button" data-ds="${k}" aria-pressed="false"><i class="st-${k}"></i>${SLABEL[k]}</button>`).join("")}</div></div>
+      <div class="dbgrid" id="dbgrid">${items.map(card).join("")}</div>
+      <p class="empty" id="dbnone" hidden>Nothing matches. Try another filter.</p>
+      <dl class="rkey">${statuses.map((k) => `<div><dt><span class="dbst st-${k}">${SLABEL[k]}</span></dt><dd>${esc((D.statuses[k] || "").split(": ").slice(1).join(": "))}</dd></div>`).join("")}</dl>
+      <p class="nfine">Last checked ${fmtDate(D.updated)}. Notes are in our own words. Spotted something in the game? <a href="/tracker/#suggest-now">Tell us</a>.</p>
+    </section></main>`;
+    const script = `(function(){var c="",st="",q="";function run(){var n=0;document.querySelectorAll(".dbcard").forEach(function(e){var ok=(!c||e.dataset.class===c)&&(!st||e.dataset.status===st)&&(!q||e.dataset.q.indexOf(q)>-1);e.hidden=!ok;if(ok)n++});document.getElementById("dbnone").hidden=n>0}
+document.querySelectorAll("[data-dc]").forEach(function(b){b.onclick=function(){c=b.dataset.dc;document.querySelectorAll("[data-dc]").forEach(function(x){x.setAttribute("aria-pressed",x===b)});run()}});
+document.querySelectorAll("[data-ds]").forEach(function(b){b.onclick=function(){var on=b.getAttribute("aria-pressed")!=="true";st=on?b.dataset.ds:"";document.querySelectorAll("[data-ds]").forEach(function(x){x.setAttribute("aria-pressed",on&&x===b)});run()}});
+document.getElementById("dbq").oninput=function(e){q=e.target.value.trim().toLowerCase();run()}})();`;
+    const ld = { "@context": "https://schema.org", "@type": "ItemList", name: `GTA 6 ${title.toLowerCase()}`, numberOfItems: items.length, itemListElement: items.map((it, i) => ({ "@type": "ListItem", position: i + 1, name: it.name, url: `${SITE}${url}#${it.id}` })) };
+    write(url.slice(1) + "index.html", layout({ url, title: `GTA 6 ${title}: every one confirmed or spotted so far`, description: desc, body, script, bg, jsonld: [ld, breadcrumbLd([["/", "Home"], [url, title]])] }));
+  }
+  dbPage("vehicles", "vehicles.json", "/vehicles/", "Vehicles", JSON.parse(fs.readFileSync(path.join(ROOT, "content/vehicles.json"), "utf8")).intro, "Every GTA 6 car, bike, boat and plane we can back up: named by Rockstar, seen in the trailers, or leaked, each with sources. Updated as the game is played.", "places-vice-city");
+  dbPage("weapons", "weapons.json", "/weapons/", "Weapons", JSON.parse(fs.readFileSync(path.join(ROOT, "content/weapons.json"), "utf8")).intro, "Every GTA 6 weapon we can back up: named by Rockstar, seen in the trailers and Extended Look, or leaked, each with sources. Updated as the game is played.", "places-ambrosia");
 }
 
 // FAQ
@@ -608,6 +655,10 @@ fs.copyFileSync(path.join(ROOT, "data.json"), path.join(OUT, "data.json"));
     <section class="tk-work" id="edit" hidden aria-labelledby="editTitle">
       <h2 id="editTitle">Edit mode</h2>
       <p>Only you see this. Add items as drafts, then press Publish drafts: they go straight to GitHub and are live in about a minute. Never change an item ID once it's published, or visitors lose their ticks.</p>
+      <div class="subq" id="subq" hidden>
+        <div class="qa-top"><div><h3>Suggestions from visitors <span class="subn" id="subN"></span></h3><p>Check each one, fix anything, then Approve to publish it (photo and map spot included) or Reject.</p></div></div>
+        <div id="subList"></div>
+      </div>
       <div class="qa">
         <div class="qa-top"><div><h3>Quick add with AI</h3><p>Pick screenshots, add a few words to each (or tap the mic), then let AI draft them. Check, fix, publish.</p></div>
           <label class="tk-btn solid qa-pick"><input type="file" id="qaFiles" accept="image/*" multiple>Add screenshots</label></div>
@@ -625,6 +676,11 @@ fs.copyFileSync(path.join(ROOT, "data.json"), path.join(OUT, "data.json"));
         <button class="tk-btn solid full" type="submit">Add item</button>
       </form>
       <div class="pub-status" id="pubStatus" role="status" aria-live="polite" hidden></div>
+      <div class="tk-psn">
+        <h3>Map editor</h3>
+        <p>Add items straight onto the map, drag pins to fix their spot, and place items that don't have one yet.</p>
+        <div class="tk-btns"><a class="tk-btn solid" href="/edit/map">Open the map editor</a></div>
+      </div>
       <div class="tk-psn" id="psnBox">
         <h3>Trophies from PlayStation</h3>
         <p>Loads the official trophy list (names, requirements, grades and how many players have each). Run it again any time: your tips, regions and photos stay.</p>
@@ -661,6 +717,10 @@ fs.copyFileSync(path.join(ROOT, "data.json"), path.join(OUT, "data.json"));
       <div id="list"></div>
     </section>
 
+    <section class="tk-help" id="suggest" aria-labelledby="helpTitle">
+      <div><h2 id="helpTitle">Found something we're missing?</h2><p>Suggest a collectible, missable, mission or anything else. Add a screenshot and a map spot if you can. Every suggestion is checked before it goes live, and you can be credited.</p></div>
+      <button class="tk-btn solid" type="button" id="sgOpen">Suggest an item</button>
+    </section>
     <section class="tk-mine" aria-labelledby="mineTitle">
       <div><h2 id="mineTitle">Your progress</h2><p>Ticks are saved in this browser. Back them up to move them to another phone or computer.</p></div>
       <div class="tk-btns"><button class="tk-btn" type="button" id="backup">Back up progress</button><button class="tk-btn" type="button" id="restoreBtn">Restore progress</button><input type="file" id="restore" accept="application/json,.json" hidden><button class="tk-btn ghost" type="button" id="reset">Reset progress</button></div>
@@ -669,7 +729,7 @@ fs.copyFileSync(path.join(ROOT, "data.json"), path.join(OUT, "data.json"));
   <div class="tk-toast" id="toast" role="status"></div>
   ${fallback}
   </div>`;
-  write("tracker/index.html", layout({ url: "/tracker/", title: "GTA 6 100% Tracker & Missables Checklist", description: "Free GTA 6 100% checklist: missables, collectibles, activities and trophies by region, with photos. Updated daily from launch.", body, script: `var TK_IMG = ${JSON.stringify(TK_IMG)};` + js, jsonld: [TRACKER_APP_LD, breadcrumbLd([["/", "Home"], ["/tracker/", "100% Tracker"]])] }));
+  write("tracker/index.html", layout({ url: "/tracker/", title: "GTA 6 100% Tracker & Missables Checklist", description: "Free GTA 6 100% checklist: missables, collectibles, activities and trophies by region, with photos. Updated daily from launch.", body, script: `var TK_IMG = ${JSON.stringify(TK_IMG)}, TS_KEY = "0x4AAAAAAGGirLnJNItJnoQN";` + js, jsonld: [TRACKER_APP_LD, breadcrumbLd([["/", "Home"], ["/tracker/", "100% Tracker"]])] }));
 }
 write("countdown/index.html", `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Moved to the Launch page</title><meta name="robots" content="noindex"><link rel="canonical" href="${SITE}/launch/"><meta http-equiv="refresh" content="0;url=/launch/"><style>html{background:#1b1d24;color:#f7f4ee;font-family:system-ui}</style></head><body><p>The countdown now lives on the <a style="color:#f7c318" href="/launch/">Launch page</a>.</p></body></html>`);
 

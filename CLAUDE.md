@@ -69,6 +69,11 @@ Worker renumbers it.
   Don't edit it by hand.
 - `content/rumors.json`: claims with status rumour / leak / reported / estimate / confirmed / debunked, a "settles" line and sources.
   Only mark confirmed/debunked with Rockstar's word, the game itself, or two reputable outlets.
+- `content/vehicles.json` and `content/weapons.json`: status named (Rockstar named it) / seen (in official footage, fan-identified
+  name) / leak / ingame (checked in the released game), with sources. Photos go in `src/assets/img/vehicles/<id>.jpg` or
+  `src/assets/img/weapons/<id>.jpg` (picked up automatically): only the owner's own screenshots or official Rockstar images,
+  never images from other fan or guide sites.
+- Visitor suggestions live in the D1 database `gta6-submissions` (binding SUBS); the owner approves them in /edit.
 - A daily scheduled task ("GTA 6 site daily update") researches new info and opens a PR updating rumours and content/*.json.
 - `dist/` is not committed; Cloudflare builds it.
 

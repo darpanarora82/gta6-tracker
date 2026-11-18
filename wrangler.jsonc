@@ -14,9 +14,11 @@
     "binding": "ASSETS",
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "404-page",
-    "run_worker_first": ["/edit", "/edit/*"]
+    "run_worker_first": ["/edit", "/edit/*", "/api/*"]
   },
   "ai": { "binding": "AI" },
+  // Visitor suggestions waiting for approval (Turnstile secret is the Worker secret TURNSTILE_SECRET).
+  "d1_databases": [{ "binding": "SUBS", "database_name": "gta6-submissions", "database_id": "7912ea8c-1012-4db2-a2c0-50a779e803e2" }],
   // 03:17 IST daily: refresh trophy rarity from PlayStation (does nothing until trophies are imported).
   // Every 3 hours at :17: pull Rockstar's YouTube uploads and GTA 6 headlines into content/news.json.
   "triggers": { "crons": ["47 21 * * *", "17 */3 * * *"] },
