@@ -65,7 +65,7 @@ Worker renumbers it.
 
 - `/map/` uses the Yanis GTA VI Community Map v18 tiles from GTADB (CC BY 4.0), self-hosted in `src/assets/map/t/{z}/{y}_{x}.jpg`
   (zoom 0–5, legend panel cropped). Place names: `src/assets/map/landmarks.json` (GTADB, CC BY 4.0). Keep the credits.
-- `content/news.json` is written by the Worker every 3 hours (Rockstar YouTube + Google News; headline, source, date, link only).
+- `content/news.json` is written by the Worker every hour (Rockstar YouTube + Google News; headline, source, date, link only).
   Don't edit it by hand.
 - `content/rumors.json`: claims with status rumour / leak / reported / estimate / confirmed / debunked, a "settles" line and sources.
   Only mark confirmed/debunked with Rockstar's word, the game itself, or two reputable outlets.
@@ -74,6 +74,8 @@ Worker renumbers it.
   `src/assets/img/weapons/<id>.jpg` (picked up automatically): only the owner's own screenshots or official Rockstar images,
   never images from other fan or guide sites.
 - Visitor suggestions live in the D1 database `gta6-submissions` (binding SUBS); the owner approves them in /edit.
+- Freshness: give new rumours/vehicles/weapons `"added": "YYYY-MM-DD"` and changed ones `"changed": "YYYY-MM-DD"`;
+  the site shows New/Updated badges for 3 days (news: 24 hours from when the Worker first saw it).
 - A daily scheduled task ("GTA 6 site daily update") researches new info and opens a PR updating rumours and content/*.json.
 - `dist/` is not committed; Cloudflare builds it.
 
