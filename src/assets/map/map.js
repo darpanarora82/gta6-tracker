@@ -10,8 +10,8 @@
   function el(t, c, txt){ var n = document.createElement(t); if (c) n.className = c; if (txt != null) n.textContent = txt; return n; }
 
   var tileBounds = L.latLngBounds([[-800, 128], [-128, 622]]);
-  var map = L.map("map", { crs: L.CRS.Simple, minZoom: -1, maxZoom: 7, zoomSnap: 0.5, zoomDelta: 0.5, preferCanvas: true, zoomControl: false,
-    maxBounds: tileBounds.pad(0.15), maxBoundsViscosity: 0.8, attributionControl: true });
+  var map = L.map("map", { crs: L.CRS.Simple, minZoom: -2, maxZoom: 7, zoomSnap: 0.5, zoomDelta: 0.5, preferCanvas: true, zoomControl: false,
+    maxBounds: tileBounds.pad(0.6), maxBoundsViscosity: 0.6, attributionControl: true });
   map.attributionControl.setPrefix(false); window.gtaMap = map;
   L.control.zoom({ position: "topright" }).addTo(map);
   L.tileLayer("/assets/map/t/{z}/{y}_{x}.jpg", { tileSize: 256, minZoom: -2, minNativeZoom: 0, maxNativeZoom: 5, maxZoom: 7, noWrap: true, bounds: tileBounds, keepBuffer: 3,
@@ -31,8 +31,9 @@
   map.on("click", function(){ if (PHONE.matches && panel.classList.contains("open")){ panel.classList.remove("open"); handle.setAttribute("aria-expanded", "false"); if (EDIT) sheetWasOpen = true; } });
   L.DomEvent.disableClickPropagation(panel); L.DomEvent.disableScrollPropagation(panel);
   window.addEventListener("resize", fitScreen); window.addEventListener("orientationchange", function(){ setTimeout(fitScreen, 300); });
-  if (PHONE.matches) document.body.classList.add("map-phone");
-  fitScreen();
+  function phoneMode(){ document.body.classList.toggle("map-phone", PHONE.matches); if (!PHONE.matches){ panel.classList.remove("open"); handle.setAttribute("aria-expanded", "false"); } fitScreen(); }
+  if (PHONE.addEventListener) PHONE.addEventListener("change", phoneMode); else if (PHONE.addListener) PHONE.addListener(phoneMode);
+  phoneMode();
   map.fitBounds([[-790, 190], [-170, 610]], { paddingTopLeft: [PHONE.matches ? 0 : 360, 0], paddingBottomRight: [0, PHONE.matches ? 60 : 0] });
 
   var EDIT = /^\/edit\/map\/?$/.test(location.pathname);

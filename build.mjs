@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 // Builds the GTA 6 Guide into ./dist. No dependencies: run `node build.mjs`.
 // Cloudflare runs this automatically on every push to main (see wrangler.jsonc).
 // Edit the content in ./content/*.json and the tracker data in ./data.json.
@@ -32,6 +33,7 @@ const pages = [];
 const ANALYTICS = process.env.CF_ANALYTICS_TOKEN
   ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='${JSON.stringify({ token: process.env.CF_ANALYTICS_TOKEN })}'></script>`
   : "";
+const verOf = (rel) => { try { return crypto.createHash("sha1").update(fs.readFileSync(path.join(ROOT, "src", rel))).digest("hex").slice(0, 8); } catch { return "1"; } };
 const SITE_CSS = fs.readFileSync(path.join(ROOT, "src/assets/site.css"), "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/\s*\n\s*/g, "\n");
 
 function write(rel, html) {
@@ -186,7 +188,7 @@ ${ANALYTICS}
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>${SITE_CSS}</style>
 ${head || ""}
-<script defer src="/assets/region.js"></script>
+<script defer src="/assets/region.js?v=${verOf("assets/region.js")}"></script>
 ${lds.map((j) => `<script type="application/ld+json">${JSON.stringify(j).replace(/</g, "\\u003c")}</script>`).join("\n")}
 </head>
 <body style="--bg:url('${bgFor(image, bg)}')">
@@ -518,7 +520,7 @@ const factHtml = (f) => `<div class="fact"><span>${esc(f.label)}</span><b${f.dyn
   write("map/index.html", layout({ url: "/map/", title: "GTA 6 Map of Leonida with Tracker Pins", description: "Interactive GTA 6 map of Leonida with missables, collectibles and activities pinned as they're found. Tick items off on the map; progress syncs with the tracker.", body,
     bg: "places-leonida-keys",
     head: `<link rel="stylesheet" href="/assets/leaflet/leaflet.css">`,
-    tail: `<script src="/assets/leaflet/leaflet.js"></script><script src="/assets/map/map.js"></script>`,
+    tail: `<script src="/assets/leaflet/leaflet.js"></script><script src="/assets/map/map.js?v=${verOf("assets/map/map.js")}"></script>`,
     jsonld: breadcrumbLd([["/", "Home"], ["/map/", "Map"]]) }));
 }
 
