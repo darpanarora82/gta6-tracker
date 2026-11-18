@@ -1,5 +1,5 @@
 // Builds the GTA 6 Guide into ./dist. No dependencies: run `node build.mjs`.
-// Vercel runs this automatically on every commit (see vercel.json).
+// Cloudflare runs this automatically on every push to main (see wrangler.jsonc).
 // Edit the content in ./content/*.json and the tracker data in ./data.json.
 
 import fs from "node:fs";
@@ -28,12 +28,10 @@ const placeById = Object.fromEntries(C.places.items.map((p) => [p.id, p]));
 const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const fmtDate = (iso) => new Date(iso + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
 const pages = [];
-// Visitor analytics: Vercel Analytics when built on Vercel, Cloudflare Web Analytics when CF_ANALYTICS_TOKEN is set.
-const ANALYTICS = process.env.VERCEL
-  ? `<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>\n<script defer src="/_vercel/insights/script.js"></script>`
-  : process.env.CF_ANALYTICS_TOKEN
-    ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='${JSON.stringify({ token: process.env.CF_ANALYTICS_TOKEN })}'></script>`
-    : "";
+// Visitor analytics: Cloudflare Web Analytics when CF_ANALYTICS_TOKEN is set at build time.
+const ANALYTICS = process.env.CF_ANALYTICS_TOKEN
+  ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='${JSON.stringify({ token: process.env.CF_ANALYTICS_TOKEN })}'></script>`
+  : "";
 const SITE_CSS = fs.readFileSync(path.join(ROOT, "src/assets/site.css"), "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/\s*\n\s*/g, "\n");
 
 function write(rel, html) {
