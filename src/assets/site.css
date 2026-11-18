@@ -906,7 +906,7 @@ footer.site{background:rgba(12,9,28,.45);backdrop-filter:var(--frost);-webkit-ba
 .mchips button{display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:13px;font-weight:700;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:6px 11px;cursor:pointer}
 .mchips button[aria-pressed=true]{color:#1a1305;background:linear-gradient(135deg,#ffd84d,#ffa53a);border-color:transparent}
 .mchips i{width:10px;height:10px;border-radius:50%;display:inline-block}
-.dot-missables{background:#ffd84d}.dot-collectibles{background:#ff8a5b}.dot-activities{background:#59c3ff}.dot-trophies{background:#c59bff}
+.dot-story{background:#ff6b8a}.dot-side{background:#2bd38a}.dot-missables{background:#ffd84d}.dot-collectibles{background:#ff8a5b}.dot-activities{background:#59c3ff}.dot-trophies{background:#c59bff}
 .mtoggle{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#e6e7ec;margin:6px 0;cursor:pointer}
 .mtoggle input{width:16px;height:16px;accent-color:#ffd84d}
 .mstats{margin:12px 0 8px;font-size:14px;font-weight:700;color:#ffe2bf}
@@ -971,3 +971,19 @@ footer.site{background:rgba(12,9,28,.45);backdrop-filter:var(--frost);-webkit-ba
 .rkey div{display:flex;gap:10px;align-items:baseline}
 .rkey dt{flex:0 0 92px}.rkey dd{margin:0}
 .nlist[hidden],.rlist[hidden]{display:none}
+/* map editor */
+.edbox{margin:0 0 14px;padding:12px;border-radius:14px;background:rgba(255,216,77,.08);border:1px solid rgba(255,216,77,.35)}
+.edbox h2{margin:0 0 4px;font-size:18px}
+.edhelp{margin:0 0 10px;font-size:13px;color:#d9dbe3}
+.edbox .mpop-btn{display:block;width:100%;margin:0 0 8px;padding:8px 12px;font-size:14px;text-align:center}
+.mpop-btn.on{background:#ffd84d;color:#1a1305}
+.mpop-btn.solid{color:#1a1305;background:linear-gradient(135deg,#ffd84d,#ffa53a);border-color:transparent}
+.mpop-btn:disabled{opacity:.55;cursor:default}
+.edrow{display:flex;gap:6px;margin-bottom:8px}.edrow select{flex:1;min-width:0}
+.edbox select,.edform input[type=text],.edform select,.edform textarea{width:100%;font:inherit;font-size:14px;color:#fff;background:rgba(10,8,24,.6);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:7px 9px}
+.edrow .mpop-btn{width:auto;margin:0}
+.edmsg{margin:4px 0 6px;font-size:13px;font-weight:700;color:#ffe2bf;min-height:1em}
+.edback{font-size:13px;font-weight:700;color:#ffd84d}
+.edform{display:grid;gap:7px;min-width:240px}
+.edform input[type=file]{font-size:12px;color:#cfd3dc}
+.edchecks{display:flex;gap:14px;font-size:14px}

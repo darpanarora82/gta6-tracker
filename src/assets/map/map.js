@@ -3,7 +3,7 @@
    zoom 5 shows the tiles at their native size. */
 (function(){
   var W = 32, Z0 = 16384, KEY = "gta6-tracker-v1";
-  var CAT = { missables:"#ffd84d", collectibles:"#ff8a5b", activities:"#59c3ff", trophies:"#c59bff" };
+  var CAT = { story:"#ff6b8a", side:"#2bd38a", missables:"#ffd84d", collectibles:"#ff8a5b", activities:"#59c3ff", trophies:"#c59bff" };
   function ll(p){ return L.latLng(-(Z0 - p[1]) / W, (p[0] + Z0) / W); }
   function load(){ try { return JSON.parse(localStorage.getItem(KEY) || "{}"); } catch(e){ return {}; } }
   function save(v){ try { localStorage.setItem(KEY, JSON.stringify(v)); } catch(e){} }
@@ -18,7 +18,8 @@
     attribution: 'Map: Yanis GTA VI Community Map v18 via <a href="https://map.gtadb.org" rel="noopener">GTADB</a> contributors, <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a>, legend panel cropped' }).addTo(map);
   map.fitBounds([[-790, 190], [-170, 610]], { paddingTopLeft: [window.innerWidth > 700 ? 360 : 0, 0] });
 
-  var done = load(), pins = {}, items = [], marks = [];
+  var EDIT = /^\/edit\/map\/?$/.test(location.pathname);
+  var done = load(), pins = {}, items = [], all = [], cats = [], regions = [], marks = [];
   var itemLayer = L.layerGroup().addTo(map), landLayer = L.layerGroup();
 
   function pinIcon(it){
@@ -46,7 +47,8 @@
     items.forEach(function(it){
       if (filt.cat !== "all" && it.cat !== filt.cat) return;
       if (filt.hideDone && done[it.id]) return;
-      pins[it.id] = L.marker(ll(it.pos), { icon: pinIcon(it), title: it.spoiler ? "Spoiler" : it.name, riseOnHover: true }).bindPopup(function(){ return popup(it); }, { maxWidth: 280 }).addTo(itemLayer);
+      pins[it.id] = L.marker(ll(it.pos), { icon: pinIcon(it), title: it.spoiler ? "Spoiler" : it.name, riseOnHover: true, draggable: EDIT }).bindPopup(function(){ return popup(it); }, { maxWidth: 280 }).addTo(itemLayer);
+      if (EDIT) pins[it.id].on("dragend", function(e){ moved(it, e.target.getLatLng()); });
     });
     stats();
   }
@@ -92,11 +94,80 @@
     });
   });
 
+  /* ---------- editor mode (/edit/map, behind the editor password) ---------- */
+  var moves = {}, addMode = false, placeId = "";
+  function game(a){ return [Math.round(a.lng * W - Z0), Math.round(Z0 + a.lat * W)]; }
+  function post(path, body){ return fetch(path, { method: "POST", headers: { "Content-Type": "application/json" }, credentials: "same-origin", body: body })
+    .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ if (!r.ok || !j.ok) throw new Error(j.error || ("HTTP " + r.status)); return j; }); }); }
+  function shrink(file, max){ return new Promise(function(ok, bad){ var img = new Image(), url = URL.createObjectURL(file);
+    img.onload = function(){ var k = Math.min(1, max / img.width), c = document.createElement("canvas"); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url); ok(c.toDataURL("image/jpeg", 0.8)); }; img.onerror = bad; img.src = url; }); }
+  function upload(dataUrl){ return dataUrl ? post("/edit/blob", JSON.stringify({ content: dataUrl.slice(dataUrl.indexOf(",") + 1), encoding: "base64" })).then(function(j){ return j.sha; }) : Promise.resolve(null); }
+  function say(msg){ var n = document.getElementById("edMsg"); if (n) n.textContent = msg; }
+  function moved(it, latlng){ it.pos = game(latlng); moves[it.id] = it.pos; refreshSave(); say("Moved " + it.name + ". Press Save pin changes."); }
+  function refreshSave(){ var n = Object.keys(moves).length, b = document.getElementById("edSave"); if (b){ b.disabled = !n; b.textContent = n ? "Save pin changes (" + n + ")" : "No pin changes"; } }
+  function opt(sel, v, t){ var o = el("option", null, t); o.value = v; sel.appendChild(o); }
+  function addForm(latlng){
+    var pos = game(latlng), f = el("form", "edform");
+    f.appendChild(el("strong", null, "New item here"));
+    var nm = el("input"); nm.type = "text"; nm.placeholder = "Name, e.g. Jacket from the stranger"; nm.required = true; f.appendChild(nm);
+    var cs = el("select"); cats.forEach(function(c){ opt(cs, c.id, c.name); }); cs.value = filt.cat !== "all" ? filt.cat : "missables"; f.appendChild(cs);
+    var rs = el("select"); opt(rs, "", "No region"); regions.forEach(function(r){ opt(rs, r, r); }); f.appendChild(rs);
+    var nt = el("textarea"); nt.rows = 3; nt.placeholder = "How to find or complete it"; f.appendChild(nt);
+    var ph = el("input"); ph.type = "file"; ph.accept = "image/*"; f.appendChild(ph);
+    var ck = el("div", "edchecks"), ms = el("input"), sp = el("input"); ms.type = sp.type = "checkbox";
+    var l1 = el("label"); l1.appendChild(ms); l1.appendChild(document.createTextNode(" Missable")); var l2 = el("label"); l2.appendChild(sp); l2.appendChild(document.createTextNode(" Spoiler"));
+    ck.appendChild(l1); ck.appendChild(l2); f.appendChild(ck);
+    cs.addEventListener("change", function(){ if (cs.value === "story") sp.checked = true; }); if (cs.value === "story") sp.checked = true;
+    var go = el("button", "mpop-btn solid", "Publish"); go.type = "submit"; f.appendChild(go);
+    f.addEventListener("submit", function(e){
+      e.preventDefault(); if (!nm.value.trim()) return; go.disabled = true; go.textContent = "Publishing…";
+      var file = ph.files && ph.files[0];
+      (file ? shrink(file, 1280).then(function(a){ return shrink(file, 480).then(function(b){ return Promise.all([upload(a), upload(b)]); }); }) : Promise.resolve([null, null]))
+        .then(function(sh){ var x = { id: "", cat: cs.value, name: nm.value.trim(), region: rs.value, note: nt.value.trim(), missable: ms.checked, spoiler: sp.checked, added: new Date().toISOString().slice(0, 10), pos: pos };
+          if (sh[0]) x.imgBlob = sh[0]; if (sh[1]) x.thumbBlob = sh[1]; return post("/edit/publish", JSON.stringify({ items: [x] })).then(function(j){ return [x, j]; }); })
+        .then(function(r){ var x = r[0], id = r[1].ids[0]; var it = { id: id, cat: x.cat, catName: (cats.find(function(c){ return c.id === x.cat; }) || {}).name, name: x.name, region: x.region, note: x.note, missable: x.missable, spoiler: x.spoiler, pos: pos };
+          all.push(it); items.push(it); map.closePopup(); drawItems(); say("Published " + id + ". It goes live for visitors in about a minute."); })
+        .catch(function(err){ go.disabled = false; go.textContent = "Publish"; say("Publish failed: " + err.message); });
+    });
+    L.popup({ maxWidth: 300, closeOnClick: false }).setLatLng(latlng).setContent(f).openOn(map); setTimeout(function(){ nm.focus(); }, 50);
+  }
+  function initEditor(){
+    var box = el("div", "edbox");
+    box.appendChild(el("h2", null, "Editor"));
+    box.appendChild(el("p", "edhelp", "Drag a pin to move it. Turn on Add, then tap the map to create an item there. Unplaced items can be dropped on the map too."));
+    var add = el("button", "mpop-btn", "➕ Add item on the map"); add.type = "button"; box.appendChild(add);
+    add.onclick = function(){ addMode = !addMode; placeId = ""; add.classList.toggle("on", addMode); add.textContent = addMode ? "Tap the map to place it… (cancel)" : "➕ Add item on the map"; map.getContainer().style.cursor = addMode ? "crosshair" : ""; };
+    var un = all.filter(function(i){ return !i.pos; });
+    if (un.length){
+      var row = el("div", "edrow"), sel = el("select"); opt(sel, "", "Not on the map yet (" + un.length + ")");
+      un.forEach(function(i){ opt(sel, i.id, i.id + " · " + i.name); });
+      var pl = el("button", "mpop-btn", "Place"); pl.type = "button";
+      pl.onclick = function(){ if (!sel.value) return; placeId = sel.value; addMode = false; add.classList.remove("on"); map.getContainer().style.cursor = "crosshair"; say("Tap the map where " + placeId + " is."); };
+      row.appendChild(sel); row.appendChild(pl); box.appendChild(row);
+    }
+    var save = el("button", "mpop-btn solid", "No pin changes"); save.type = "button"; save.id = "edSave"; save.disabled = true; box.appendChild(save);
+    save.onclick = function(){ var list = Object.keys(moves).map(function(id){ return { id: id, pos: moves[id] }; }); save.disabled = true; save.textContent = "Saving…";
+      post("/edit/move", JSON.stringify({ moves: list })).then(function(j){ moves = {}; refreshSave(); say("Saved " + j.count + " pin" + (j.count === 1 ? "" : "s") + ". Live in about a minute."); }, function(err){ refreshSave(); say("Save failed: " + err.message); }); };
+    var msg = el("p", "edmsg"); msg.id = "edMsg"; msg.setAttribute("role", "status"); box.appendChild(msg);
+    var back = el("a", "edback", "← Back to the editor"); back.href = "/edit"; box.appendChild(back);
+    document.querySelector(".mpanel").insertBefore(box, document.querySelector(".mpanel .msearch"));
+    map.on("click", function(e){
+      if (placeId){ var it = all.find(function(i){ return i.id === placeId; }); placeId = ""; map.getContainer().style.cursor = "";
+        if (it){ it.pos = game(e.latlng); moves[it.id] = it.pos; if (items.indexOf(it) < 0) items.push(it); drawItems(); refreshSave(); say("Placed " + it.name + ". Press Save pin changes."); } return; }
+      if (addMode){ addMode = false; add.classList.remove("on"); add.textContent = "➕ Add item on the map"; map.getContainer().style.cursor = ""; addForm(e.latlng); }
+    });
+    window.addEventListener("beforeunload", function(e){ if (Object.keys(moves).length){ e.preventDefault(); e.returnValue = ""; } });
+  }
+
   fetch("/data.json", { cache: "no-cache" }).then(function(r){ return r.json(); }).then(function(d){
-    (d.categories || []).forEach(function(c){ (c.items || []).forEach(function(it){
-      if (Array.isArray(it.pos) && it.pos.length === 2){ it.cat = c.id; it.catName = c.name; items.push(it); }
+    cats = d.categories || []; regions = d.regions || [];
+    cats.forEach(function(c){ (c.items || []).forEach(function(it){
+      it.cat = c.id; it.catName = c.name; all.push(it);
+      if (Array.isArray(it.pos) && it.pos.length === 2) items.push(it);
     }); });
     drawItems();
+    if (EDIT) initEditor();
     var id = location.hash.slice(1);
     if (id && pins[id]){ map.setView(pins[id].getLatLng(), 4); pins[id].openPopup(); }
   }).catch(stats);

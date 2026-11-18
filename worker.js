@@ -273,6 +273,23 @@ async function updateNews(env) {
   return { changed, count: added };
 }
 
+// Move pins: [{id, pos:[x,y]}] -> update data.json in one commit.
+async function movePins(request, env) {
+  const { moves } = await request.json().catch(() => ({}));
+  if (!Array.isArray(moves) || !moves.length || moves.length > 200) return json({ ok: false, error: "No pin changes" }, 400);
+  const ok = (p) => Array.isArray(p) && p.length === 2 && p.every((n) => Number.isFinite(n) && Math.abs(n) <= 16384);
+  let count = 0;
+  await commitFile(env, "data.json", (old) => {
+    const data = JSON.parse(old); count = 0;
+    const byId = new Map(data.categories.flatMap((c) => (c.items || []).map((i) => [i.id, i])));
+    for (const m of moves) { const it = byId.get(m.id); if (it && ok(m.pos)) { it.pos = m.pos.map(Math.round); count++; } }
+    if (!count) return null;
+    data.updated = new Date().toISOString().slice(0, 10);
+    return JSON.stringify(data, null, 2) + "\n";
+  }, `Tracker: move ${moves.length} pin${moves.length === 1 ? "" : "s"} on the map`);
+  return json({ ok: true, count });
+}
+
 const VISION = "@cf/meta/llama-3.2-11b-vision-instruct";
 async function draft(request, env) {
   const { image, hint, categories, regions } = await request.json();
@@ -342,6 +359,10 @@ export default {
       if (!env.AI) return json({ ok: false, error: "AI isn't connected to this Worker." }, 500);
       try { return await draft(request, env); } catch (e) { return json({ ok: false, error: "AI error: " + (e.message || e) }, 502); }
     }
+    if (request.method === "POST" && p === "/edit/move") {
+      if (!env.GITHUB_TOKEN) return json({ ok: false, error: "Publishing isn't set up." }, 500);
+      try { return await movePins(request, env); } catch (e) { return json({ ok: false, error: e.message }, 502); }
+    }
     if (request.method === "POST" && p === "/edit/news") {
       if (!env.GITHUB_TOKEN) return json({ ok: false, error: "Publishing isn't set up." }, 500);
       try { return json({ ok: true, ...(await updateNews(env)) }); } catch (e) { return json({ ok: false, error: "News update failed: " + (e.message || e) }, 502); }
@@ -366,6 +387,11 @@ export default {
       }
     }
 
+    if (p === "/edit/map" || p === "/edit/map/") {
+      // Signed in: the public map page; map.js switches to editor mode on this path.
+      const page = await env.ASSETS.fetch(new Request(new URL("/map/", url), request));
+      return new Response(page.body, { status: page.status, headers: { "Content-Type": "text/html; charset=utf-8", ...NO_STORE } });
+    }
     if (p === "/edit" || p === "/edit/") {
       // Signed in: serve the tracker page. It switches to edit mode because the path is /edit.
       const page = await env.ASSETS.fetch(new Request(new URL("/tracker/", url), request));

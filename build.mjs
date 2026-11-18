@@ -625,6 +625,11 @@ fs.copyFileSync(path.join(ROOT, "data.json"), path.join(OUT, "data.json"));
         <button class="tk-btn solid full" type="submit">Add item</button>
       </form>
       <div class="pub-status" id="pubStatus" role="status" aria-live="polite" hidden></div>
+      <div class="tk-psn">
+        <h3>Map editor</h3>
+        <p>Add items straight onto the map, drag pins to fix their spot, and place items that don't have one yet.</p>
+        <div class="tk-btns"><a class="tk-btn solid" href="/edit/map">Open the map editor</a></div>
+      </div>
       <div class="tk-psn" id="psnBox">
         <h3>Trophies from PlayStation</h3>
         <p>Loads the official trophy list (names, requirements, grades and how many players have each). Run it again any time: your tips, regions and photos stay.</p>
