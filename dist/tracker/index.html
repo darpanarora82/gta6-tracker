@@ -726,6 +726,16 @@ a.thumb{display:block;cursor:zoom-in}
 .pub-status.warn .pub-msg{color:#ffc870}
 @keyframes pubspin{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.pub-status.busy .pub-msg::before{animation:none}}
+.badge.grade{background:rgba(255,255,255,.08);color:#d8dbe3}
+.badge.g-platinum{color:#cfe3ff;background:rgba(160,200,255,.14)}
+.badge.g-gold{color:#ffd56b;background:rgba(255,200,60,.13)}
+.badge.g-silver{color:#dfe3ea;background:rgba(220,225,235,.12)}
+.badge.g-bronze{color:#e7a774;background:rgba(205,127,50,.15)}
+.badge.rare{color:var(--soft);background:rgba(255,255,255,.05)}
+.item .req{margin-top:6px;color:#f1ede4;font-size:14px;line-height:1.45}
+.tk .item .req + .note{margin-top:4px}
+.tk-psn{margin-top:18px}
+.tk-psn p{color:var(--soft);font-size:14px;max-width:62ch}
 </style>
 <script defer src="/assets/region.js"></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"GTA 6 100% Completion Tracker","url":"https://trackgta6.com/tracker/","applicationCategory":"GameApplication","operatingSystem":"Any (web browser)","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Free checklist for Grand Theft Auto VI: missables, collectibles, side activities and trophies, filtered by region, with progress saved on your device."}</script>
@@ -770,6 +780,12 @@ a.thumb{display:block;cursor:zoom-in}
         <button class="tk-btn solid full" type="submit">Add item</button>
       </form>
       <div class="pub-status" id="pubStatus" role="status" aria-live="polite" hidden></div>
+      <div class="tk-psn" id="psnBox">
+        <h3>Trophies from PlayStation</h3>
+        <p>Loads the official trophy list (names, requirements, grades and how many players have each). Run it again any time: your tips, regions and photos stay.</p>
+        <div class="tk-btns"><button class="tk-btn" type="button" id="psnCheck">Check for the GTA 6 trophy list</button></div>
+        <div id="psnOut" role="status" aria-live="polite"></div>
+      </div>
       <div class="tk-btns"><button class="tk-btn solid" type="button" id="publish">Publish drafts</button><button class="tk-btn" type="button" id="dlData">Download data.json</button><button class="tk-btn" type="button" id="copyData">Copy JSON</button><button class="tk-btn ghost" type="button" id="clearDrafts">Clear drafts</button></div>
     </section>
 
@@ -905,7 +921,7 @@ a.thumb{display:block;cursor:zoom-in}
   function matches(it){
     if (S.region && it.region !== S.region) return false;
     if (S.hideDone && S.done[it.id]) return false;
-    if (S.q){ var hay = ((it.name||"")+" "+(it.note||"")+" "+(it.region||"")).toLowerCase(); if (hay.indexOf(S.q) === -1) return false; }
+    if (S.q){ var hay = ((it.name||"")+" "+(it.desc||"")+" "+(it.note||"")+" "+(it.region||"")).toLowerCase(); if (hay.indexOf(S.q) === -1) return false; }
     return true;
   }
   function plural(n, w){ return n + " " + w + (n === 1 ? "" : "s"); }
@@ -975,11 +991,14 @@ a.thumb{display:block;cursor:zoom-in}
     var meta = el("div", "meta");
     if (it.added && Date.now() - Date.parse(it.added + "T00:00:00Z") < 36 * 3600 * 1000) meta.appendChild(el("span", "badge new", "New"));
     if (it.missable){ var m = el("span", "badge miss"); m.appendChild(el("span", "diamond")); m.appendChild(document.createTextNode("Missable")); meta.appendChild(m); }
+    if (it.grade) meta.appendChild(el("span", "badge grade g-" + it.grade, it.grade.charAt(0).toUpperCase() + it.grade.slice(1)));
+    if (it.rarity != null && it.rarity !== "") meta.appendChild(el("span", "badge rare", it.rarity + "% of players"));
     if (it.spoiler) meta.appendChild(el("span", "badge spoil", "Spoiler"));
     if (it.region) meta.appendChild(el("span", "region", it.region));
     if (it.draft){ meta.appendChild(el("span", "badge draft", "Draft " + it.id)); var x = el("button", "del", "Delete"); x.type = "button"; x.dataset.del = it.id; meta.appendChild(x); }
     if (meta.childNodes.length) body.appendChild(meta);
-    if (it.note){ var note = el("div", "note" + (hidden ? " hidden-text" : ""), it.note); if (hidden) note.setAttribute("aria-hidden", "true"); body.appendChild(note); }
+    if (it.desc){ var dq = el("div", "req" + (hidden ? " hidden-text" : ""), it.desc); if (hidden) dq.setAttribute("aria-hidden", "true"); body.appendChild(dq); }
+    if (it.note){ var note = el("div", "note" + (hidden ? " hidden-text" : ""), (it.desc ? "Tip: " : "") + it.note); if (hidden) note.setAttribute("aria-hidden", "true"); body.appendChild(note); }
     if (hidden){ var rv = el("button", "reveal", "Show this spoiler"); rv.type = "button"; rv.dataset.reveal = it.id; body.appendChild(rv); }
     row.appendChild(body);
     if (it.img){
@@ -1232,6 +1251,26 @@ a.thumb{display:block;cursor:zoom-in}
         .then(function(j){ S.drafts = []; save(DKEY, S.drafts); render(); watchLive(j.ids, j.names || []); })
         .catch(function(err){ toast("Publish failed: " + err.message); })
         .then(function(){ b.disabled = false; b.textContent = "Publish drafts"; });
+    });
+    $("psnCheck").addEventListener("click", function(){
+      var b = this, out = $("psnOut"); b.disabled = true; b.textContent = "Checking PlayStation…"; out.innerHTML = "";
+      post("/edit/trophies", JSON.stringify({action:"check"})).then(function(j){
+        if (!j.found.length){ out.appendChild(el("p", null, j.message)); return; }
+        j.found.forEach(function(t){
+          var go = el("button", "tk-btn solid", "Import " + t.total + " trophies: " + t.name + " (" + t.platform + ")"); go.type = "button";
+          go.addEventListener("click", function(){
+            go.disabled = true; go.textContent = "Importing…";
+            post("/edit/trophies", JSON.stringify({action:"import", id:t.id, service:t.service})).then(function(r){
+              out.innerHTML = "";
+              if (!r.changed){ out.appendChild(el("p", null, "Already up to date. Nothing to publish.")); return; }
+              if (r.added.length) watchLive(r.ids, r.names);
+              out.appendChild(el("p", null, r.added.length ? "Imported " + r.added.length + " new trophies" + (r.updated ? " and updated " + r.updated : "") + "." : "Updated " + r.updated + " trophies. Live in about a minute."));
+            }, function(err){ go.disabled = false; go.textContent = "Try the import again"; out.appendChild(el("p", null, err.message)); });
+          });
+          out.appendChild(go);
+        });
+      }, function(err){ out.appendChild(el("p", null, err.message)); })
+      .then(function(){ b.disabled = false; b.textContent = "Check for the GTA 6 trophy list"; });
     });
     $("dlData").addEventListener("click", function(){ download("data.json", merged()); toast("data.json downloaded"); });
     $("copyData").addEventListener("click", function(){ var txt = merged();

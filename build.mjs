@@ -539,6 +539,12 @@ fs.copyFileSync(path.join(ROOT, "data.json"), path.join(OUT, "data.json"));
         <button class="tk-btn solid full" type="submit">Add item</button>
       </form>
       <div class="pub-status" id="pubStatus" role="status" aria-live="polite" hidden></div>
+      <div class="tk-psn" id="psnBox">
+        <h3>Trophies from PlayStation</h3>
+        <p>Loads the official trophy list (names, requirements, grades and how many players have each). Run it again any time: your tips, regions and photos stay.</p>
+        <div class="tk-btns"><button class="tk-btn" type="button" id="psnCheck">Check for the GTA 6 trophy list</button></div>
+        <div id="psnOut" role="status" aria-live="polite"></div>
+      </div>
       <div class="tk-btns"><button class="tk-btn solid" type="button" id="publish">Publish drafts</button><button class="tk-btn" type="button" id="dlData">Download data.json</button><button class="tk-btn" type="button" id="copyData">Copy JSON</button><button class="tk-btn ghost" type="button" id="clearDrafts">Clear drafts</button></div>
     </section>
 
