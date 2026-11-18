@@ -4,13 +4,8 @@
   "trailingSlash": true,
   "redirects": [
     {
-      "source": "/countdown",
-      "destination": "/launch/",
-      "permanent": true
-    },
-    {
-      "source": "/countdown/",
-      "destination": "/launch/",
+      "source": "/:path*",
+      "destination": "https://trackgta6.com/:path*",
       "permanent": true
     }
   ]
