@@ -1,0 +1,150 @@
+{
+  "intro": "GTA 6's arsenal so far: what Rockstar has named, what its footage shows, and what only leaks suggest. Updated as the game is played.",
+  "updated": "2026-11-18",
+  "statuses": {
+    "named": "Named by Rockstar: the name appears in Rockstar's own material",
+    "seen": "Seen in official footage: shown in a trailer, screenshot or the Extended Look; the name comes from fans matching it to earlier GTA games",
+    "leak": "Leak: only seen in leaked footage",
+    "ingame": "In the game: checked in the released game"
+  },
+  "items": [
+    {
+      "id": "hawk-revolver",
+      "name": "Hawk revolver",
+      "class": "Handgun",
+      "status": "named",
+      "note": "Half of a his-and-hers revolver pair with palm-tree grips, engraving and a scope (Ultimate Edition).",
+      "sources": [
+        {
+          "title": "MeowDB: what Rockstar named in the edition material",
+          "url": "https://meowdb.com/gta6/editions"
+        },
+        {
+          "title": "ConsolePulse: what Rockstar has named, by evidence level",
+          "url": "https://consolepulse.com/multiplatform/gta/guides/gta-6-confirmed-vehicles-weapons-gameplay-systems"
+        }
+      ]
+    },
+    {
+      "id": "little-morgan-revolver",
+      "name": "Little Morgan revolver",
+      "class": "Handgun",
+      "status": "named",
+      "note": "The other half of the Ultimate Edition revolver pair.",
+      "sources": [
+        {
+          "title": "MeowDB: what Rockstar named in the edition material",
+          "url": "https://meowdb.com/gta6/editions"
+        },
+        {
+          "title": "ConsolePulse: what Rockstar has named, by evidence level",
+          "url": "https://consolepulse.com/multiplatform/gta/guides/gta-6-confirmed-vehicles-weapons-gameplay-systems"
+        }
+      ]
+    },
+    {
+      "id": "girardi-es9",
+      "name": "Girardi ES9",
+      "class": "Handgun",
+      "status": "named",
+      "note": "Jason's pistol. The Ultimate Edition adds an engraved version.",
+      "sources": [
+        {
+          "title": "MeowDB: what Rockstar named in the edition material",
+          "url": "https://meowdb.com/gta6/editions"
+        }
+      ]
+    },
+    {
+      "id": "klose-k17",
+      "name": "Klose K17",
+      "class": "Handgun",
+      "status": "named",
+      "note": "Lucia's pistol. The Ultimate Edition adds an engraved version.",
+      "sources": [
+        {
+          "title": "MeowDB: what Rockstar named in the edition material",
+          "url": "https://meowdb.com/gta6/editions"
+        }
+      ]
+    },
+    {
+      "id": "duke-556",
+      "name": "Duke 556",
+      "class": "Assault rifle",
+      "status": "seen",
+      "note": "An assault rifle shown clearly in the Extended Look.",
+      "sources": [
+        {
+          "title": "All Things How: weapons seen in the trailers and Extended Look",
+          "url": "https://allthings.how/gta-6-weapons-list-every-confirmed-gun-so-far/"
+        }
+      ]
+    },
+    {
+      "id": "moreland-850",
+      "name": "Moreland 850",
+      "class": "Shotgun",
+      "status": "seen",
+      "note": "A shotgun shown in the Extended Look.",
+      "sources": [
+        {
+          "title": "All Things How: weapons seen in the trailers and Extended Look",
+          "url": "https://allthings.how/gta-6-weapons-list-every-confirmed-gun-so-far/"
+        }
+      ]
+    },
+    {
+      "id": "pistol-50",
+      "name": "Pistol .50",
+      "class": "Handgun",
+      "status": "seen",
+      "note": "A heavy pistol seen during the convenience-store robbery in Trailer 2. Name from earlier GTA games.",
+      "sources": [
+        {
+          "title": "GTA Intel: weapons confirmed by Trailer 2",
+          "url": "https://gtaintel.com/news/gta-6-confirmed-weapons-list"
+        }
+      ]
+    },
+    {
+      "id": "flashbang",
+      "name": "Flashbang",
+      "class": "Thrown",
+      "status": "seen",
+      "note": "A stun grenade visible while a robbery is being set up in Trailer 2.",
+      "sources": [
+        {
+          "title": "GTA Intel: weapons confirmed by Trailer 2",
+          "url": "https://gtaintel.com/news/gta-6-confirmed-weapons-list"
+        }
+      ]
+    },
+    {
+      "id": "hammer",
+      "name": "Hammer",
+      "class": "Melee",
+      "status": "seen",
+      "note": "Seen in a character's hands in the trailers.",
+      "sources": [
+        {
+          "title": "All Things How: weapons seen in the trailers and Extended Look",
+          "url": "https://allthings.how/gta-6-weapons-list-every-confirmed-gun-so-far/"
+        }
+      ]
+    },
+    {
+      "id": "knife",
+      "name": "Knife",
+      "class": "Melee",
+      "status": "seen",
+      "note": "A combat knife visible in Trailer 2.",
+      "sources": [
+        {
+          "title": "GTA Intel: weapons confirmed by Trailer 2",
+          "url": "https://gtaintel.com/news/gta-6-confirmed-weapons-list"
+        }
+      ]
+    }
+  ]
+}
