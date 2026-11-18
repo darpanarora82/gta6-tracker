@@ -116,8 +116,8 @@ const HERO = `<svg class="scene" viewBox="0 0 1200 600" preserveAspectRatio="xMi
 
 /* ======================= layout ======================= */
 const NAV = [
-  ["/tracker/", "100% Tracker"], ["/launch/", "Launch"], ["/editions/", "Editions"], ["/videos/", "Videos"],
-  ["/characters/", "Characters"], ["/places/", "Places"], ["/features/", "Gameplay"], ["/radio/", "Radio"], ["/faq/", "FAQ"],
+  ["/tracker/", "100% Tracker"], ["/news/", "News"], ["/launch/", "Launch"], ["/editions/", "Editions"], ["/videos/", "Videos"],
+  ["/characters/", "Characters"], ["/places/", "Places"], ["/map/", "Map"], ["/features/", "Gameplay"], ["/radio/", "Radio"], ["/rumors/", "Rumours"], ["/faq/", "FAQ"],
 ];
 
 // Search engines show about 155 characters of a description: add the tail only if it fits.
@@ -131,6 +131,15 @@ function bgFor(image, bg) {
   return f && fs.existsSync(path.join(ROOT, "src/assets/img/bg", f + ".jpg")) ? `/assets/img/bg/${f}.jpg` : "/assets/img/bg/places-vice-city.jpg";
 }
 
+// NEWS: content/news.json is refreshed every 3 hours by the Worker (headline, source, date, link only).
+const NEWS = (() => { try { return JSON.parse(fs.readFileSync(path.join(ROOT, "content/news.json"), "utf8")).items || []; } catch { return []; } })();
+const newsDate = (iso) => { const d = new Date(iso); return isNaN(d) ? "" : d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }); };
+const NEWS_KIND = { video: "Video", official: "Rockstar", news: "News" };
+function newsCard(n, { thumb: withThumb = true } = {}) {
+  const thumb = n.video && withThumb ? `<span class="nthumb"><img src="https://i.ytimg.com/vi/${esc(n.video)}/hqdefault.jpg" alt="" loading="lazy" decoding="async"><i aria-hidden="true">▶</i></span>` : "";
+  return `<a class="ncard k-${esc(n.kind)}${n.video ? " has-thumb" : ""}" href="${esc(n.url)}" target="_blank" rel="noopener nofollow">${thumb}<span class="nbody"><span class="nmeta"><b>${NEWS_KIND[n.kind] || "News"}</b>${esc(n.source)} · <time datetime="${esc(n.date)}">${newsDate(n.date)}</time></span><span class="ntitle">${esc(n.title)}</span></span></a>`;
+}
+
 const TRACKER_APP_LD = {
   "@context": "https://schema.org", "@type": "WebApplication", name: "GTA 6 100% Completion Tracker",
   url: SITE + "/tracker/", applicationCategory: "GameApplication", operatingSystem: "Any (web browser)",
@@ -138,13 +147,13 @@ const TRACKER_APP_LD = {
   description: "Free checklist for Grand Theft Auto VI: missables, collectibles, side activities and trophies, filtered by region, with progress saved on your device.",
 };
 
-function layout({ url, title, description, body, jsonld, script, image, bg }) {
+function layout({ url, title, description, body, jsonld, script, image, bg, head, tail }) {
   pages.push(url);
   const full = url === "/" ? `GTA 6 Guide & 100% Tracker: release times, prices, characters, map` : `${title} | ${SITE_NAME}`;
   const img = SITE + (image || "/assets/og.jpg");
   if (description.length > 155) description = description.slice(0, 154).replace(/\s+\S*$/, "").replace(/[,:;]$/, "") + "…";
   const lds = (Array.isArray(jsonld) ? jsonld : jsonld ? [jsonld] : []);
-  const nav = NAV.filter(([h]) => h !== "/tracker/").map(([h, l]) => `<a href="${h}"${h === url || (h !== "/" && url.startsWith(h)) ? ' aria-current="page"' : ""}${h === "/tracker/" ? ' class="cta"' : ""}>${l}</a>`).join("");
+  const nav = NAV.filter(([h]) => !["/tracker/", "/editions/", "/videos/", "/radio/"].includes(h)).map(([h, l]) => `<a href="${h}"${h === url || (h !== "/" && url.startsWith(h)) ? ' aria-current="page"' : ""}${h === "/tracker/" ? ' class="cta"' : ""}>${l}</a>`).join("");
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -175,6 +184,7 @@ ${ANALYTICS}
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>${SITE_CSS}</style>
+${head || ""}
 <script defer src="/assets/region.js"></script>
 ${lds.map((j) => `<script type="application/ld+json">${JSON.stringify(j).replace(/</g, "\\u003c")}</script>`).join("\n")}
 </head>
@@ -186,6 +196,7 @@ ${body}
   <p>Fan-made and unofficial. Not affiliated with or endorsed by Rockstar Games or Take-Two Interactive. Grand Theft Auto and related names are trademarks of their owners. Screenshots are official Rockstar Games images, credited where shown. <a href="/faq/#sources">Where our facts come from</a>.</p>
 </div></footer>
 <script>${LB_SCRIPT}${script || ""}</script>
+${tail || ""}
 </body>
 </html>`;
 }
@@ -257,6 +268,11 @@ const factHtml = (f) => `<div class="fact"><span>${esc(f.label)}</span><b${f.dyn
       <a class="bigcard t3" href="/editions/">${ICON.tag}<h3>Which edition?</h3><p><b data-r="std">$79.99</b> or <b data-r="ult">$99.99</b>. What the extra <span data-r="diff">$20</span> actually buys you.</p><span class="go">Compare</span></a>
     </div>
   </section>
+
+  ${NEWS.length ? `<section class="sec">
+    <div class="sec-head"><div><h2>Latest news</h2><p>From Rockstar and the gaming press, updated every few hours.</p></div><a href="/news/">All news</a></div>
+    <div class="nlist home">${NEWS.slice(0, 4).map((n) => newsCard(n, { thumb: false })).join("")}</div>
+  </section>` : ""}
 
   ${VIDEOS.length ? `<section class="sec">
     <div class="sec-head"><div><h2>Watch the trailers</h2><p>Official videos from Rockstar.</p></div><a href="/videos/">All videos</a></div>
@@ -471,6 +487,68 @@ const factHtml = (f) => `<div class="fact"><span>${esc(f.label)}</span><b${f.dyn
   write("videos/index.html", layout({ url: "/videos/", title: "Trailers and videos", description: "Watch every official GTA 6 video: the Launch Trailer, An Extended Look, Trailer 2, Trailer 1 and the cover art reveal, with dates and what each one shows.", body, script: YT_SCRIPT, jsonld: breadcrumbLd([["/", "Home"], ["/videos/", "Videos"]]) }));
 }
 
+// MAP: GTADB community tiles (CC BY 4.0) + tracker items with a pos as pins
+{
+  const cats = JSON.parse(fs.readFileSync(path.join(ROOT, "data.json"), "utf8")).categories || [];
+  const body = `<main class="mapwrap">
+  <div id="map" class="mapcanvas" role="region" aria-label="Map of Leonida"></div>
+  <aside class="mpanel" aria-label="Map controls">
+    <h1>Map of Leonida</h1>
+    <p class="mlede">Every tracker item with a known spot, on the community-built map. Tap a pin to tick it off.</p>
+    <div class="msearch"><input id="mSearch" type="search" placeholder="Search places and items" aria-label="Search the map" autocomplete="off"><ul id="mResults" class="mresults"></ul></div>
+    <div class="mchips" role="group" aria-label="Show">
+      <button type="button" data-mcat="all" aria-pressed="true">Everything</button>
+      ${cats.map((c) => `<button type="button" data-mcat="${esc(c.id)}" aria-pressed="false"><i class="dot-${esc(c.id)}"></i>${esc(c.name)}</button>`).join("")}
+    </div>
+    <label class="mtoggle"><input type="checkbox" id="mLand" checked> Fan-mapped places (zoom in)</label>
+    <label class="mtoggle"><input type="checkbox" id="mHide"> Hide what I've done</label>
+    <p class="mstats" id="mStats">Loading…</p>
+    <p class="mnote">The base map is a fan reconstruction made before launch, so some areas will move as the community maps the real game. Base map: Yanis GTA VI Community Map v18, place names from <a href="https://map.gtadb.org" rel="noopener">GTADB</a> contributors, both <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a>. We cropped the legend panel and simplified the place list.</p>
+  </aside>
+</main>`;
+  write("map/index.html", layout({ url: "/map/", title: "GTA 6 Map of Leonida with Tracker Pins", description: "Interactive GTA 6 map of Leonida with missables, collectibles and activities pinned as they're found. Tick items off on the map; progress syncs with the tracker.", body,
+    bg: "places-leonida-keys",
+    head: `<link rel="stylesheet" href="/assets/leaflet/leaflet.css">`,
+    tail: `<script src="/assets/leaflet/leaflet.js"></script><script src="/assets/map/map.js"></script>`,
+    jsonld: breadcrumbLd([["/", "Home"], ["/map/", "Map"]]) }));
+}
+
+// NEWS PAGE
+{
+  const groups = [["All", NEWS], ["Rockstar", NEWS.filter((n) => n.kind !== "news")], ["Press", NEWS.filter((n) => n.kind === "news")]];
+  const body = pageHead([["/", "Home"], [null, "News"]], "GTA 6 news", "Everything new about GTA 6 from Rockstar's channels and the gaming press, pulled in automatically every few hours. Headlines link to the original story.") + `<main class="wrap"><section class="sec">
+    <div class="nfilter" role="tablist" aria-label="Show">${groups.map(([g, l], i) => `<button type="button" role="tab" aria-selected="${i === 0}" data-nf="${i}">${g} <span>${l.length}</span></button>`).join("")}</div>
+    ${groups.map(([g, l], i) => `<div class="nlist" data-np="${i}"${i ? " hidden" : ""}>${l.length ? l.map(newsCard).join("") : `<p class="empty">Nothing here yet. The feed refreshes every three hours.</p>`}</div>`).join("")}
+    <p class="nfine">Headlines and links come from Rockstar's YouTube channel and Google News. We don't copy articles; tap through to read them on the publisher's site.</p>
+  </section></main>`;
+  const script = `document.querySelectorAll("[data-nf]").forEach(function(b){b.addEventListener("click",function(){document.querySelectorAll("[data-nf]").forEach(function(x){x.setAttribute("aria-selected",x===b)});document.querySelectorAll("[data-np]").forEach(function(p){p.hidden=p.dataset.np!==b.dataset.nf})})});`;
+  write("news/index.html", layout({ url: "/news/", title: "GTA 6 News: latest from Rockstar and the press", description: "Latest GTA 6 news in one place: Rockstar's trailers and Newswire posts plus gaming press headlines, refreshed every three hours.", body, script,
+    jsonld: breadcrumbLd([["/", "Home"], ["/news/", "News"]]) }));
+}
+
+// RUMOURS: content/rumors.json (own words, status + sources; checked against the game after launch)
+{
+  const R = JSON.parse(fs.readFileSync(path.join(ROOT, "content/rumors.json"), "utf8"));
+  const order = ["confirmed", "reported", "leak", "rumour", "estimate", "debunked"];
+  const label = { rumour: "Rumour", leak: "Leak", reported: "Reported", estimate: "Estimate", confirmed: "Confirmed", debunked: "Debunked" };
+  const counts = order.map((k) => [k, R.items.filter((i) => i.status === k).length]).filter(([, n]) => n);
+  const body = pageHead([["/", "Home"], [null, "Rumours"]], "GTA 6 rumours and leaks", R.intro) + `<main class="wrap"><section class="sec">
+    <div class="rfilter" role="group" aria-label="Show"><button type="button" data-rf="all" aria-pressed="true">All <span>${R.items.length}</span></button>${counts.map(([k, n]) => `<button type="button" data-rf="${k}" aria-pressed="false"><i class="rs-${k}"></i>${label[k]} <span>${n}</span></button>`).join("")}</div>
+    <div class="rlist">${R.items.map((it) => `<article class="rcard" id="${esc(it.id)}" data-status="${esc(it.status)}">
+      <div class="rtop"><span class="rbadge rs-${esc(it.status)}" title="${esc(R.statuses[it.status] || "")}">${label[it.status] || it.status}</span></div>
+      <h2>${esc(it.title)}</h2>
+      <p>${esc(it.summary)}</p>
+      <p class="rsettle"><b>What settles it:</b> ${esc(it.settles)}</p>
+      <details class="rsrc"><summary>Sources (${it.sources.length})</summary><ul>${it.sources.map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener nofollow">${esc(s.title)}</a></li>`).join("")}</ul></details>
+    </article>`).join("")}</div>
+    <dl class="rkey">${order.filter((k) => R.statuses[k]).map((k) => `<div><dt><span class="rbadge rs-${k}">${label[k]}</span></dt><dd>${esc(R.statuses[k].split(": ").slice(1).join(": "))}</dd></div>`).join("")}</dl>
+    <p class="nfine">Last checked ${fmtDate(R.updated)}. Summaries are in our own words; follow the sources for the original reporting.</p>
+  </section></main>`;
+  const script = `document.querySelectorAll("[data-rf]").forEach(function(b){b.addEventListener("click",function(){document.querySelectorAll("[data-rf]").forEach(function(x){x.setAttribute("aria-pressed",x===b)});document.querySelectorAll(".rcard").forEach(function(c){c.hidden=b.dataset.rf!=="all"&&c.dataset.status!==b.dataset.rf})})});`;
+  write("rumors/index.html", layout({ url: "/rumors/", title: "GTA 6 Rumours and Leaks, Fact-Checked", description: "Every big GTA 6 rumour and leak in one place, labelled Rumour, Leak, Reported or Debunked, with sources, and checked against the real game after launch.", body, script,
+    jsonld: breadcrumbLd([["/", "Home"], ["/rumors/", "Rumours"]]) }));
+}
+
 // FAQ
 {
   const F = C.faq;
@@ -552,6 +630,11 @@ fs.copyFileSync(path.join(ROOT, "data.json"), path.join(OUT, "data.json"));
         <p>Loads the official trophy list (names, requirements, grades and how many players have each). Run it again any time: your tips, regions and photos stay.</p>
         <div class="tk-btns"><button class="tk-btn" type="button" id="psnCheck">Check for the GTA 6 trophy list</button></div>
         <div id="psnOut" role="status" aria-live="polite"></div>
+      </div>
+      <div class="tk-psn">
+        <h3>News feed</h3>
+        <p>Pulls new GTA 6 headlines and Rockstar videos. It also runs by itself every three hours.</p>
+        <div class="tk-btns"><button class="tk-btn" type="button" id="newsNow">Refresh news now</button></div>
       </div>
       <div class="tk-btns"><button class="tk-btn solid" type="button" id="publish">Publish drafts</button><button class="tk-btn" type="button" id="dlData">Download data.json</button><button class="tk-btn" type="button" id="copyData">Copy JSON</button><button class="tk-btn ghost" type="button" id="clearDrafts">Clear drafts</button></div>
     </section>

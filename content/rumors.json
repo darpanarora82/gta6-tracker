@@ -1,0 +1,93 @@
+{
+  "intro": "What people are saying about GTA 6 that Rockstar hasn't confirmed. Each claim has a status, what would settle it and where it came from. We check them against the real game after launch and move them to Confirmed or Debunked.",
+  "updated": "2026-11-18",
+  "statuses": {
+    "rumour": "Rumour: a claim from an insider or leaker, nothing official",
+    "leak": "Leak: material that appeared without Rockstar's approval; not fully verified",
+    "reported": "Reported: covered by established outlets citing sources, not confirmed by Rockstar",
+    "estimate": "Estimate: community measurement or maths, not an official figure",
+    "confirmed": "Confirmed: Rockstar or the game itself shows it's true",
+    "debunked": "Debunked: shown to be false"
+  },
+  "items": [
+    {
+      "id": "online-timing",
+      "title": "GTA 6 Online arrives within weeks of launch",
+      "status": "rumour",
+      "summary": "Rockstar hasn't announced the online mode, and it isn't part of the 19 November launch. A leaker known as TheGhostOfHope claimed it would follow within about a month, before Christmas. Data miners say multiplayer code is already in the release build. On the other side, Bloomberg's Jason Schreier hasn't expected an announcement soon, and a mix-up over a Bloomberg remark briefly spread a 2027 date that wasn't actually reported.",
+      "settles": "An announcement from Rockstar, or an online mode appearing in the game's menus.",
+      "sources": [
+        { "title": "GTA BOOM: GTA 6 Online may launch before Christmas, says leaker", "url": "https://www.gtaboom.com/gta-6-online-could-launch-right-on-time-for-christmas-f811" },
+        { "title": "Esquire India: multiplayer strings found in the release build", "url": "https://www.esquireindia.co.in/tech-and-auto/gaming/gta-6-online-launch-date-coming-soon-multiplayer-leak-strings-joinsession-launchmultiplayeractivity-spotted" },
+        { "title": "Notebookcheck: Schreier doesn't expect an online announcement soon", "url": "https://www.notebookcheck.net/1363019.html" },
+        { "title": "Gaming HQ: the Bloomberg mix-up behind the 2027 claims", "url": "https://gaminghq.eu/2026/11/15/gta-6-online-release-date-rumors-bloomberg-error/" }
+      ]
+    },
+    {
+      "id": "story-dlc",
+      "title": "Story DLC with new cities and missions",
+      "status": "rumour",
+      "summary": "Insider Tez2 said in 2022 that Rockstar is returning to single-player expansions, with new cities and missions planned before launch, the way GTA IV got The Lost and Damned. GTA V never got story DLC. Rockstar hasn't said anything about post-launch story content.",
+      "settles": "Rockstar announcing an expansion, or areas of the map that are clearly closed off for later.",
+      "sources": [
+        { "title": "GamesRadar: GTA 6 will reportedly go back to single-player DLC", "url": "https://gamesradar.com/gta-6-will-reportedly-go-back-to-single-player-dlc" },
+        { "title": "GameSpot: rumour suggests a return to single-player DLC", "url": "https://www.gamespot.com/articles/gta-6-rumor-suggests-a-return-to-single-player-dlc/1100-6506586/" }
+      ]
+    },
+    {
+      "id": "five-counties",
+      "title": "Leonida has five counties: Vice Dale, Mariana, Kelly, Leonard and Lummox",
+      "status": "leak",
+      "summary": "A full map of Leonida was posted on 18–19 August 2026 alongside two short gameplay clips. It splits the state into five counties with a rail network and many small islands. Rockstar acknowledged that gameplay videos had leaked but didn't vouch for everything shared with them, and the fan mapping project first called the map fake. Some county names had already appeared in the community's own reconstruction.",
+      "settles": "The in-game map on launch day.",
+      "sources": [
+        { "title": "Gfinity: what the August leak showed", "url": "https://www.gfinityesports.com/article/all-gta-6-leaks-so-far-new-gameplay-cutscenes-and-features-revealed" },
+        { "title": "Beebom: mapping project says the leaked map is fake", "url": "https://beebom.com/full-gta-6-map-leaked-online-and-its-massive/" },
+        { "title": "GTA BOOM: Rockstar's response to the leaked videos", "url": "https://www.gtaboom.com/gta-6-release-date-map-missions-characters-and-other-leaks-93bc" }
+      ]
+    },
+    {
+      "id": "map-size",
+      "title": "The map is about 1.5 to 2 times the size of GTA V's",
+      "status": "estimate",
+      "summary": "Rockstar hasn't given a size. Fans measuring the leaked map against GTA V's land mostly land between 1.5 and 3 times bigger, with the most cited estimate around 125 square kilometres against GTA V's 48. Much bigger figures, like 3.5 times or 'thousands of times', have been widely dismissed.",
+      "settles": "Measurements from the real game, which the community will do within days of launch.",
+      "sources": [
+        { "title": "All Things How: how Leonida stacks up against GTA V", "url": "https://allthings.how/gta-6-map-size-how-leonida-stacks-up-against-gta-5/" },
+        { "title": "Gfinity: how big is the GTA 6 map", "url": "https://www.gfinityesports.com/article/how-big-is-the-gta-6-map-leonida-size-and-confirmed-locations" }
+      ]
+    },
+    {
+      "id": "leaked-mechanics",
+      "title": "Vehicles need refuelling, and weapons are picked from a loadout",
+      "status": "leak",
+      "summary": "The August gameplay clips appeared to show filling up a car and choosing weapons from a loadout rather than carrying everything at once, plus police that react to what you're wearing. None of these were in Rockstar's own trailers.",
+      "settles": "Playing the game.",
+      "sources": [
+        { "title": "Gfinity: mechanics seen in the leaked clips", "url": "https://www.gfinityesports.com/article/all-gta-6-leaks-so-far-new-gameplay-cutscenes-and-features-revealed" }
+      ]
+    },
+    {
+      "id": "pc-q1-2027",
+      "title": "The PC version comes in early 2027",
+      "status": "reported",
+      "summary": "GamesBeat reported that GTA 6 reaches PC in the first quarter of 2027, much sooner than GTA V's 19-month gap. Rockstar hasn't announced a PC version or commented.",
+      "settles": "A Rockstar announcement or a store page.",
+      "sources": [
+        { "title": "Dexerto: GamesBeat report on the PC version", "url": "https://www.dexerto.com/gta/gta-6-releasing-on-pc-much-earlier-than-expected-report-3418569/" },
+        { "title": "PCWorld: Rockstar did not comment", "url": "https://www.pcworld.com/article/3260660/we-guessed-late-2027-for-gta-6-on-pc-a-report-says-q1-2027.html" }
+      ]
+    },
+    {
+      "id": "delay-2027",
+      "title": "Another delay to 2027",
+      "status": "debunked",
+      "summary": "Delay claims went viral several times in 2026, often from misread comments. The game kept its 19 November date: pre-orders opened in June, and pre-loading started on 10 November.",
+      "settles": "Settled: GTA 6 launches on 19 November 2026.",
+      "sources": [
+        { "title": "GTA BOOM: no, GTA 6 has not been delayed to 2027", "url": "https://www.gtaboom.com/no-gta-6-has-not-been-delayed-to-2027" },
+        { "title": "PC Gamer: how casual speculation turned into a delay rumour", "url": "https://www.pcgamer.com/games/grand-theft-auto/casual-gta-6-speculation-mutates-into-delay-rumor-leading-to-anxious-fans-and-prediction-market-frenzy-for-no-good-reason" }
+      ]
+    }
+  ]
+}

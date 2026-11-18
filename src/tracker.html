@@ -515,6 +515,7 @@ footer p{margin:0 0 6px;max-width:72ch}
     if (meta.childNodes.length) body.appendChild(meta);
     if (it.desc){ var dq = el("div", "req" + (hidden ? " hidden-text" : ""), it.desc); if (hidden) dq.setAttribute("aria-hidden", "true"); body.appendChild(dq); }
     if (it.note){ var note = el("div", "note" + (hidden ? " hidden-text" : ""), (it.desc ? "Tip: " : "") + it.note); if (hidden) note.setAttribute("aria-hidden", "true"); body.appendChild(note); }
+    if (it.pos && !it.draft){ var ml = el("a", "on-map", "📍 On the map"); ml.href = "/map/#" + it.id; body.appendChild(ml); }
     if (hidden){ var rv = el("button", "reveal", "Show this spoiler"); rv.type = "button"; rv.dataset.reveal = it.id; body.appendChild(rv); }
     row.appendChild(body);
     if (it.img){
@@ -597,6 +598,7 @@ footer p{margin:0 0 6px;max-width:72ch}
       var it = {id:d.id, name:d.name};
       if (d.region) it.region = d.region; if (d.note) it.note = d.note; if (d.img && d.img.indexOf("data:") !== 0) it.img = d.img;
       it.added = d.added || today();
+      if (d.pos) it.pos = d.pos;
       if (d.missable) it.missable = true; if (d.spoiler) it.spoiler = true;
       c.items = c.items || []; c.items.push(it);
     });
@@ -614,6 +616,48 @@ footer p{margin:0 0 6px;max-width:72ch}
   }
   function post(path, body){ return fetch(path, {method:"POST", headers:{"Content-Type":"application/json"}, credentials:"same-origin", body:body})
     .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ if (!r.ok || !j.ok) throw new Error(j.error || ("HTTP " + r.status)); return j; }); }); }
+
+  /* ---------- map spot picker (editor) ----------
+     Loads Leaflet on demand and shows the same tiles as /map/. Positions are GTA world units [x, y]. */
+  function loadMapLib(){
+    if (window.L) return Promise.resolve();
+    return new Promise(function(ok, bad){
+      var c = document.createElement("link"); c.rel = "stylesheet"; c.href = "/assets/leaflet/leaflet.css"; document.head.appendChild(c);
+      var j = document.createElement("script"); j.src = "/assets/leaflet/leaflet.js"; j.onload = ok; j.onerror = bad; document.head.appendChild(j);
+    });
+  }
+  function pickSpot(current, done){
+    loadMapLib().then(function(){
+      var W = 32, Z0 = 16384;
+      function ll(p){ return L.latLng(-(Z0 - p[1]) / W, (p[0] + Z0) / W); }
+      function game(a){ return [Math.round(a.lng * W - Z0), Math.round(Z0 + a.lat * W)]; }
+      var back = el("div", "pick-back"), box = el("div", "pick"); back.appendChild(box);
+      box.appendChild(el("p", "pick-t", "Tap where it is on the map"));
+      var m = el("div", "pick-map"); box.appendChild(m);
+      var row = el("div", "tk-btns"), use = el("button", "tk-btn solid", "Use this spot"), clr = el("button", "tk-btn", "No spot"), cancel = el("button", "tk-btn ghost", "Cancel");
+      [use, clr, cancel].forEach(function(b){ b.type = "button"; row.appendChild(b); }); box.appendChild(row);
+      document.body.appendChild(back);
+      var bounds = L.latLngBounds([[-800, 128], [-128, 622]]);
+      var map = L.map(m, { crs: L.CRS.Simple, minZoom: 1, maxZoom: 7, zoomSnap: 0.5, maxBounds: bounds.pad(0.15) });
+      L.tileLayer("/assets/map/t/{z}/{y}_{x}.jpg", { tileSize: 256, maxNativeZoom: 5, maxZoom: 7, noWrap: true, bounds: bounds }).addTo(map);
+      var pos = current ? current.slice() : null, mk = null;
+      function put(){ if (mk) map.removeLayer(mk); if (pos) mk = L.circleMarker(ll(pos), { radius: 9, color: "#120a2a", weight: 3, fillColor: "#ffd84d", fillOpacity: 1 }).addTo(map); use.disabled = !pos; }
+      if (pos) map.setView(ll(pos), 4); else map.fitBounds([[-790, 190], [-170, 610]]);
+      put();
+      map.on("click", function(e){ pos = game(e.latlng); put(); });
+      function close(){ map.remove(); back.remove(); }
+      use.onclick = function(){ close(); done(pos); };
+      clr.onclick = function(){ close(); done(null); };
+      cancel.onclick = close;
+      back.addEventListener("click", function(e){ if (e.target === back) close(); });
+    }, function(){ toast("Couldn't load the map"); });
+  }
+  function spotButton(get, set){
+    var b = el("button", "tk-btn spot-btn"); b.type = "button";
+    function label(){ b.textContent = get() ? "📍 Spot set (change)" : "📍 Set map spot"; }
+    b.addEventListener("click", function(){ pickSpot(get(), function(p){ set(p); label(); }); });
+    label(); return b;
+  }
 
   /* ---------- quick add with AI ---------- */
   var QA = [], SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -659,6 +703,7 @@ footer p{margin:0 0 6px;max-width:72ch}
         [["missable", "Missable"], ["spoiler", "Spoiler"]].forEach(function(p){ var l = el("label"), x = el("input"); x.type = "checkbox"; x.checked = !!d[p[0]];
           x.addEventListener("change", function(){ d[p[0]] = x.checked; }); l.appendChild(x); l.appendChild(document.createTextNode(" " + p[1])); ck.appendChild(l); });
         g.appendChild(nm); g.appendChild(cs); g.appendChild(rs); f.appendChild(g); f.appendChild(nt); f.appendChild(ck);
+        f.appendChild(spotButton(function(){ return d.pos; }, function(p){ d.pos = p; }));
         if (!d.regionSure) f.appendChild(el("p", "qa-warn", "Check the region: the AI wasn't sure."));
         var dup = dupOf(d.name, d.cat); if (dup) f.appendChild(el("p", "qa-warn", "Looks like " + dup.id + " (" + dup.name + "). Remove this card if it's the same thing."));
       }
@@ -692,7 +737,7 @@ footer p{margin:0 0 6px;max-width:72ch}
       var b = this; b.disabled = true;
       ready.reduce(function(chain, q){ return chain.then(function(){
         return shrink(q.file, 1280).then(function(full){ return shrink(q.file, 480).then(function(th){
-          var d = q.d; S.drafts.push({id:nextId(d.cat), cat:d.cat, name:d.name.trim(), region:d.region, note:(d.note || "").trim(), missable:d.missable, spoiler:d.spoiler, added:today(), img:full, thumb:th});
+          var d = q.d; S.drafts.push({id:nextId(d.cat), cat:d.cat, name:d.name.trim(), region:d.region, note:(d.note || "").trim(), missable:d.missable, spoiler:d.spoiler, added:today(), img:full, thumb:th, pos:d.pos || null});
         }); });
       }); }, Promise.resolve()).then(function(){
         try { localStorage.setItem(DKEY, JSON.stringify(S.drafts)); } catch(err){}
@@ -743,14 +788,16 @@ footer p{margin:0 0 6px;max-width:72ch}
     var none = el("option", null, "No region"); none.value = ""; fr.appendChild(none);
     (S.data.regions || []).forEach(function(r){ var o = el("option", null, r); o.value = r; fr.appendChild(o); });
     if (S.cat !== "all") fc.value = S.cat;
+    var formPos = null, fsb = spotButton(function(){ return formPos; }, function(p){ formPos = p; });
+    $("fPhoto").closest("label").insertAdjacentElement("afterend", fsb); fsb.classList.add("full");
     $("addForm").addEventListener("submit", function(e){
       e.preventDefault(); var name = $("fName").value.trim(); if (!name) return;
-      var d = {id:nextId(fc.value), cat:fc.value, name:name, region:fr.value, note:$("fNote").value.trim(), missable:$("fMiss").checked, spoiler:$("fSpoil").checked, added:today()};
+      var d = {id:nextId(fc.value), cat:fc.value, name:name, region:fr.value, note:$("fNote").value.trim(), missable:$("fMiss").checked, spoiler:$("fSpoil").checked, added:today(), pos:formPos};
       var file = $("fPhoto").files && $("fPhoto").files[0];
       (file ? shrink(file, 1280).then(function(full){ return shrink(file, 480).then(function(th){ d.img = full; d.thumb = th; }); }) : Promise.resolve()).then(function(){
         S.drafts.push(d);
         try { localStorage.setItem(DKEY, JSON.stringify(S.drafts)); } catch(err){ S.drafts.pop(); toast("Browser storage is full. Publish your drafts first."); return; }
-        $("fName").value = ""; $("fNote").value = ""; $("fPhoto").value = ""; $("fMiss").checked = false; $("fSpoil").checked = false;
+        $("fName").value = ""; $("fNote").value = ""; $("fPhoto").value = ""; formPos = null; fsb.textContent = "📍 Set map spot"; $("fMiss").checked = false; $("fSpoil").checked = false;
         $("fName").focus(); render(); toast("Added " + d.id + (d.img ? " with photo" : ""));
       }, function(){ toast("Couldn't read that photo"); });
     });
@@ -761,12 +808,17 @@ footer p{margin:0 0 6px;max-width:72ch}
       var out = [];
       S.drafts.reduce(function(chain, d){ return chain.then(function(){
           return upload(d.img).then(function(a){ return upload(d.thumb).then(function(t){
-            var x = {id:d.id, cat:d.cat, name:d.name, region:d.region, note:d.note, missable:d.missable, spoiler:d.spoiler, added:d.added};
+            var x = {id:d.id, cat:d.cat, name:d.name, region:d.region, note:d.note, missable:d.missable, spoiler:d.spoiler, added:d.added, pos:d.pos || null};
             if (a) x.imgBlob = a; if (t) x.thumbBlob = t; out.push(x); }); }); }); }, Promise.resolve())
         .then(function(){ return post("/edit/publish", JSON.stringify({items:out})); })
         .then(function(j){ S.drafts = []; save(DKEY, S.drafts); render(); watchLive(j.ids, j.names || []); })
         .catch(function(err){ toast("Publish failed: " + err.message); })
         .then(function(){ b.disabled = false; b.textContent = "Publish drafts"; });
+    });
+    $("newsNow").addEventListener("click", function(){
+      var b = this; b.disabled = true; b.textContent = "Checking for news…";
+      post("/edit/news", "{}").then(function(r){ toast(r.count ? r.count + " new headlines. Live in about a minute." : "No new headlines right now"); }, function(err){ toast(err.message); })
+        .then(function(){ b.disabled = false; b.textContent = "Refresh news now"; });
     });
     $("psnCheck").addEventListener("click", function(){
       var b = this, out = $("psnOut"); b.disabled = true; b.textContent = "Checking PlayStation…"; out.innerHTML = "";

@@ -75,6 +75,7 @@ async function publish(request, env) {
       if (note) it.note = note;
       if (d.missable) it.missable = true;
       if (d.spoiler) it.spoiler = true;
+      if (Array.isArray(d.pos) && d.pos.length === 2 && d.pos.every((n) => Number.isFinite(n) && Math.abs(n) <= 16384)) it.pos = d.pos.map(Math.round);
       if (/^[0-9a-f]{40}$/.test(d.imgBlob || "")) { tree.push({ path: `src/assets/img/items/${id}.jpg`, mode: "100644", type: "blob", sha: d.imgBlob }); it.img = `/assets/img/items/${id}.jpg`; }
       if (/^[0-9a-f]{40}$/.test(d.thumbBlob || "")) { tree.push({ path: `src/assets/img/items/${id}-t.jpg`, mode: "100644", type: "blob", sha: d.thumbBlob }); it.thumb = `/assets/img/items/${id}-t.jpg`; }
       it.added = /^\d{4}-\d{2}-\d{2}$/.test(d.added || "") ? d.added : today;
@@ -210,6 +211,68 @@ async function trophies(request, env) {
   return json({ ok: false, error: "Unknown action" }, 400);
 }
 
+/* ---------- news feed ----------
+   Every 3 hours: Rockstar's YouTube uploads about GTA VI + Google News headlines for "GTA 6".
+   Only headline, source, date and link are kept (no article text). Writes content/news.json. */
+const YT_FEED = "https://www.youtube.com/feeds/videos.xml?channel_id=UC6VcWc1rAoWdBCM0JxrRQ3A";
+const GN_FEED = "https://news.google.com/rss/search?q=%22GTA%206%22%20OR%20%22GTA%20VI%22%20OR%20%22Grand%20Theft%20Auto%20VI%22&hl=en-US&gl=US&ceid=US:en";
+const xmlText = (s) => String(s || "").replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;|&apos;/g, "'").replace(/&#(\d+);/g, (_, n) => String.fromCharCode(+n)).replace(/&amp;/g, "&").trim();
+const tag = (block, name) => { const m = block.match(new RegExp(`<${name}(?:\\s[^>]*)?>([\\s\\S]*?)</${name}>`)); return m ? xmlText(m[1]) : ""; };
+
+async function fetchNews() {
+  const out = [];
+  const get = (u) => fetch(u, { headers: { "User-Agent": "trackgta6.com news (+https://trackgta6.com)" }, cf: { cacheTtl: 600 } }).then((r) => (r.ok ? r.text() : ""));
+  const [yt, gn] = await Promise.all([get(YT_FEED).catch(() => ""), get(GN_FEED).catch(() => "")]);
+  for (const e of yt.split("<entry>").slice(1)) {
+    const id = tag(e, "yt:videoId"), title = tag(e, "title");
+    if (!id || !/grand theft auto vi\b|\bgta vi\b|\bgta 6\b/i.test(title)) continue;
+    out.push({ kind: "video", id: "yt-" + id, title: clean(title, 160), source: "Rockstar Games on YouTube", url: `https://www.youtube.com/watch?v=${id}`, video: id, date: tag(e, "published") });
+  }
+  for (const it of gn.split("<item>").slice(1).slice(0, 40)) {
+    const src = tag(it, "source"); let title = tag(it, "title"); const link = tag(it, "link");
+    if (src && title.endsWith(" - " + src)) title = title.slice(0, -(src.length + 3));
+    if (!title || !/^https:\/\//.test(link)) continue;
+    const official = /rockstar/i.test(src);
+    out.push({ kind: official ? "official" : "news", id: "gn-" + tag(it, "guid").slice(-24), title: clean(title, 160), source: clean(src, 60), url: link, date: new Date(tag(it, "pubDate") || Date.now()).toISOString() });
+  }
+  return out;
+}
+
+async function commitFile(env, filePath, build, message) {
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const ref = await ghJson(env, "/git/ref/heads/main");
+    const head = ref.object.sha;
+    const commit = await ghJson(env, `/git/commits/${head}`);
+    const cur = await gh(env, `/contents/${filePath}?ref=${head}`);
+    const old = cur.ok ? b64ToText((await cur.json()).content) : null;
+    const next = build(old);
+    if (next == null || next === old) return false;
+    const blob = await ghJson(env, "/git/blobs", { method: "POST", body: JSON.stringify({ content: next, encoding: "utf-8" }) });
+    const tree = await ghJson(env, "/git/trees", { method: "POST", body: JSON.stringify({ base_tree: commit.tree.sha, tree: [{ path: filePath, mode: "100644", type: "blob", sha: blob.sha }] }) });
+    const c = await ghJson(env, "/git/commits", { method: "POST", body: JSON.stringify({ message, tree: tree.sha, parents: [head] }) });
+    const move = await gh(env, "/git/refs/heads/main", { method: "PATCH", body: JSON.stringify({ sha: c.sha }) });
+    if (move.ok) return true;
+    if (move.status !== 422) throw new Error(`GitHub ${move.status}: couldn't update main`);
+  }
+  return false;
+}
+
+async function updateNews(env) {
+  const fresh = await fetchNews();
+  if (!fresh.length) return { changed: false, count: 0 };
+  let added = 0;
+  const changed = await commitFile(env, "content/news.json", (old) => {
+    const cur = old ? JSON.parse(old) : { items: [] };
+    const byUrl = new Map(cur.items.map((i) => [i.url, i]));
+    const seenTitle = new Set(cur.items.map((i) => i.title.toLowerCase()));
+    for (const n of fresh) { if (!byUrl.has(n.url) && !seenTitle.has(n.title.toLowerCase())) { byUrl.set(n.url, n); seenTitle.add(n.title.toLowerCase()); added++; } }
+    if (!added) return null;
+    const items = [...byUrl.values()].sort((a, b) => (b.date || "").localeCompare(a.date || "")).slice(0, 80);
+    return JSON.stringify({ updated: new Date().toISOString(), items }, null, 2) + "\n";
+  }, "News: update feed");
+  return { changed, count: added };
+}
+
 const VISION = "@cf/meta/llama-3.2-11b-vision-instruct";
 async function draft(request, env) {
   const { image, hint, categories, regions } = await request.json();
@@ -257,7 +320,9 @@ ${cats}
 export default {
   // Once a day: refresh "x% of players" for every trophy, if the list has been imported.
   async scheduled(event, env, ctx) {
-    if (!env.PSN_NPSSO || !env.GITHUB_TOKEN) return;
+    if (!env.GITHUB_TOKEN) return;
+    if (event.cron === "17 */3 * * *") { ctx.waitUntil(updateNews(env)); return; }
+    if (!env.PSN_NPSSO) return;
     ctx.waitUntil((async () => {
       const r = await env.ASSETS.fetch(new Request("https://trackgta6.com/data.json"));
       const data = await r.json();
@@ -276,6 +341,10 @@ export default {
     if (request.method === "POST" && p === "/edit/draft") {
       if (!env.AI) return json({ ok: false, error: "AI isn't connected to this Worker." }, 500);
       try { return await draft(request, env); } catch (e) { return json({ ok: false, error: "AI error: " + (e.message || e) }, 502); }
+    }
+    if (request.method === "POST" && p === "/edit/news") {
+      if (!env.GITHUB_TOKEN) return json({ ok: false, error: "Publishing isn't set up." }, 500);
+      try { return json({ ok: true, ...(await updateNews(env)) }); } catch (e) { return json({ ok: false, error: "News update failed: " + (e.message || e) }, 502); }
     }
     if (request.method === "POST" && p === "/edit/trophies") {
       if (!env.GITHUB_TOKEN || !env.GITHUB_REPO) return json({ ok: false, error: "Publishing isn't set up: add the GITHUB_TOKEN secret in Cloudflare." }, 500);

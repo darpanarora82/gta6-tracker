@@ -18,7 +18,8 @@
   },
   "ai": { "binding": "AI" },
   // 03:17 IST daily: refresh trophy rarity from PlayStation (does nothing until trophies are imported).
-  "triggers": { "crons": ["47 21 * * *"] },
+  // Every 3 hours at :17: pull Rockstar's YouTube uploads and GTA 6 headlines into content/news.json.
+  "triggers": { "crons": ["47 21 * * *", "17 */3 * * *"] },
   "vars": { "GITHUB_REPO": "darpanarora82/gta6-tracker" },
   "observability": { "enabled": true }
 }

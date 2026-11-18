@@ -1,3 +1,0 @@
-User-agent: *
-Disallow: /edit
-Sitemap: https://trackgta6.com/sitemap.xml
