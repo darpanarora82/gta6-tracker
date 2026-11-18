@@ -948,3 +948,25 @@ footer.site{background:rgba(12,9,28,.45);backdrop-filter:var(--frost);-webkit-ba
 .nfilter button[aria-selected=true]{color:#1a1305;background:linear-gradient(135deg,#ffd84d,#ffa53a);border-color:transparent}
 .nfine{margin-top:18px;font-size:13px;color:var(--muted)}
 @media (max-width:640px){.nthumb{flex-basis:120px}.ntitle{font-size:15px}}
+
+/* ===================== rumours ===================== */
+.rfilter{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.rfilter button{display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:14px;font-weight:700;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:7px 13px;cursor:pointer}
+.rfilter button span{opacity:.7}
+.rfilter button i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.rfilter button[aria-pressed=true]{color:#1a1305;background:linear-gradient(135deg,#ffd84d,#ffa53a);border-color:transparent}
+.rlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
+.rcard{padding:18px;border-radius:16px;background-color:rgba(255,255,255,.065);backdrop-filter:var(--frost);-webkit-backdrop-filter:var(--frost);border:1px solid var(--glass-rim);border-top-color:var(--glass-top)}
+.rcard[hidden]{display:none}
+.rcard h2{margin:10px 0 8px;font-size:21px;line-height:1.25}
+.rcard p{margin:0 0 10px;color:#e6e4ee;font-size:15px}
+.rsettle{font-size:14px!important;color:var(--soft)!important}
+.rsrc summary{cursor:pointer;font-size:14px;font-weight:700;color:#ffd84d}
+.rsrc ul{margin:8px 0 0;padding-left:18px;font-size:14px}
+.rsrc a{color:#cfe3ff}
+.rbadge{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.02em;padding:3px 10px;border-radius:999px;color:#1a1305}
+.rs-rumour{background:#c59bff}.rs-leak{background:#ff8a5b}.rs-reported{background:#59c3ff}.rs-estimate{background:#b9c0cf}.rs-confirmed{background:#59e39a}.rs-debunked{background:#ff6b8a}
+.rfilter i.rs-rumour,.rfilter i.rs-leak,.rfilter i.rs-reported,.rfilter i.rs-estimate,.rfilter i.rs-confirmed,.rfilter i.rs-debunked{padding:0}
+.rkey{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px 16px;margin:26px 0 0;font-size:14px;color:var(--soft)}
+.rkey div{display:flex;gap:10px;align-items:baseline}
+.rkey dt{flex:0 0 92px}.rkey dd{margin:0}

@@ -117,7 +117,7 @@ const HERO = `<svg class="scene" viewBox="0 0 1200 600" preserveAspectRatio="xMi
 /* ======================= layout ======================= */
 const NAV = [
   ["/tracker/", "100% Tracker"], ["/news/", "News"], ["/launch/", "Launch"], ["/editions/", "Editions"], ["/videos/", "Videos"],
-  ["/characters/", "Characters"], ["/places/", "Places"], ["/map/", "Map"], ["/features/", "Gameplay"], ["/radio/", "Radio"], ["/faq/", "FAQ"],
+  ["/characters/", "Characters"], ["/places/", "Places"], ["/map/", "Map"], ["/features/", "Gameplay"], ["/radio/", "Radio"], ["/rumors/", "Rumours"], ["/faq/", "FAQ"],
 ];
 
 // Search engines show about 155 characters of a description: add the tail only if it fits.
@@ -153,7 +153,7 @@ function layout({ url, title, description, body, jsonld, script, image, bg, head
   const img = SITE + (image || "/assets/og.jpg");
   if (description.length > 155) description = description.slice(0, 154).replace(/\s+\S*$/, "").replace(/[,:;]$/, "") + "…";
   const lds = (Array.isArray(jsonld) ? jsonld : jsonld ? [jsonld] : []);
-  const nav = NAV.filter(([h]) => h !== "/tracker/").map(([h, l]) => `<a href="${h}"${h === url || (h !== "/" && url.startsWith(h)) ? ' aria-current="page"' : ""}${h === "/tracker/" ? ' class="cta"' : ""}>${l}</a>`).join("");
+  const nav = NAV.filter(([h]) => !["/tracker/", "/editions/", "/videos/", "/radio/"].includes(h)).map(([h, l]) => `<a href="${h}"${h === url || (h !== "/" && url.startsWith(h)) ? ' aria-current="page"' : ""}${h === "/tracker/" ? ' class="cta"' : ""}>${l}</a>`).join("");
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -524,6 +524,29 @@ const factHtml = (f) => `<div class="fact"><span>${esc(f.label)}</span><b${f.dyn
   const script = `document.querySelectorAll("[data-nf]").forEach(function(b){b.addEventListener("click",function(){document.querySelectorAll("[data-nf]").forEach(function(x){x.setAttribute("aria-selected",x===b)});document.querySelectorAll("[data-np]").forEach(function(p){p.hidden=p.dataset.np!==b.dataset.nf})})});`;
   write("news/index.html", layout({ url: "/news/", title: "GTA 6 News: latest from Rockstar and the press", description: "Latest GTA 6 news in one place: Rockstar's trailers and Newswire posts plus gaming press headlines, refreshed every three hours.", body, script,
     jsonld: breadcrumbLd([["/", "Home"], ["/news/", "News"]]) }));
+}
+
+// RUMOURS: content/rumors.json (own words, status + sources; checked against the game after launch)
+{
+  const R = JSON.parse(fs.readFileSync(path.join(ROOT, "content/rumors.json"), "utf8"));
+  const order = ["confirmed", "reported", "leak", "rumour", "estimate", "debunked"];
+  const label = { rumour: "Rumour", leak: "Leak", reported: "Reported", estimate: "Estimate", confirmed: "Confirmed", debunked: "Debunked" };
+  const counts = order.map((k) => [k, R.items.filter((i) => i.status === k).length]).filter(([, n]) => n);
+  const body = pageHead([["/", "Home"], [null, "Rumours"]], "GTA 6 rumours and leaks", R.intro) + `<main class="wrap"><section class="sec">
+    <div class="rfilter" role="group" aria-label="Show"><button type="button" data-rf="all" aria-pressed="true">All <span>${R.items.length}</span></button>${counts.map(([k, n]) => `<button type="button" data-rf="${k}" aria-pressed="false"><i class="rs-${k}"></i>${label[k]} <span>${n}</span></button>`).join("")}</div>
+    <div class="rlist">${R.items.map((it) => `<article class="rcard" id="${esc(it.id)}" data-status="${esc(it.status)}">
+      <div class="rtop"><span class="rbadge rs-${esc(it.status)}" title="${esc(R.statuses[it.status] || "")}">${label[it.status] || it.status}</span></div>
+      <h2>${esc(it.title)}</h2>
+      <p>${esc(it.summary)}</p>
+      <p class="rsettle"><b>What settles it:</b> ${esc(it.settles)}</p>
+      <details class="rsrc"><summary>Sources (${it.sources.length})</summary><ul>${it.sources.map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener nofollow">${esc(s.title)}</a></li>`).join("")}</ul></details>
+    </article>`).join("")}</div>
+    <dl class="rkey">${order.filter((k) => R.statuses[k]).map((k) => `<div><dt><span class="rbadge rs-${k}">${label[k]}</span></dt><dd>${esc(R.statuses[k].split(": ").slice(1).join(": "))}</dd></div>`).join("")}</dl>
+    <p class="nfine">Last checked ${fmtDate(R.updated)}. Summaries are in our own words; follow the sources for the original reporting.</p>
+  </section></main>`;
+  const script = `document.querySelectorAll("[data-rf]").forEach(function(b){b.addEventListener("click",function(){document.querySelectorAll("[data-rf]").forEach(function(x){x.setAttribute("aria-pressed",x===b)});document.querySelectorAll(".rcard").forEach(function(c){c.hidden=b.dataset.rf!=="all"&&c.dataset.status!==b.dataset.rf})})});`;
+  write("rumors/index.html", layout({ url: "/rumors/", title: "GTA 6 Rumours and Leaks, Fact-Checked", description: "Every big GTA 6 rumour and leak in one place, labelled Rumour, Leak, Reported or Debunked, with sources, and checked against the real game after launch.", body, script,
+    jsonld: breadcrumbLd([["/", "Home"], ["/rumors/", "Rumours"]]) }));
 }
 
 // FAQ
