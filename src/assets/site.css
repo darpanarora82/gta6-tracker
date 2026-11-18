@@ -998,3 +998,23 @@ footer.site{background:rgba(12,9,28,.45);backdrop-filter:var(--frost);-webkit-ba
 .edform{display:grid;gap:7px;min-width:240px}
 .edform input[type=file]{font-size:12px;color:#cfd3dc}
 .edchecks{display:flex;gap:14px;font-size:14px}
+/* visitor suggestions */
+.tk-help{margin:40px 0 0;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;padding:22px 24px;border-radius:20px;
+  background:linear-gradient(135deg,rgba(43,182,115,.16),rgba(89,195,255,.10));background-color:rgba(255,255,255,.05);backdrop-filter:var(--frost);-webkit-backdrop-filter:var(--frost);border:1px solid rgba(89,227,154,.35)}
+.tk-help h2{margin:0;font-size:24px}.tk-help p{margin:6px 0 0;max-width:60ch;color:var(--soft);font-size:15px}
+.sg{width:min(560px,100%);max-height:92vh;overflow:auto;display:grid;gap:10px}
+.sg-head{display:flex;justify-content:space-between;align-items:center}.sg-head h3{margin:0;font-size:22px}
+.sg .qa-x{position:static}
+.sg-lede{margin:0;color:var(--soft);font-size:14px}
+.sg-f{display:grid;gap:4px;font-size:13px;font-weight:700;color:#d9dbe3}
+.sg-f input[type=text],.sg-f select,.sg-f textarea{font:inherit;font-size:15px;font-weight:400;color:#fff;background:rgba(10,8,24,.55);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:9px 11px}
+.sg-f input[type=file]{font-size:13px;font-weight:400;color:#cfd3dc}
+.sg .checks{display:flex;flex-wrap:wrap;gap:14px;font-size:14px}
+.sg-ts{min-height:65px}
+.sg-msg{margin:0;color:#ffb3c1;font-weight:700;font-size:14px;min-height:1em}
+.item .by{font-size:12px;font-weight:700;color:#9ff0c4;background:rgba(89,227,154,.1);padding:3px 9px;border-radius:999px}
+.subq{margin:0 0 18px;padding:18px;border-radius:16px;background:rgba(43,182,115,.1);border:1px solid rgba(89,227,154,.4)}
+.subq h3{margin:0}.subn{color:#59e39a}
+.sub-card{margin-top:12px}.sub-noimg{display:grid;place-items:center;height:100%;min-height:90px;color:var(--muted);font-size:13px}
+.qa-thumb img{width:100%;border-radius:10px;display:block}
+.msuggest{display:block;margin:0 0 10px;font-size:14px;font-weight:800;color:#59e39a}

@@ -513,6 +513,7 @@ footer p{margin:0 0 6px;max-width:72ch}
     if (it.rarity != null && it.rarity !== "") meta.appendChild(el("span", "badge rare", it.rarity + "% of players"));
     if (it.spoiler) meta.appendChild(el("span", "badge spoil", "Spoiler"));
     if (it.region) meta.appendChild(el("span", "region", it.region));
+    if (it.by) meta.appendChild(el("span", "by", "Found by " + it.by));
     if (it.draft){ meta.appendChild(el("span", "badge draft", "Draft " + it.id)); var x = el("button", "del", "Delete"); x.type = "button"; x.dataset.del = it.id; meta.appendChild(x); }
     if (meta.childNodes.length) body.appendChild(meta);
     if (it.desc){ var dq = el("div", "req" + (hidden ? " hidden-text" : ""), it.desc); if (hidden) dq.setAttribute("aria-hidden", "true"); body.appendChild(dq); }
@@ -661,6 +662,77 @@ footer p{margin:0 0 6px;max-width:72ch}
     label(); return b;
   }
 
+
+  /* ---------- visitor suggestions (public) ---------- */
+  function loadTurnstile(){
+    if (window.turnstile) return Promise.resolve();
+    return new Promise(function(ok, bad){ var j = document.createElement("script"); j.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"; j.async = true; j.onload = ok; j.onerror = bad; document.head.appendChild(j); });
+  }
+  function openSuggest(){
+    var back = el("div", "pick-back"), box = el("form", "pick sg"); back.appendChild(box);
+    var head = el("div", "sg-head"); head.appendChild(el("h3", null, "Suggest an item")); var x = el("button", "qa-x", "×"); x.type = "button"; x.setAttribute("aria-label", "Close"); head.appendChild(x); box.appendChild(head);
+    box.appendChild(el("p", "sg-lede", "Tell us what it is and where. We check every suggestion before it goes live."));
+    function field(label, input){ var l = el("label", "sg-f"); l.appendChild(el("span", null, label)); l.appendChild(input); box.appendChild(l); return input; }
+    var nm = el("input"); nm.type = "text"; nm.required = true; nm.maxLength = 120; nm.placeholder = "e.g. Signal jammer #4, on the motel roof"; field("What is it?", nm);
+    var cs = el("select"); S.data.categories.forEach(function(c){ opt(cs, c.id, c.name); }); cs.value = S.cat !== "all" ? S.cat : "collectibles"; field("Category", cs);
+    var rs = el("select"); opt(rs, "", "Not sure"); (S.data.regions || []).forEach(function(r){ opt(rs, r, r); }); field("Region", rs);
+    var nt = el("textarea"); nt.rows = 3; nt.maxLength = 800; nt.placeholder = "How to find or complete it"; field("How to find it", nt);
+    var ph = el("input"); ph.type = "file"; ph.accept = "image/*"; field("Screenshot (optional)", ph);
+    var pos = null, sb = spotButton(function(){ return pos; }, function(p){ pos = p; }); box.appendChild(sb);
+    var ck = el("div", "checks"), ms = el("input"), sp = el("input"); ms.type = sp.type = "checkbox";
+    var l1 = el("label"); l1.appendChild(ms); l1.appendChild(document.createTextNode(" Can be missed for good"));
+    var l2 = el("label"); l2.appendChild(sp); l2.appendChild(document.createTextNode(" Story spoiler")); ck.appendChild(l1); ck.appendChild(l2); box.appendChild(ck);
+    var cr = el("input"); cr.type = "text"; cr.maxLength = 40; cr.placeholder = "Your name or PSN/Xbox ID (optional)"; field("Credit me as", cr);
+    var ts = el("div", "sg-ts"); box.appendChild(ts);
+    var msg = el("p", "sg-msg"); msg.setAttribute("role", "status"); box.appendChild(msg);
+    var go = el("button", "tk-btn solid", "Send suggestion"); go.type = "submit"; box.appendChild(go);
+    var token = "", wid = null;
+    function close(){ if (wid != null && window.turnstile) try { turnstile.remove(wid); } catch(e){} back.remove(); }
+    x.onclick = close; back.addEventListener("click", function(e){ if (e.target === back) close(); });
+    document.body.appendChild(back); nm.focus();
+    loadTurnstile().then(function(){ wid = turnstile.render(ts, { sitekey: TS_KEY, theme: "dark", callback: function(t){ token = t; }, "expired-callback": function(){ token = ""; } }); }, function(){ msg.textContent = "Couldn't load the robot check. Refresh and try again."; });
+    box.addEventListener("submit", function(e){
+      e.preventDefault();
+      if (!token){ msg.textContent = "Please finish the robot check first."; return; }
+      go.disabled = true; go.textContent = "Sending…"; msg.textContent = "";
+      var file = ph.files && ph.files[0];
+      (file ? shrink(file, 1280).then(function(a){ return shrink(file, 480).then(function(b){ return [a, b]; }); }) : Promise.resolve([null, null]))
+        .then(function(im){ return post("/api/suggest", JSON.stringify({ token: token, name: nm.value.trim(), cat: cs.value, region: rs.value, note: nt.value.trim(), missable: ms.checked, spoiler: sp.checked, pos: pos, img: im[0], thumb: im[1], credit: cr.value.trim() })); })
+        .then(function(){ box.innerHTML = ""; box.appendChild(el("h3", null, "Thank you!")); box.appendChild(el("p", "sg-lede", "We'll check it and add it to the tracker if it's right.")); var ok = el("button", "tk-btn solid", "Close"); ok.type = "button"; ok.onclick = close; box.appendChild(ok); },
+          function(err){ go.disabled = false; go.textContent = "Send suggestion"; msg.textContent = err.message; token = ""; if (wid != null) try { turnstile.reset(wid); } catch(e){} });
+    });
+  }
+
+  /* ---------- review queue (editor) ---------- */
+  function loadSubs(){
+    fetch("/edit/subs", { credentials: "same-origin", cache: "no-store" }).then(function(r){ return r.json(); }).then(function(j){
+      var box = $("subq"), list = $("subList"); if (!j.ok) return;
+      box.hidden = false; list.innerHTML = ""; $("subN").textContent = j.subs.length ? "(" + j.subs.length + ")" : "";
+      if (!j.subs.length){ list.appendChild(el("p", "empty", "No suggestions waiting.")); return; }
+      j.subs.forEach(function(sg){
+        var c = el("div", "qa-card sub-card");
+        var th = el("div", "qa-thumb"); if (sg.thumb){ var im = el("img"); im.src = sg.thumb; im.alt = ""; th.appendChild(im); } else th.appendChild(el("span", "sub-noimg", "No photo")); c.appendChild(th);
+        var f = el("div", "qa-fields");
+        var nm = el("input"); nm.type = "text"; nm.value = sg.name;
+        var cs = el("select"); S.data.categories.forEach(function(x){ opt(cs, x.id, x.name); }); cs.value = sg.cat;
+        var rs = el("select"); opt(rs, "", "No region"); (S.data.regions || []).forEach(function(r){ opt(rs, r, r); }); rs.value = sg.region || "";
+        var g = el("div", "qa-grid"); g.appendChild(nm); g.appendChild(cs); g.appendChild(rs); f.appendChild(g);
+        var nt = el("textarea"); nt.rows = 3; nt.value = sg.note || ""; f.appendChild(nt);
+        var ck = el("div", "checks"), ms = el("input"), sp = el("input"); ms.type = sp.type = "checkbox"; ms.checked = !!sg.missable; sp.checked = !!sg.spoiler;
+        var a1 = el("label"); a1.appendChild(ms); a1.appendChild(document.createTextNode(" Missable")); var a2 = el("label"); a2.appendChild(sp); a2.appendChild(document.createTextNode(" Spoiler")); ck.appendChild(a1); ck.appendChild(a2); f.appendChild(ck);
+        var by = el("input"); by.type = "text"; by.value = sg.credit || ""; by.placeholder = "Credit (optional)"; f.appendChild(by);
+        f.appendChild(el("p", "qa-msg", "Sent " + new Date(sg.created).toLocaleString() + (sg.pos ? " · has a map spot" : " · no map spot")));
+        var row = el("div", "tk-btns"), ap = el("button", "tk-btn solid", "Approve & publish"), rj = el("button", "tk-btn ghost", "Reject"); ap.type = rj.type = "button"; row.appendChild(ap); row.appendChild(rj); f.appendChild(row);
+        var out = el("p", "qa-msg"); f.appendChild(out); c.appendChild(f); list.appendChild(c);
+        function decide(action){ ap.disabled = rj.disabled = true; out.textContent = action === "approve" ? "Publishing…" : "Rejecting…";
+          post("/edit/subs", JSON.stringify({ id: sg.id, action: action, item: { name: nm.value.trim(), cat: cs.value, region: rs.value, note: nt.value.trim(), missable: ms.checked, spoiler: sp.checked, by: by.value.trim() } }))
+            .then(function(r){ c.remove(); if (action === "approve") watchLive(r.ids, r.names); toast(action === "approve" ? "Published " + r.ids[0] : "Rejected"); var left = list.querySelectorAll(".sub-card").length; $("subN").textContent = left ? "(" + left + ")" : ""; if (!left) list.appendChild(el("p", "empty", "No suggestions waiting.")); },
+              function(err){ ap.disabled = rj.disabled = false; out.textContent = err.message; }); }
+        ap.onclick = function(){ decide("approve"); }; rj.onclick = function(){ if (confirm("Reject this suggestion?")) decide("reject"); };
+      });
+    }).catch(function(){});
+  }
+
   /* ---------- quick add with AI ---------- */
   var QA = [], SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   function words(s){ return (s || "").toLowerCase().replace(/[^a-z0-9 ]+/g, " ").split(" ").filter(function(w){ return w.length > 2; }); }
@@ -783,7 +855,7 @@ footer p{margin:0 0 6px;max-width:72ch}
   }
 
   function setupEdit(){
-    $("edit").hidden = false;
+    $("edit").hidden = false; loadSubs();
     setupQuickAdd();
     var fc = $("fCat"), fr = $("fRegion");
     S.data.categories.forEach(function(c){ var o = el("option", null, c.name); o.value = c.id; fc.appendChild(o); });
@@ -865,6 +937,7 @@ footer p{margin:0 0 6px;max-width:72ch}
     try { var rq = new URLSearchParams(location.search).get("region"); if (rq && (data.regions || []).indexOf(rq) > -1) S.region = rq; } catch(e){}
     if (EDIT) setupEdit();
     render();
+    var so = $("sgOpen"); if (so){ so.addEventListener("click", openSuggest); if (location.hash === "#suggest-now") setTimeout(openSuggest, 300); }
   }
   function fallback(){ return JSON.parse($("fallback").textContent); }
   if (location.protocol === "file:") init(fallback());

@@ -503,6 +503,7 @@ const factHtml = (f) => `<div class="fact"><span>${esc(f.label)}</span><b${f.dyn
     <label class="mtoggle"><input type="checkbox" id="mLand" checked> Fan-mapped places (zoom in)</label>
     <label class="mtoggle"><input type="checkbox" id="mHide"> Hide what I've done</label>
     <p class="mstats" id="mStats">Loading…</p>
+    <a class="msuggest" href="/tracker/#suggest-now">Found something? Suggest an item</a>
     <p class="mnote">The base map is a fan reconstruction made before launch, so some areas will move as the community maps the real game. Base map: Yanis GTA VI Community Map v18, place names from <a href="https://map.gtadb.org" rel="noopener">GTADB</a> contributors, both <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a>. We cropped the legend panel and simplified the place list.</p>
   </aside>
 </main>`;
@@ -608,6 +609,10 @@ fs.copyFileSync(path.join(ROOT, "data.json"), path.join(OUT, "data.json"));
     <section class="tk-work" id="edit" hidden aria-labelledby="editTitle">
       <h2 id="editTitle">Edit mode</h2>
       <p>Only you see this. Add items as drafts, then press Publish drafts: they go straight to GitHub and are live in about a minute. Never change an item ID once it's published, or visitors lose their ticks.</p>
+      <div class="subq" id="subq" hidden>
+        <div class="qa-top"><div><h3>Suggestions from visitors <span class="subn" id="subN"></span></h3><p>Check each one, fix anything, then Approve to publish it (photo and map spot included) or Reject.</p></div></div>
+        <div id="subList"></div>
+      </div>
       <div class="qa">
         <div class="qa-top"><div><h3>Quick add with AI</h3><p>Pick screenshots, add a few words to each (or tap the mic), then let AI draft them. Check, fix, publish.</p></div>
           <label class="tk-btn solid qa-pick"><input type="file" id="qaFiles" accept="image/*" multiple>Add screenshots</label></div>
@@ -666,6 +671,10 @@ fs.copyFileSync(path.join(ROOT, "data.json"), path.join(OUT, "data.json"));
       <div id="list"></div>
     </section>
 
+    <section class="tk-help" id="suggest" aria-labelledby="helpTitle">
+      <div><h2 id="helpTitle">Found something we're missing?</h2><p>Suggest a collectible, missable, mission or anything else. Add a screenshot and a map spot if you can. Every suggestion is checked before it goes live, and you can be credited.</p></div>
+      <button class="tk-btn solid" type="button" id="sgOpen">Suggest an item</button>
+    </section>
     <section class="tk-mine" aria-labelledby="mineTitle">
       <div><h2 id="mineTitle">Your progress</h2><p>Ticks are saved in this browser. Back them up to move them to another phone or computer.</p></div>
       <div class="tk-btns"><button class="tk-btn" type="button" id="backup">Back up progress</button><button class="tk-btn" type="button" id="restoreBtn">Restore progress</button><input type="file" id="restore" accept="application/json,.json" hidden><button class="tk-btn ghost" type="button" id="reset">Reset progress</button></div>
@@ -674,7 +683,7 @@ fs.copyFileSync(path.join(ROOT, "data.json"), path.join(OUT, "data.json"));
   <div class="tk-toast" id="toast" role="status"></div>
   ${fallback}
   </div>`;
-  write("tracker/index.html", layout({ url: "/tracker/", title: "GTA 6 100% Tracker & Missables Checklist", description: "Free GTA 6 100% checklist: missables, collectibles, activities and trophies by region, with photos. Updated daily from launch.", body, script: `var TK_IMG = ${JSON.stringify(TK_IMG)};` + js, jsonld: [TRACKER_APP_LD, breadcrumbLd([["/", "Home"], ["/tracker/", "100% Tracker"]])] }));
+  write("tracker/index.html", layout({ url: "/tracker/", title: "GTA 6 100% Tracker & Missables Checklist", description: "Free GTA 6 100% checklist: missables, collectibles, activities and trophies by region, with photos. Updated daily from launch.", body, script: `var TK_IMG = ${JSON.stringify(TK_IMG)}, TS_KEY = "0x4AAAAAAGGirLnJNItJnoQN";` + js, jsonld: [TRACKER_APP_LD, breadcrumbLd([["/", "Home"], ["/tracker/", "100% Tracker"]])] }));
 }
 write("countdown/index.html", `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Moved to the Launch page</title><meta name="robots" content="noindex"><link rel="canonical" href="${SITE}/launch/"><meta http-equiv="refresh" content="0;url=/launch/"><style>html{background:#1b1d24;color:#f7f4ee;font-family:system-ui}</style></head><body><p>The countdown now lives on the <a style="color:#f7c318" href="/launch/">Launch page</a>.</p></body></html>`);
 
