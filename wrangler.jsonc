@@ -3,6 +3,12 @@
   "name": "gta6-guide",
   "main": "worker.js",
   "compatibility_date": "2026-11-01",
+  // trackgta6.com is the real address; www forwards to it with a Cloudflare redirect rule.
+  "routes": [
+    { "pattern": "trackgta6.com", "custom_domain": true },
+    { "pattern": "www.trackgta6.com", "custom_domain": true }
+  ],
+  "workers_dev": true,
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",

@@ -7,7 +7,7 @@ import path from "node:path";
 
 const ROOT = path.dirname(new URL(import.meta.url).pathname);
 const OUT = path.join(ROOT, "dist");
-const SITE = (process.env.SITE_URL || "https://gta6-tracker-snowy.vercel.app").replace(/\/$/, "");
+const SITE = (process.env.SITE_URL || "https://trackgta6.com").replace(/\/$/, "");
 const SITE_NAME = "GTA 6 Guide";
 
 const read = (f) => JSON.parse(fs.readFileSync(path.join(ROOT, f), "utf8"));
