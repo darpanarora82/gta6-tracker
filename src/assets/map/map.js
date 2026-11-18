@@ -10,13 +10,30 @@
   function el(t, c, txt){ var n = document.createElement(t); if (c) n.className = c; if (txt != null) n.textContent = txt; return n; }
 
   var tileBounds = L.latLngBounds([[-800, 128], [-128, 622]]);
-  var map = L.map("map", { crs: L.CRS.Simple, minZoom: 1, maxZoom: 7, zoomSnap: 0.5, zoomDelta: 0.5, preferCanvas: true, zoomControl: false,
+  var map = L.map("map", { crs: L.CRS.Simple, minZoom: -1, maxZoom: 7, zoomSnap: 0.5, zoomDelta: 0.5, preferCanvas: true, zoomControl: false,
     maxBounds: tileBounds.pad(0.15), maxBoundsViscosity: 0.8, attributionControl: true });
   map.attributionControl.setPrefix(false); window.gtaMap = map;
   L.control.zoom({ position: "topright" }).addTo(map);
-  L.tileLayer("/assets/map/t/{z}/{y}_{x}.jpg", { tileSize: 256, minZoom: 0, maxNativeZoom: 5, maxZoom: 7, noWrap: true, bounds: tileBounds, keepBuffer: 3,
+  L.tileLayer("/assets/map/t/{z}/{y}_{x}.jpg", { tileSize: 256, minZoom: -2, minNativeZoom: 0, maxNativeZoom: 5, maxZoom: 7, noWrap: true, bounds: tileBounds, keepBuffer: 3,
     attribution: 'Map: Yanis GTA VI Community Map v18 via <a href="https://map.gtadb.org" rel="noopener">GTADB</a> contributors, <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a>, legend panel cropped' }).addTo(map);
-  map.fitBounds([[-790, 190], [-170, 610]], { paddingTopLeft: [window.innerWidth > 700 ? 360 : 0, 0] });
+  /* Phones: the map fills the screen under the header; search and filters live in a pull-up sheet. */
+  var PHONE = window.matchMedia("(max-width: 700px)");
+  var wrap = document.querySelector(".mapwrap"), bar = document.querySelector(".bar"), panel = document.querySelector(".mpanel");
+  function fitScreen(){
+    if (PHONE.matches){ var top = bar ? bar.getBoundingClientRect().height : 0; wrap.style.height = Math.max(320, window.innerHeight - top) + "px"; }
+    else wrap.style.height = "";
+    map.invalidateSize();
+  }
+  var handle = document.createElement("button"); handle.type = "button"; handle.className = "mhandle"; handle.setAttribute("aria-expanded", "false");
+  handle.innerHTML = '<span class="grab" aria-hidden="true"></span><span>Search &amp; filters</span>';
+  handle.addEventListener("click", function(){ var o = panel.classList.toggle("open"); handle.setAttribute("aria-expanded", o ? "true" : "false"); });
+  panel.insertBefore(handle, panel.firstChild);
+  map.on("click", function(){ if (PHONE.matches && panel.classList.contains("open")){ panel.classList.remove("open"); handle.setAttribute("aria-expanded", "false"); } });
+  L.DomEvent.disableClickPropagation(panel); L.DomEvent.disableScrollPropagation(panel);
+  window.addEventListener("resize", fitScreen); window.addEventListener("orientationchange", function(){ setTimeout(fitScreen, 300); });
+  if (PHONE.matches) document.body.classList.add("map-phone");
+  fitScreen();
+  map.fitBounds([[-790, 190], [-170, 610]], { paddingTopLeft: [PHONE.matches ? 0 : 360, 0], paddingBottomRight: [0, PHONE.matches ? 60 : 0] });
 
   var EDIT = /^\/edit\/map\/?$/.test(location.pathname);
   var done = load(), pins = {}, items = [], all = [], cats = [], regions = [], marks = [];
