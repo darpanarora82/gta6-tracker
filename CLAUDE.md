@@ -44,6 +44,7 @@ The owner plays on PS5, sends screenshots with a few words each, and Claude turn
    }
    ```
 
+   Optional `"pos": [x, y]` puts the item on the map (GTA world units; the /edit "Set map spot" picker fills it in).
    Only include `missable` / `spoiler` when true. `added` (YYYY-MM-DD) shows a "New" badge for 36 hours.
    Set the top-level `"updated"` to today's date.
 5. Run `node build.mjs` to check it builds, commit to `main`, push, and reply with the list of IDs that went live.
@@ -59,6 +60,17 @@ draft each item. The owner reviews the drafts and presses **Publish all**.
 **Publish drafts**. `worker.js` uploads photos and commits items to GitHub in one commit, using the Cloudflare
 secret `GITHUB_TOKEN` (fine-grained, Contents read/write on this repo only). If an ID is already taken, the
 Worker renumbers it.
+
+## Map, news and rumours
+
+- `/map/` uses the Yanis GTA VI Community Map v18 tiles from GTADB (CC BY 4.0), self-hosted in `src/assets/map/t/{z}/{y}_{x}.jpg`
+  (zoom 0–5, legend panel cropped). Place names: `src/assets/map/landmarks.json` (GTADB, CC BY 4.0). Keep the credits.
+- `content/news.json` is written by the Worker every 3 hours (Rockstar YouTube + Google News; headline, source, date, link only).
+  Don't edit it by hand.
+- `content/rumors.json`: claims with status rumour / leak / reported / estimate / confirmed / debunked, a "settles" line and sources.
+  Only mark confirmed/debunked with Rockstar's word, the game itself, or two reputable outlets.
+- A daily scheduled task ("GTA 6 site daily update") researches new info and opens a PR updating rumours and content/*.json.
+- `dist/` is not committed; Cloudflare builds it.
 
 ## Where things live
 
