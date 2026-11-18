@@ -123,6 +123,14 @@ const NAV = [
 // Search engines show about 155 characters of a description: add the tail only if it fits.
 const fitDesc = (main, tail) => (main + " " + tail).length <= 155 ? main + " " + tail : main;
 
+// Page backdrop: a tiny pre-blurred copy of the page's own photo (src/assets/img/bg/<kind>-<id>.jpg).
+function bgFor(image, bg) {
+  if (bg) return `/assets/img/bg/${bg}.jpg`;
+  const m = /^\/assets\/img\/(characters|places)\/([a-z0-9-]+?)(-\d+)?\.jpe?g$/i.exec(image || "");
+  const f = m && `${m[1]}-${m[2]}`;
+  return f && fs.existsSync(path.join(ROOT, "src/assets/img/bg", f + ".jpg")) ? `/assets/img/bg/${f}.jpg` : "/assets/img/bg/places-vice-city.jpg";
+}
+
 const TRACKER_APP_LD = {
   "@context": "https://schema.org", "@type": "WebApplication", name: "GTA 6 100% Completion Tracker",
   url: SITE + "/tracker/", applicationCategory: "GameApplication", operatingSystem: "Any (web browser)",
@@ -130,7 +138,7 @@ const TRACKER_APP_LD = {
   description: "Free checklist for Grand Theft Auto VI: missables, collectibles, side activities and trophies, filtered by region, with progress saved on your device.",
 };
 
-function layout({ url, title, description, body, jsonld, script, image }) {
+function layout({ url, title, description, body, jsonld, script, image, bg }) {
   pages.push(url);
   const full = url === "/" ? `GTA 6 Guide & 100% Tracker: release times, prices, characters, map` : `${title} | ${SITE_NAME}`;
   const img = SITE + (image || "/assets/og.jpg");
@@ -170,7 +178,7 @@ ${ANALYTICS}
 <script defer src="/assets/region.js"></script>
 ${lds.map((j) => `<script type="application/ld+json">${JSON.stringify(j).replace(/</g, "\\u003c")}</script>`).join("\n")}
 </head>
-<body>
+<body style="--bg:url('${bgFor(image, bg)}')">
 <header class="bar"><div class="wrap"><a class="logo" href="/" aria-label="${SITE_NAME} home">${LOGO_MARK}<span><b>GTA 6 Guide</b><small>Leonida field guide</small></span></a><nav class="nav" aria-label="Main">${nav}</nav><a class="hcta${url === "/tracker/" ? " on" : ""}" href="/tracker/"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l3.5 3.5L16 5.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>100% Tracker</a></div></header>
 ${body}
 <footer class="site"><div class="wrap">
