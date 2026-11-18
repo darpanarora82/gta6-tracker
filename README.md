@@ -1,6 +1,6 @@
 # GTA 6 Guide
 
-Fan-made GTA 6 guide with a 100% tracker. Vercel builds it on every commit by running `node build.mjs` (no packages needed) and publishes the `dist` folder.
+Fan-made GTA 6 guide with a 100% tracker. Live at https://trackgta6.com. Cloudflare builds it on every push to `main` by running `node build.mjs` (no packages needed) and deploys the `dist` folder.
 
 ## Where things live
 
@@ -13,7 +13,7 @@ Fan-made GTA 6 guide with a 100% tracker. Vercel builds it on every commit by ru
 | `src/assets/` | Shared styles and favicon | Changing the look |
 | `src/assets/img/` | Official photos for characters and places (see IMAGES.md) | Adding photos |
 | `build.mjs` | Turns the content into pages | Adding a new kind of page |
-| `middleware.js` | Password check for `/edit` (needs `EDIT_PASSWORD` in Vercel) | Rarely |
+| `worker.js` | `/edit`: password check, publishing, AI drafts | Changing the editor |
 
 ## Rules
 - Write descriptions in your own words and keep a source link for every fact.
@@ -22,12 +22,12 @@ Fan-made GTA 6 guide with a 100% tracker. Vercel builds it on every commit by ru
 
 ## Hosting on Cloudflare (Workers)
 
-The same repo deploys to Cloudflare Workers. Static pages are served free and unlimited; the small
+The site runs on Cloudflare Workers. Static pages are served free and unlimited; the small
 `worker.js` only runs for `/edit` to check the password.
 
 - Config: `wrangler.jsonc` (serves `./dist`, runs the worker first for `/edit`).
 - Build command: `node build.mjs` · Deploy command: `npx wrangler deploy`.
-- Secret: `EDIT_PASSWORD` (Settings → Variables and Secrets → type Secret).
+- Secrets: `EDIT_PASSWORD` and `GITHUB_TOKEN` (Settings → Variables and Secrets → type Secret).
 - Analytics: create a site in Cloudflare Web Analytics, then add a build variable
-  `CF_ANALYTICS_TOKEN` with its token. On Vercel, Vercel Analytics is used automatically.
+  `CF_ANALYTICS_TOKEN` with its token.
 - Redirects live in `dist/_redirects`, cache headers in `dist/_headers` (both written by the build).
