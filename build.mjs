@@ -117,7 +117,7 @@ const HERO = `<svg class="scene" viewBox="0 0 1200 600" preserveAspectRatio="xMi
 /* ======================= layout ======================= */
 const NAV = [
   ["/tracker/", "100% Tracker"], ["/launch/", "Launch"], ["/editions/", "Editions"], ["/videos/", "Videos"],
-  ["/characters/", "Characters"], ["/places/", "Places"], ["/features/", "Gameplay"], ["/radio/", "Radio"], ["/faq/", "FAQ"],
+  ["/characters/", "Characters"], ["/places/", "Places"], ["/map/", "Map"], ["/features/", "Gameplay"], ["/radio/", "Radio"], ["/faq/", "FAQ"],
 ];
 
 // Search engines show about 155 characters of a description: add the tail only if it fits.
@@ -138,7 +138,7 @@ const TRACKER_APP_LD = {
   description: "Free checklist for Grand Theft Auto VI: missables, collectibles, side activities and trophies, filtered by region, with progress saved on your device.",
 };
 
-function layout({ url, title, description, body, jsonld, script, image, bg }) {
+function layout({ url, title, description, body, jsonld, script, image, bg, head, tail }) {
   pages.push(url);
   const full = url === "/" ? `GTA 6 Guide & 100% Tracker: release times, prices, characters, map` : `${title} | ${SITE_NAME}`;
   const img = SITE + (image || "/assets/og.jpg");
@@ -175,6 +175,7 @@ ${ANALYTICS}
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>${SITE_CSS}</style>
+${head || ""}
 <script defer src="/assets/region.js"></script>
 ${lds.map((j) => `<script type="application/ld+json">${JSON.stringify(j).replace(/</g, "\\u003c")}</script>`).join("\n")}
 </head>
@@ -186,6 +187,7 @@ ${body}
   <p>Fan-made and unofficial. Not affiliated with or endorsed by Rockstar Games or Take-Two Interactive. Grand Theft Auto and related names are trademarks of their owners. Screenshots are official Rockstar Games images, credited where shown. <a href="/faq/#sources">Where our facts come from</a>.</p>
 </div></footer>
 <script>${LB_SCRIPT}${script || ""}</script>
+${tail || ""}
 </body>
 </html>`;
 }
@@ -469,6 +471,32 @@ const factHtml = (f) => `<div class="fact"><span>${esc(f.label)}</span><b${f.dyn
 {
   const body = pageHead([["/", "Home"], [null, "Videos"]], "GTA 6 trailers and videos", C.videos.intro) + `<main class="wrap"><section class="sec"><div class="vids">${VIDEOS.map(vidCard).join("")}</div></section></main>`;
   write("videos/index.html", layout({ url: "/videos/", title: "Trailers and videos", description: "Watch every official GTA 6 video: the Launch Trailer, An Extended Look, Trailer 2, Trailer 1 and the cover art reveal, with dates and what each one shows.", body, script: YT_SCRIPT, jsonld: breadcrumbLd([["/", "Home"], ["/videos/", "Videos"]]) }));
+}
+
+// MAP: GTADB community tiles (CC BY 4.0) + tracker items with a pos as pins
+{
+  const cats = JSON.parse(fs.readFileSync(path.join(ROOT, "data.json"), "utf8")).categories || [];
+  const body = `<main class="mapwrap">
+  <div id="map" class="mapcanvas" role="region" aria-label="Map of Leonida"></div>
+  <aside class="mpanel" aria-label="Map controls">
+    <h1>Map of Leonida</h1>
+    <p class="mlede">Every tracker item with a known spot, on the community-built map. Tap a pin to tick it off.</p>
+    <div class="msearch"><input id="mSearch" type="search" placeholder="Search places and items" aria-label="Search the map" autocomplete="off"><ul id="mResults" class="mresults"></ul></div>
+    <div class="mchips" role="group" aria-label="Show">
+      <button type="button" data-mcat="all" aria-pressed="true">Everything</button>
+      ${cats.map((c) => `<button type="button" data-mcat="${esc(c.id)}" aria-pressed="false"><i class="dot-${esc(c.id)}"></i>${esc(c.name)}</button>`).join("")}
+    </div>
+    <label class="mtoggle"><input type="checkbox" id="mLand" checked> Fan-mapped places (zoom in)</label>
+    <label class="mtoggle"><input type="checkbox" id="mHide"> Hide what I've done</label>
+    <p class="mstats" id="mStats">Loading…</p>
+    <p class="mnote">The base map is a fan reconstruction made before launch, so some areas will move as the community maps the real game. Base map: Yanis GTA VI Community Map v18, place names from <a href="https://map.gtadb.org" rel="noopener">GTADB</a> contributors, both <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a>. We cropped the legend panel and simplified the place list.</p>
+  </aside>
+</main>`;
+  write("map/index.html", layout({ url: "/map/", title: "GTA 6 Map of Leonida with Tracker Pins", description: "Interactive GTA 6 map of Leonida with missables, collectibles and activities pinned as they're found. Tick items off on the map; progress syncs with the tracker.", body,
+    bg: "places-leonida-keys",
+    head: `<link rel="stylesheet" href="/assets/leaflet/leaflet.css">`,
+    tail: `<script src="/assets/leaflet/leaflet.js"></script><script src="/assets/map/map.js"></script>`,
+    jsonld: breadcrumbLd([["/", "Home"], ["/map/", "Map"]]) }));
 }
 
 // FAQ

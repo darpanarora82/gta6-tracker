@@ -75,6 +75,7 @@ async function publish(request, env) {
       if (note) it.note = note;
       if (d.missable) it.missable = true;
       if (d.spoiler) it.spoiler = true;
+      if (Array.isArray(d.pos) && d.pos.length === 2 && d.pos.every((n) => Number.isFinite(n) && Math.abs(n) <= 16384)) it.pos = d.pos.map(Math.round);
       if (/^[0-9a-f]{40}$/.test(d.imgBlob || "")) { tree.push({ path: `src/assets/img/items/${id}.jpg`, mode: "100644", type: "blob", sha: d.imgBlob }); it.img = `/assets/img/items/${id}.jpg`; }
       if (/^[0-9a-f]{40}$/.test(d.thumbBlob || "")) { tree.push({ path: `src/assets/img/items/${id}-t.jpg`, mode: "100644", type: "blob", sha: d.thumbBlob }); it.thumb = `/assets/img/items/${id}-t.jpg`; }
       it.added = /^\d{4}-\d{2}-\d{2}$/.test(d.added || "") ? d.added : today;
