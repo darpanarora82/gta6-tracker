@@ -28,7 +28,7 @@
   handle.innerHTML = '<span class="grab" aria-hidden="true"></span><span>Search &amp; filters</span>';
   handle.addEventListener("click", function(){ var o = panel.classList.toggle("open"); handle.setAttribute("aria-expanded", o ? "true" : "false"); });
   panel.insertBefore(handle, panel.firstChild);
-  map.on("click", function(){ if (PHONE.matches && panel.classList.contains("open")){ panel.classList.remove("open"); handle.setAttribute("aria-expanded", "false"); } });
+  map.on("click", function(){ if (PHONE.matches && panel.classList.contains("open")){ panel.classList.remove("open"); handle.setAttribute("aria-expanded", "false"); if (EDIT) sheetWasOpen = true; } });
   L.DomEvent.disableClickPropagation(panel); L.DomEvent.disableScrollPropagation(panel);
   window.addEventListener("resize", fitScreen); window.addEventListener("orientationchange", function(){ setTimeout(fitScreen, 300); });
   if (PHONE.matches) document.body.classList.add("map-phone");
@@ -144,23 +144,38 @@
         .then(function(sh){ var x = { id: "", cat: cs.value, name: nm.value.trim(), region: rs.value, note: nt.value.trim(), missable: ms.checked, spoiler: sp.checked, added: new Date().toISOString().slice(0, 10), pos: pos };
           if (sh[0]) x.imgBlob = sh[0]; if (sh[1]) x.thumbBlob = sh[1]; return post("/edit/publish", JSON.stringify({ items: [x] })).then(function(j){ return [x, j]; }); })
         .then(function(r){ var x = r[0], id = r[1].ids[0]; var it = { id: id, cat: x.cat, catName: (cats.find(function(c){ return c.id === x.cat; }) || {}).name, name: x.name, region: x.region, note: x.note, missable: x.missable, spoiler: x.spoiler, pos: pos };
-          all.push(it); items.push(it); map.closePopup(); drawItems(); say("Published " + id + ". It goes live for visitors in about a minute."); })
+          all.push(it); items.push(it); map.closePopup(); if (f._close) f._close(); drawItems(); say("Published " + id + ". It goes live for visitors in about a minute."); })
         .catch(function(err){ go.disabled = false; go.textContent = "Publish"; say("Publish failed: " + err.message); });
     });
-    L.popup({ maxWidth: 300, closeOnClick: false }).setLatLng(latlng).setContent(f).openOn(map); setTimeout(function(){ nm.focus(); }, 50);
+    if (PHONE.matches){
+      // Phones: a full-screen sheet, so the keyboard and the header never hide the form.
+      var back = el("div", "pick-back edsheet"), box = el("div", "pick"); box.appendChild(f); back.appendChild(box);
+      var x = el("button", "qa-x", "×"); x.type = "button"; x.setAttribute("aria-label", "Cancel"); f.insertBefore(x, f.firstChild);
+      var marker = L.circleMarker(latlng, { radius: 9, color: "#120a2a", weight: 3, fillColor: "#ffd84d", fillOpacity: 1 }).addTo(map);
+      var done = function(){ back.remove(); map.removeLayer(marker); };
+      x.onclick = done; back.addEventListener("click", function(e){ if (e.target === back) done(); });
+      f._close = done;
+      document.body.appendChild(back); setTimeout(function(){ nm.focus(); }, 50); return;
+    }
+    L.popup({ maxWidth: 300, closeOnClick: false, autoPanPaddingTopLeft: L.point(16, 70), autoPanPaddingBottomRight: L.point(16, 70) }).setLatLng(latlng).setContent(f).openOn(map); setTimeout(function(){ nm.focus(); }, 50);
+  }
+  var sheetWasOpen = false;
+  function closeSheet(){ var p = document.querySelector(".mpanel"); if (p && p.classList.contains("open")){ p.classList.remove("open"); var h = p.querySelector(".mhandle"); if (h) h.setAttribute("aria-expanded", "false"); } }
+  function banner(text){
+    var b = document.getElementById("edBanner");
+    if (!b){ b = el("div", "edbanner"); b.id = "edBanner"; map.getContainer().appendChild(b); L.DomEvent.disableClickPropagation(b); }
+    b.textContent = text;
   }
   function initEditor(){
     var box = el("div", "edbox");
     box.appendChild(el("h2", null, "Editor"));
-    box.appendChild(el("p", "edhelp", "Drag a pin to move it. Turn on Add, then tap the map to create an item there. Unplaced items can be dropped on the map too."));
-    var add = el("button", "mpop-btn", "➕ Add item on the map"); add.type = "button"; box.appendChild(add);
-    add.onclick = function(){ addMode = !addMode; placeId = ""; add.classList.toggle("on", addMode); add.textContent = addMode ? "Tap the map to place it… (cancel)" : "➕ Add item on the map"; map.getContainer().style.cursor = addMode ? "crosshair" : ""; };
+    box.appendChild(el("p", "edhelp", "Tap anywhere on the map to add an item there. Drag a pin to move it. Items without a spot can be placed below."));
     var un = all.filter(function(i){ return !i.pos; });
     if (un.length){
       var row = el("div", "edrow"), sel = el("select"); opt(sel, "", "Not on the map yet (" + un.length + ")");
       un.forEach(function(i){ opt(sel, i.id, i.id + " · " + i.name); });
       var pl = el("button", "mpop-btn", "Place"); pl.type = "button";
-      pl.onclick = function(){ if (!sel.value) return; placeId = sel.value; addMode = false; add.classList.remove("on"); map.getContainer().style.cursor = "crosshair"; say("Tap the map where " + placeId + " is."); };
+      pl.onclick = function(){ if (!sel.value) return; placeId = sel.value; closeSheet(); say("Tap the map where " + placeId + " is."); banner("Tap where " + placeId + " is"); };
       row.appendChild(sel); row.appendChild(pl); box.appendChild(row);
     }
     var save = el("button", "mpop-btn solid", "No pin changes"); save.type = "button"; save.id = "edSave"; save.disabled = true; box.appendChild(save);
@@ -169,10 +184,15 @@
     var msg = el("p", "edmsg"); msg.id = "edMsg"; msg.setAttribute("role", "status"); box.appendChild(msg);
     var back = el("a", "edback", "← Back to the editor"); back.href = "/edit"; box.appendChild(back);
     document.querySelector(".mpanel").insertBefore(box, document.querySelector(".mpanel .msearch"));
+    map.getContainer().classList.add("is-editing");
+    banner("Editor: tap the map to add an item");
+    map.on("popupopen", function(){ var b = document.getElementById("edBanner"); if (b) b.style.display = "none"; });
+    map.on("popupclose", function(){ var b = document.getElementById("edBanner"); if (b) b.style.display = ""; });
     map.on("click", function(e){
-      if (placeId){ var it = all.find(function(i){ return i.id === placeId; }); placeId = ""; map.getContainer().style.cursor = "";
+      if (sheetWasOpen) { sheetWasOpen = false; return; }   // first tap just closes the phone sheet
+      if (placeId){ var it = all.find(function(i){ return i.id === placeId; }); placeId = ""; banner("Editor: tap the map to add an item");
         if (it){ it.pos = game(e.latlng); moves[it.id] = it.pos; if (items.indexOf(it) < 0) items.push(it); drawItems(); refreshSave(); say("Placed " + it.name + ". Press Save pin changes."); } return; }
-      if (addMode){ addMode = false; add.classList.remove("on"); add.textContent = "➕ Add item on the map"; map.getContainer().style.cursor = ""; addForm(e.latlng); }
+      addForm(e.latlng);
     });
     window.addEventListener("beforeunload", function(e){ if (Object.keys(moves).length){ e.preventDefault(); e.returnValue = ""; } });
   }

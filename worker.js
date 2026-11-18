@@ -218,7 +218,7 @@ async function trophies(request, env) {
 }
 
 /* ---------- news feed ----------
-   Every 3 hours: Rockstar's YouTube uploads about GTA VI + Google News headlines for "GTA 6".
+   Every hour: Rockstar's YouTube uploads about GTA VI + Google News headlines for "GTA 6".
    Only headline, source, date and link are kept (no article text). Writes content/news.json. */
 const YT_FEED = "https://www.youtube.com/feeds/videos.xml?channel_id=UC6VcWc1rAoWdBCM0JxrRQ3A";
 const GN_FEED = "https://news.google.com/rss/search?q=%22GTA%206%22%20OR%20%22GTA%20VI%22%20OR%20%22Grand%20Theft%20Auto%20VI%22&hl=en-US&gl=US&ceid=US:en";
@@ -271,7 +271,8 @@ async function updateNews(env) {
     const cur = old ? JSON.parse(old) : { items: [] };
     const byUrl = new Map(cur.items.map((i) => [i.url, i]));
     const seenTitle = new Set(cur.items.map((i) => i.title.toLowerCase()));
-    for (const n of fresh) { if (!byUrl.has(n.url) && !seenTitle.has(n.title.toLowerCase())) { byUrl.set(n.url, n); seenTitle.add(n.title.toLowerCase()); added++; } }
+    const seenAt = new Date().toISOString();
+    for (const n of fresh) { if (!byUrl.has(n.url) && !seenTitle.has(n.title.toLowerCase())) { n.seen = seenAt; byUrl.set(n.url, n); seenTitle.add(n.title.toLowerCase()); added++; } }
     if (!added) return null;
     const items = [...byUrl.values()].sort((a, b) => (b.date || "").localeCompare(a.date || "")).slice(0, 80);
     return JSON.stringify({ updated: new Date().toISOString(), items }, null, 2) + "\n";
@@ -397,7 +398,7 @@ export default {
   // Once a day: refresh "x% of players" for every trophy, if the list has been imported.
   async scheduled(event, env, ctx) {
     if (!env.GITHUB_TOKEN) return;
-    if (event.cron === "17 */3 * * *") { ctx.waitUntil(updateNews(env)); return; }
+    if (event.cron === "17 * * * *") { ctx.waitUntil(updateNews(env)); return; }
     if (!env.PSN_NPSSO) return;
     ctx.waitUntil((async () => {
       const r = await env.ASSETS.fetch(new Request("https://trackgta6.com/data.json"));
