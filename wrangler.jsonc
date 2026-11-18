@@ -17,6 +17,8 @@
     "run_worker_first": ["/edit", "/edit/*"]
   },
   "ai": { "binding": "AI" },
+  // 03:17 IST daily: refresh trophy rarity from PlayStation (does nothing until trophies are imported).
+  "triggers": { "crons": ["47 21 * * *"] },
   "vars": { "GITHUB_REPO": "darpanarora82/gta6-tracker" },
   "observability": { "enabled": true }
 }

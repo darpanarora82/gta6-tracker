@@ -97,6 +97,119 @@ async function publish(request, env) {
 }
 
 
+/* ---------- trophies from PlayStation ----------
+   Uses the owner's NPSSO token (Cloudflare secret PSN_NPSSO) to read the official trophy list:
+   names, Rockstar's one-line requirement, grade, hidden flag and how many players have each one.
+   Trophy IDs are fixed from PlayStation's own numbering (trophies-001 is PSN trophy 0), so
+   re-importing updates the same items and never touches our tips, regions or photos. */
+const PSN_AUTH = "https://ca.account.sony.com/api/authz/v3/oauth";
+const PSN_TROPHY = "https://m.np.playstation.com/api/trophy";
+const PSN_REDIRECT = "com.scee.psxandroid.scecompcall://redirect";
+const GTA6 = /grand theft auto vi\b|\bgta vi\b|\bgta 6\b/i;
+const GRADES = ["platinum", "gold", "silver", "bronze"];
+
+class PsnError extends Error {}
+
+async function psnToken(env) {
+  if (!env.PSN_NPSSO) throw new PsnError("Add your PlayStation token as the Cloudflare secret PSN_NPSSO first.");
+  const q = new URLSearchParams({ access_type: "offline", client_id: "09515159-7237-4370-9b40-3806e67c0891", redirect_uri: PSN_REDIRECT, response_type: "code", scope: "psn:mobile.v2.core psn:clientapp" });
+  const a = await fetch(`${PSN_AUTH}/authorize?${q}`, { headers: { Cookie: `npsso=${env.PSN_NPSSO}` }, redirect: "manual" });
+  const loc = a.headers.get("location") || "";
+  const code = loc.includes("?code=") ? new URLSearchParams(loc.split("redirect/")[1] || loc.split("?")[1]).get("code") : null;
+  if (!code) throw new PsnError("PlayStation sign-in failed. Your PSN_NPSSO token has probably expired: get a fresh one and update the secret.");
+  const t = await fetch(`${PSN_AUTH}/token`, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded", Authorization: "Basic MDk1MTUxNTktNzIzNy00MzcwLTliNDAtMzgwNmU2N2MwODkxOnVjUGprYTV0bnRCMktxc1A=" },
+    body: new URLSearchParams({ code, redirect_uri: PSN_REDIRECT, grant_type: "authorization_code", token_format: "jwt" }),
+  });
+  const j = await t.json().catch(() => ({}));
+  if (!j.access_token) throw new PsnError("PlayStation sign-in failed at the token step. Try again in a minute.");
+  return j.access_token;
+}
+
+async function psnGet(token, path) {
+  const r = await fetch(PSN_TROPHY + path, { headers: { Authorization: `Bearer ${token}`, "Accept-Language": "en-US" } });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new PsnError(`PlayStation said ${r.status}: ${(j.error && j.error.message) || "request failed"}`);
+  return j;
+}
+
+async function findGta6(token) {
+  const j = await psnGet(token, "/v1/users/me/trophyTitles?limit=800");
+  return (j.trophyTitles || []).filter((t) => GTA6.test(t.trophyTitleName || "")).map((t) => {
+    const c = t.definedTrophies || {};
+    return { id: t.npCommunicationId, name: t.trophyTitleName, platform: t.trophyTitlePlatform, service: t.npServiceName, total: (c.platinum || 0) + (c.gold || 0) + (c.silver || 0) + (c.bronze || 0) };
+  });
+}
+
+// Reads the trophy list and writes it into data.json. Returns { changed, added, updated, ids, names }.
+async function importTrophies(env, titleId, service) {
+  const token = await psnToken(env);
+  const svc = service === "trophy" ? "trophy" : "trophy2";
+  const list = (await psnGet(token, `/v1/npCommunicationIds/${titleId}/trophyGroups/all/trophies?npServiceName=${svc}`)).trophies || [];
+  if (!list.length) throw new PsnError("PlayStation returned an empty trophy list for this game.");
+  const rate = {};
+  try {
+    const mine = await psnGet(token, `/v1/users/me/npCommunicationIds/${titleId}/trophyGroups/all/trophies?npServiceName=${svc}`);
+    (mine.trophies || []).forEach((t) => { if (t.trophyEarnedRate != null) rate[t.trophyId] = String(t.trophyEarnedRate); });
+  } catch { /* rarity is optional */ }
+
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const ref = await ghJson(env, "/git/ref/heads/main");
+    const head = ref.object.sha;
+    const commit = await ghJson(env, `/git/commits/${head}`);
+    const file = await ghJson(env, `/contents/data.json?ref=${head}`);
+    const data = JSON.parse(b64ToText(file.content));
+    const cat = data.categories.find((c) => c.id === "trophies");
+    if (!cat) throw new PsnError("data.json has no trophies category.");
+    const before = JSON.stringify(cat);
+    const today = new Date().toISOString().slice(0, 10);
+    const byId = new Map((cat.items || []).map((i) => [i.id, i]));
+    const fromPsn = [], added = [], names = [];
+    for (const t of list) {
+      const id = `trophies-${String(t.trophyId + 1).padStart(3, "0")}`;
+      const old = byId.get(id);
+      const it = old || { id };
+      it.name = clean(t.trophyName, 120) || it.name || `Trophy ${t.trophyId + 1}`;
+      const desc = clean(t.trophyDetail, 400); if (desc) it.desc = desc;
+      if (GRADES.includes(t.trophyType)) it.grade = t.trophyType;
+      if (rate[t.trophyId] != null) it.rarity = rate[t.trophyId];
+      it.psn = t.trophyId;
+      if (!old) { if (t.trophyHidden) it.spoiler = true; it.added = today; added.push(id); names.push(it.name); }
+      byId.delete(id);
+      fromPsn.push(it);
+    }
+    // Trophies in PlayStation's order first (platinum leads), then anything we added by hand.
+    cat.items = fromPsn.concat([...byId.values()]);
+    cat.psnTitle = titleId; cat.psnService = svc;
+    if (JSON.stringify(cat) === before) return { changed: false, added: [], updated: 0, ids: [], names: [] };
+    data.updated = today;
+    const blob = await ghJson(env, "/git/blobs", { method: "POST", body: JSON.stringify({ content: JSON.stringify(data, null, 2) + "\n", encoding: "utf-8" }) });
+    const newTree = await ghJson(env, "/git/trees", { method: "POST", body: JSON.stringify({ base_tree: commit.tree.sha, tree: [{ path: "data.json", mode: "100644", type: "blob", sha: blob.sha }] }) });
+    const msg = added.length ? `Trophies: import ${list.length} from PlayStation (${added.length} new)` : `Trophies: refresh rarity from PlayStation`;
+    const newCommit = await ghJson(env, "/git/commits", { method: "POST", body: JSON.stringify({ message: msg, tree: newTree.sha, parents: [head] }) });
+    const move = await gh(env, "/git/refs/heads/main", { method: "PATCH", body: JSON.stringify({ sha: newCommit.sha }) });
+    if (move.ok) return { changed: true, added, updated: list.length - added.length, ids: added, names };
+    if (move.status !== 422) throw new Error(`GitHub ${move.status}: couldn't update main`);
+  }
+  throw new Error("The site changed while importing. Try again.");
+}
+
+async function trophies(request, env) {
+  const { action, id, service } = await request.json().catch(() => ({}));
+  if (action === "check") {
+    const token = await psnToken(env);
+    const found = await findGta6(token);
+    if (!found.length) return json({ ok: true, found: [], message: "GTA 6 isn't in this PlayStation account's trophy list yet. Start the game once on your PS5, then check again." });
+    return json({ ok: true, found });
+  }
+  if (action === "import") {
+    if (!/^NPWR\d{5}_\d{2}$/.test(id || "")) return json({ ok: false, error: "Check for the trophy list first." }, 400);
+    return json({ ok: true, ...(await importTrophies(env, id, service)) });
+  }
+  return json({ ok: false, error: "Unknown action" }, 400);
+}
+
 const VISION = "@cf/meta/llama-3.2-11b-vision-instruct";
 async function draft(request, env) {
   const { image, hint, categories, regions } = await request.json();
@@ -142,6 +255,17 @@ ${cats}
 }
 
 export default {
+  // Once a day: refresh "x% of players" for every trophy, if the list has been imported.
+  async scheduled(event, env, ctx) {
+    if (!env.PSN_NPSSO || !env.GITHUB_TOKEN) return;
+    ctx.waitUntil((async () => {
+      const r = await env.ASSETS.fetch(new Request("https://trackgta6.com/data.json"));
+      const data = await r.json();
+      const cat = (data.categories || []).find((c) => c.id === "trophies");
+      if (cat && cat.psnTitle) await importTrophies(env, cat.psnTitle, cat.psnService);
+    })());
+  },
+
   async fetch(request, env) {
     const url = new URL(request.url);
     const p = url.pathname;
@@ -152,6 +276,11 @@ export default {
     if (request.method === "POST" && p === "/edit/draft") {
       if (!env.AI) return json({ ok: false, error: "AI isn't connected to this Worker." }, 500);
       try { return await draft(request, env); } catch (e) { return json({ ok: false, error: "AI error: " + (e.message || e) }, 502); }
+    }
+    if (request.method === "POST" && p === "/edit/trophies") {
+      if (!env.GITHUB_TOKEN || !env.GITHUB_REPO) return json({ ok: false, error: "Publishing isn't set up: add the GITHUB_TOKEN secret in Cloudflare." }, 500);
+      try { return await trophies(request, env); }
+      catch (e) { return json({ ok: false, error: e instanceof PsnError ? e.message : "Import failed: " + (e.message || e) }, 502); }
     }
     if (request.method === "POST" && (p === "/edit/blob" || p === "/edit/publish")) {
       if (!env.GITHUB_TOKEN || !env.GITHUB_REPO) return json({ ok: false, error: "Publishing isn't set up: add the GITHUB_TOKEN secret in Cloudflare." }, 500);
