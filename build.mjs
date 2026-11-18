@@ -116,7 +116,7 @@ const HERO = `<svg class="scene" viewBox="0 0 1200 600" preserveAspectRatio="xMi
 
 /* ======================= layout ======================= */
 const NAV = [
-  ["/tracker/", "100% Tracker"], ["/launch/", "Launch"], ["/editions/", "Editions"], ["/videos/", "Videos"],
+  ["/tracker/", "100% Tracker"], ["/news/", "News"], ["/launch/", "Launch"], ["/editions/", "Editions"], ["/videos/", "Videos"],
   ["/characters/", "Characters"], ["/places/", "Places"], ["/map/", "Map"], ["/features/", "Gameplay"], ["/radio/", "Radio"], ["/faq/", "FAQ"],
 ];
 
@@ -129,6 +129,15 @@ function bgFor(image, bg) {
   const m = /^\/assets\/img\/(characters|places)\/([a-z0-9-]+?)(-\d+)?\.jpe?g$/i.exec(image || "");
   const f = m && `${m[1]}-${m[2]}`;
   return f && fs.existsSync(path.join(ROOT, "src/assets/img/bg", f + ".jpg")) ? `/assets/img/bg/${f}.jpg` : "/assets/img/bg/places-vice-city.jpg";
+}
+
+// NEWS: content/news.json is refreshed every 3 hours by the Worker (headline, source, date, link only).
+const NEWS = (() => { try { return JSON.parse(fs.readFileSync(path.join(ROOT, "content/news.json"), "utf8")).items || []; } catch { return []; } })();
+const newsDate = (iso) => { const d = new Date(iso); return isNaN(d) ? "" : d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }); };
+const NEWS_KIND = { video: "Video", official: "Rockstar", news: "News" };
+function newsCard(n, { thumb: withThumb = true } = {}) {
+  const thumb = n.video && withThumb ? `<span class="nthumb"><img src="https://i.ytimg.com/vi/${esc(n.video)}/hqdefault.jpg" alt="" loading="lazy" decoding="async"><i aria-hidden="true">▶</i></span>` : "";
+  return `<a class="ncard k-${esc(n.kind)}${n.video ? " has-thumb" : ""}" href="${esc(n.url)}" target="_blank" rel="noopener nofollow">${thumb}<span class="nbody"><span class="nmeta"><b>${NEWS_KIND[n.kind] || "News"}</b>${esc(n.source)} · <time datetime="${esc(n.date)}">${newsDate(n.date)}</time></span><span class="ntitle">${esc(n.title)}</span></span></a>`;
 }
 
 const TRACKER_APP_LD = {
@@ -259,6 +268,11 @@ const factHtml = (f) => `<div class="fact"><span>${esc(f.label)}</span><b${f.dyn
       <a class="bigcard t3" href="/editions/">${ICON.tag}<h3>Which edition?</h3><p><b data-r="std">$79.99</b> or <b data-r="ult">$99.99</b>. What the extra <span data-r="diff">$20</span> actually buys you.</p><span class="go">Compare</span></a>
     </div>
   </section>
+
+  ${NEWS.length ? `<section class="sec">
+    <div class="sec-head"><div><h2>Latest news</h2><p>From Rockstar and the gaming press, updated every few hours.</p></div><a href="/news/">All news</a></div>
+    <div class="nlist home">${NEWS.slice(0, 4).map((n) => newsCard(n, { thumb: false })).join("")}</div>
+  </section>` : ""}
 
   ${VIDEOS.length ? `<section class="sec">
     <div class="sec-head"><div><h2>Watch the trailers</h2><p>Official videos from Rockstar.</p></div><a href="/videos/">All videos</a></div>
@@ -499,6 +513,19 @@ const factHtml = (f) => `<div class="fact"><span>${esc(f.label)}</span><b${f.dyn
     jsonld: breadcrumbLd([["/", "Home"], ["/map/", "Map"]]) }));
 }
 
+// NEWS PAGE
+{
+  const groups = [["All", NEWS], ["Rockstar", NEWS.filter((n) => n.kind !== "news")], ["Press", NEWS.filter((n) => n.kind === "news")]];
+  const body = pageHead([["/", "Home"], [null, "News"]], "GTA 6 news", "Everything new about GTA 6 from Rockstar's channels and the gaming press, pulled in automatically every few hours. Headlines link to the original story.") + `<main class="wrap"><section class="sec">
+    <div class="nfilter" role="tablist" aria-label="Show">${groups.map(([g, l], i) => `<button type="button" role="tab" aria-selected="${i === 0}" data-nf="${i}">${g} <span>${l.length}</span></button>`).join("")}</div>
+    ${groups.map(([g, l], i) => `<div class="nlist" data-np="${i}"${i ? " hidden" : ""}>${l.length ? l.map(newsCard).join("") : `<p class="empty">Nothing here yet. The feed refreshes every three hours.</p>`}</div>`).join("")}
+    <p class="nfine">Headlines and links come from Rockstar's YouTube channel and Google News. We don't copy articles; tap through to read them on the publisher's site.</p>
+  </section></main>`;
+  const script = `document.querySelectorAll("[data-nf]").forEach(function(b){b.addEventListener("click",function(){document.querySelectorAll("[data-nf]").forEach(function(x){x.setAttribute("aria-selected",x===b)});document.querySelectorAll("[data-np]").forEach(function(p){p.hidden=p.dataset.np!==b.dataset.nf})})});`;
+  write("news/index.html", layout({ url: "/news/", title: "GTA 6 News: latest from Rockstar and the press", description: "Latest GTA 6 news in one place: Rockstar's trailers and Newswire posts plus gaming press headlines, refreshed every three hours.", body, script,
+    jsonld: breadcrumbLd([["/", "Home"], ["/news/", "News"]]) }));
+}
+
 // FAQ
 {
   const F = C.faq;
@@ -580,6 +607,11 @@ fs.copyFileSync(path.join(ROOT, "data.json"), path.join(OUT, "data.json"));
         <p>Loads the official trophy list (names, requirements, grades and how many players have each). Run it again any time: your tips, regions and photos stay.</p>
         <div class="tk-btns"><button class="tk-btn" type="button" id="psnCheck">Check for the GTA 6 trophy list</button></div>
         <div id="psnOut" role="status" aria-live="polite"></div>
+      </div>
+      <div class="tk-psn">
+        <h3>News feed</h3>
+        <p>Pulls new GTA 6 headlines and Rockstar videos. It also runs by itself every three hours.</p>
+        <div class="tk-btns"><button class="tk-btn" type="button" id="newsNow">Refresh news now</button></div>
       </div>
       <div class="tk-btns"><button class="tk-btn solid" type="button" id="publish">Publish drafts</button><button class="tk-btn" type="button" id="dlData">Download data.json</button><button class="tk-btn" type="button" id="copyData">Copy JSON</button><button class="tk-btn ghost" type="button" id="clearDrafts">Clear drafts</button></div>
     </section>

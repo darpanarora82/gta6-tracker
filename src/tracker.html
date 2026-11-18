@@ -815,6 +815,11 @@ footer p{margin:0 0 6px;max-width:72ch}
         .catch(function(err){ toast("Publish failed: " + err.message); })
         .then(function(){ b.disabled = false; b.textContent = "Publish drafts"; });
     });
+    $("newsNow").addEventListener("click", function(){
+      var b = this; b.disabled = true; b.textContent = "Checking for news…";
+      post("/edit/news", "{}").then(function(r){ toast(r.count ? r.count + " new headlines. Live in about a minute." : "No new headlines right now"); }, function(err){ toast(err.message); })
+        .then(function(){ b.disabled = false; b.textContent = "Refresh news now"; });
+    });
     $("psnCheck").addEventListener("click", function(){
       var b = this, out = $("psnOut"); b.disabled = true; b.textContent = "Checking PlayStation…"; out.innerHTML = "";
       post("/edit/trophies", JSON.stringify({action:"check"})).then(function(j){
