@@ -867,7 +867,7 @@ footer.site{background:rgba(12,9,28,.45);backdrop-filter:var(--frost);-webkit-ba
 /* ===================== map page ===================== */
 .mapwrap{position:relative;height:calc(100vh - 58px);height:calc(100dvh - 58px);min-height:520px}
 .mapcanvas{position:absolute;inset:0;background:#2c66a5}
-.leaflet-container{font:inherit;background:#2c66a5}
+.mapwrap .leaflet-container,.pick-map.leaflet-container{font:inherit;background:#2c66a5}
 .leaflet-container .leaflet-control-attribution{background:rgba(12,9,28,.7)!important;color:#cfd3dc!important;font-size:11px;backdrop-filter:blur(8px)}
 .leaflet-container .leaflet-control-attribution a{color:#ffd84d!important}
 .leaflet-container .leaflet-bar a{background:rgba(18,12,40,.75)!important;color:#fff!important;border-color:rgba(255,255,255,.14)!important;backdrop-filter:blur(10px)}
@@ -970,3 +970,4 @@ footer.site{background:rgba(12,9,28,.45);backdrop-filter:var(--frost);-webkit-ba
 .rkey{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px 16px;margin:26px 0 0;font-size:14px;color:var(--soft)}
 .rkey div{display:flex;gap:10px;align-items:baseline}
 .rkey dt{flex:0 0 92px}.rkey dd{margin:0}
+.nlist[hidden],.rlist[hidden]{display:none}
