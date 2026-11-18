@@ -120,12 +120,21 @@ const NAV = [
   ["/characters/", "Characters"], ["/places/", "Places"], ["/features/", "Gameplay"], ["/radio/", "Radio"], ["/faq/", "FAQ"],
 ];
 
-function layout({ url, title, description, body, jsonld, script }) {
+const TRACKER_APP_LD = {
+  "@context": "https://schema.org", "@type": "WebApplication", name: "GTA 6 100% Completion Tracker",
+  url: SITE + "/tracker/", applicationCategory: "GameApplication", operatingSystem: "Any (web browser)",
+  isAccessibleForFree: true, offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  description: "Free checklist for Grand Theft Auto VI: missables, collectibles, side activities and trophies, filtered by region, with progress saved on your device.",
+};
+
+function layout({ url, title, description, body, jsonld, script, image }) {
   pages.push(url);
-  const full = url === "/" ? `${SITE_NAME}: release times, prices, characters, map and 100% tracker` : `${title} | ${SITE_NAME}`;
+  const full = url === "/" ? `GTA 6 Guide & 100% Tracker: release times, prices, characters, map` : `${title} | ${SITE_NAME}`;
+  const img = SITE + (image || "/assets/og.jpg");
+  const lds = (Array.isArray(jsonld) ? jsonld : jsonld ? [jsonld] : []);
   const nav = NAV.filter(([h]) => h !== "/tracker/").map(([h, l]) => `<a href="${h}"${h === url || (h !== "/" && url.startsWith(h)) ? ' aria-current="page"' : ""}${h === "/tracker/" ? ' class="cta"' : ""}>${l}</a>`).join("");
   return `<!DOCTYPE html>
-<html lang="en-IN">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -137,17 +146,25 @@ function layout({ url, title, description, body, jsonld, script }) {
 <meta property="og:title" content="${esc(full)}">
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${SITE}${url}">
+<meta property="og:image" content="${img}">${image ? "" : `\n<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">`}
+<meta property="og:image:alt" content="${esc(full)}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(full)}">
+<meta name="twitter:description" content="${esc(description)}">
+<meta name="twitter:image" content="${img}">
 <meta name="theme-color" content="#141433">
 <meta name="color-scheme" content="dark">
 <style>html{background:#1b1d24;color-scheme:dark}</style>
 ${HEAD_FX}
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
 ${ANALYTICS}
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>${SITE_CSS}</style>
 <script defer src="/assets/region.js"></script>
-${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld).replace(/</g, "\\u003c")}</script>` : ""}
+${lds.map((j) => `<script type="application/ld+json">${JSON.stringify(j).replace(/</g, "\\u003c")}</script>`).join("\n")}
 </head>
 <body>
 <header class="bar"><div class="wrap"><a class="logo" href="/" aria-label="${SITE_NAME} home">${LOGO_MARK}<span><b>GTA 6 Guide</b><small>Leonida field guide</small></span></a><nav class="nav" aria-label="Main">${nav}</nav><a class="hcta${url === "/tracker/" ? " on" : ""}" href="/tracker/"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l3.5 3.5L16 5.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>100% Tracker</a></div></header>
@@ -261,7 +278,7 @@ const factHtml = (f) => `<div class="fact"><span>${esc(f.label)}</span><b${f.dyn
 </main>`;
   const script = YT_SCRIPT + `(function(){var a=document.getElementById("unlock");function f(){if(!window.GTAR)return;var l=GTAR.unlockAt()-Date.now();if(l<=0){a.textContent="Out now where you are";return}var h=Math.floor(l/36e5),m=Math.floor(l%36e5/6e4);a.textContent="Unlocks for you in "+(h?h+"h ":"")+m+"m"}document.addEventListener("gta-region",f);setInterval(f,3e4)})();`;
   write("index.html", layout({ url: "/", title: "Home", description: "GTA 6 guide: unlock times and prices for your country, editions, characters, every region of Leonida, radio stations, gameplay details and a free 100% completion tracker.", body, script,
-    jsonld: { "@context": "https://schema.org", "@type": "WebSite", name: SITE_NAME, url: SITE + "/" } }));
+    jsonld: [{ "@context": "https://schema.org", "@type": "WebSite", name: SITE_NAME, alternateName: "trackgta6.com", url: SITE + "/", description: "Fan-made GTA 6 guide and free 100% completion tracker." }, TRACKER_APP_LD] }));
 }
 
 // CHARACTERS
@@ -298,7 +315,7 @@ const factHtml = (f) => `<div class="fact"><span>${esc(f.label)}</span><b${f.dyn
     ${conns.length ? `<section class="sec"><div class="sec-head"><div><h2>Connected to</h2><p>The people ${esc(c.name.split(" ")[0])} is tied to.</p></div></div>${cast(conns, true)}</section>` : ""}
     <nav class="pager" aria-label="More characters"><a href="/characters/${prev.id}/"><span>Previous</span><b>${esc(prev.name)}</b></a><a class="next" href="/characters/${next.id}/"><span>Next</span><b>${esc(next.name)}</b></a></nav>
     </main>`;
-    write(`characters/${c.id}/index.html`, layout({ url: `/characters/${c.id}/`, title: `${c.name} in GTA 6`, description: `${c.name} in GTA 6: ${c.summary} Who they are, where they're based and who they're connected to.`, body,
+    write(`characters/${c.id}/index.html`, layout({ url: `/characters/${c.id}/`, image: photos("characters", c.id)[0], title: `${c.name} in GTA 6`, description: `${c.name} in GTA 6: ${c.summary} Who they are, where they're based and who they're connected to.`, body,
       jsonld: breadcrumbLd([["/", "Home"], ["/characters/", "Characters"], [`/characters/${c.id}/`, c.name]]) }));
   });
 }
@@ -332,7 +349,7 @@ const factHtml = (f) => `<div class="fact"><span>${esc(f.label)}</span><b${f.dyn
     ${people.length ? `<section class="sec"><div class="sec-head"><h2>Who you'll meet here</h2></div>${cast(people, true)}</section>` : ""}
     <nav class="pager" aria-label="More places"><a href="/places/${prev.id}/"><span>Previous</span><b>${esc(prev.name)}</b></a><a class="next" href="/places/${next.id}/"><span>Next</span><b>${esc(next.name)}</b></a></nav>
     </main>`;
-    write(`places/${p.id}/index.html`, layout({ url: `/places/${p.id}/`, title: `${p.name} in GTA 6`, description: `${p.name} in GTA 6: ${p.about[0]} Landmarks, characters and what to track there.`, body,
+    write(`places/${p.id}/index.html`, layout({ url: `/places/${p.id}/`, image: photos("places", p.id)[0], title: `${p.name} in GTA 6`, description: `${p.name} in GTA 6: ${p.about[0]} Landmarks, characters and what to track there.`, body,
       jsonld: breadcrumbLd([["/", "Home"], ["/places/", "Places"], [`/places/${p.id}/`, p.name]]) }));
   });
 }
@@ -551,7 +568,7 @@ fs.copyFileSync(path.join(ROOT, "data.json"), path.join(OUT, "data.json"));
   <div class="tk-toast" id="toast" role="status"></div>
   ${fallback}
   </div>`;
-  write("tracker/index.html", layout({ url: "/tracker/", title: "100% completion tracker", description: "Free GTA 6 100% completion tracker: tick off missables, collectibles, side activities and trophies by region. Progress saves on your device.", body, script: `var TK_IMG = ${JSON.stringify(TK_IMG)};` + js, jsonld: breadcrumbLd([["/", "Home"], ["/tracker/", "100% Tracker"]]) }));
+  write("tracker/index.html", layout({ url: "/tracker/", title: "GTA 6 100% Tracker & Missables Checklist", description: "Free GTA 6 100% tracker and checklist: tick off missables, collectibles, side activities and trophies by region, with photos. Updated daily from launch, progress saves on your device.", body, script: `var TK_IMG = ${JSON.stringify(TK_IMG)};` + js, jsonld: [TRACKER_APP_LD, breadcrumbLd([["/", "Home"], ["/tracker/", "100% Tracker"]])] }));
 }
 write("countdown/index.html", `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Moved to the Launch page</title><meta name="robots" content="noindex"><link rel="canonical" href="${SITE}/launch/"><meta http-equiv="refresh" content="0;url=/launch/"><style>html{background:#1b1d24;color:#f7f4ee;font-family:system-ui}</style></head><body><p>The countdown now lives on the <a style="color:#f7c318" href="/launch/">Launch page</a>.</p></body></html>`);
 
@@ -560,5 +577,33 @@ write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="htt
 write("_redirects", "/countdown /launch/ 301\n/countdown/ /launch/ 301\n");
 write("_headers", "/assets/img/*\n  Cache-Control: public, max-age=604800\n/assets/*.js\n  Cache-Control: public, max-age=3600\n");
 write("robots.txt", `User-agent: *\nDisallow: /edit\nSitemap: ${SITE}/sitemap.xml\n`);
+write("manifest.webmanifest", JSON.stringify({
+  name: "GTA 6 100% Tracker", short_name: "GTA 6 Tracker", id: "/", start_url: "/tracker/", scope: "/",
+  display: "standalone", background_color: "#1b1d24", theme_color: "#141433",
+  description: "Free GTA 6 100% completion tracker and guide.",
+  icons: [
+    { src: "/assets/icon-192.png", sizes: "192x192", type: "image/png" },
+    { src: "/assets/icon-512.png", sizes: "512x512", type: "image/png" },
+    { src: "/assets/icon-maskable-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
+  ],
+}, null, 2));
+write("llms.txt", `# trackgta6.com – GTA 6 Guide & 100% Tracker
+
+> Fan-made, unofficial guide to Grand Theft Auto VI (GTA 6) with a free 100% completion tracker.
+> The tracker lists missables, collectibles, side activities and trophies by region of Leonida, with photos,
+> and is updated from launch day (19 November 2026) by a player on PS5. Progress is saved in the visitor's browser.
+
+## Main pages
+- [100% completion tracker](${SITE}/tracker/): checklist of missables, collectibles, activities and trophies, filterable by region
+- [Launch times](${SITE}/launch/): live countdown and the exact unlock time in every country
+- [Editions and prices](${SITE}/editions/): Standard vs Ultimate, prices by country
+- [FAQ](${SITE}/faq/): quick answers (unlock time, PC version, consoles, download size, online) with sources
+- [Characters](${SITE}/characters/): Jason, Lucia and the rest of the revealed cast
+- [Places](${SITE}/places/): Vice City, Leonida Keys, Grassrivers, Port Gellhorn, Ambrosia, Mount Kalaga
+- [Gameplay](${SITE}/features/), [Radio stations](${SITE}/radio/), [Videos](${SITE}/videos/)
+
+## Data
+- [Tracker data (JSON)](${SITE}/data.json): every tracker item with id, name, region, note and flags
+`);
 
 console.log(`Built ${pages.length} pages into dist/`);

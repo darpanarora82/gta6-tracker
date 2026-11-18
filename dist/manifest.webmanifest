@@ -1,0 +1,29 @@
+{
+  "name": "GTA 6 100% Tracker",
+  "short_name": "GTA 6 Tracker",
+  "id": "/",
+  "start_url": "/tracker/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#1b1d24",
+  "theme_color": "#141433",
+  "description": "Free GTA 6 100% completion tracker and guide.",
+  "icons": [
+    {
+      "src": "/assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
