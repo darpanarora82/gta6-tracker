@@ -1,6 +1,16 @@
 {
-  "updated": "2026-11-19T13:17:52.195Z",
+  "updated": "2026-11-19T14:17:54.658Z",
   "items": [
+    {
+      "kind": "video",
+      "id": "yt-T95WGWkx7P0",
+      "title": "Grand Theft Auto VI Now Available",
+      "source": "Rockstar Games on YouTube",
+      "url": "https://www.youtube.com/watch?v=T95WGWkx7P0",
+      "video": "T95WGWkx7P0",
+      "date": "2026-11-19T13:59:56+00:00",
+      "seen": "2026-11-19T14:17:54.658Z"
+    },
     {
       "kind": "news",
       "id": "gn-ZmQ0LUtwaElJeGJrQzhDaE1N",
@@ -709,15 +719,6 @@
       "title": "'GTA 6' merch: Where to buy shirts, hats, and more on launch day",
       "source": "Mashable",
       "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE0tbkVwZHV4MlRsRFFUZjVZa2J2N1Jub2FGMWY4eUs5ZE11bnhpQWlqUXlFdHBnMk96SE05WXFQRTNjeTh3UzdQaUxLdzh2U3VTUi1tdG03bl9hdmdsUG9ZYUpXTmlyY1Yt?oc=5",
-      "date": "2026-11-18T09:47:37.000Z",
-      "seen": "2026-11-18T10:17:45.426Z"
-    },
-    {
-      "kind": "news",
-      "id": "gn-cnNSbGw1UUZMRVNJWk9wTnF3",
-      "title": "PS5 Pro stock updates: Where to buy Sony's console for 'GTA 6' (without overpaying)",
-      "source": "Mashable",
-      "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE1ncWRGLVFRVUFqM3BHWUpIdTkwSExuMzItLXE5ZldVeGpYSUFEajloSV95ZWx2SWU3aHBfUjBFZWdNR01hVUVLczQwM2ozTjNwcnNSbGw1UUZMRVNJWk9wTnF3?oc=5",
       "date": "2026-11-18T09:47:37.000Z",
       "seen": "2026-11-18T10:17:45.426Z"
     }
