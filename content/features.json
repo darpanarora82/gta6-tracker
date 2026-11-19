@@ -24,6 +24,22 @@
     {
       "title": "ARY News – Extended Look gameplay upgrades",
       "url": "https://arynews.tv/gta-6-extended-look-on-netflix-reveals-massive-gameplay-upgrades"
+    },
+    {
+      "title": "Notebookcheck – review roundup, story length",
+      "url": "https://www.notebookcheck.net/GTA-6-reviews-award-99-Metacritic-score-topping-GTA-4-to-become-Rockstar-s-top-rated.1453363.0.html"
+    },
+    {
+      "title": "TechRadar – the weapon wheel in the final game",
+      "url": "https://www.techradar.com/gaming/rockstar-spent-months-if-not-years-trying-a-million-different-things-that-would-replace-the-weapon-wheel-to-make-loadouts-more-realistic-in-gta-6"
+    },
+    {
+      "title": "Dexerto – limit on guns carried",
+      "url": "https://www.dexerto.com/gta/gta-6-devs-tried-a-million-weapon-wheel-alternatives-as-struggles-with-rdr2-realism-led-some-to-quit-3420111/"
+    },
+    {
+      "title": "The National – reviewers on police searches",
+      "url": "https://www.thenationalnews.com/arts-culture/pop-culture/2026/11/18/gta-6-reviews-metacritic/"
     }
   ],
   "groups": [
@@ -43,7 +59,7 @@
         },
         {
           "title": "A long main story",
-          "text": "Previews put the main story at roughly 80 hours. Rockstar hasn't given an official figure.",
+          "text": "Reviews put the main story at roughly 50 to 60 hours if you skip most side activities; some reviewers played well over 100 hours. Rockstar hasn't given an official figure.",
           "status": "Reported"
         }
       ]
@@ -70,6 +86,16 @@
         {
           "title": "Split health bar",
           "text": "Health is shown as a split bar rather than one meter.",
+          "status": "Reported"
+        },
+        {
+          "title": "Weapon wheel, with a carry limit",
+          "text": "The weapon wheel is back after Rockstar tried alternatives, but you reportedly can't carry every gun at once.",
+          "status": "Reported"
+        },
+        {
+          "title": "Police look for you, not just your last position",
+          "text": "Reviewers say witnesses, security cameras and your clothes or car shape how the police search for you.",
           "status": "Reported"
         }
       ]
