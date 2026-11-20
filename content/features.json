@@ -40,6 +40,10 @@
     {
       "title": "The National – reviewers on police searches",
       "url": "https://www.thenationalnews.com/arts-culture/pop-culture/2026/11/18/gta-6-reviews-metacritic/"
+    },
+    {
+      "title": "VGC – Rockstar on activities and why darts was cut",
+      "url": "https://www.videogameschronicle.com/news/rockstar-explains-why-you-cant-play-darts-in-gta-6-we-dont-have-unlimited-time/"
     }
   ],
   "groups": [
@@ -118,6 +122,11 @@
           "title": "Pool, mini-golf and the zoo",
           "text": "Previews mention pool returning, mini-golf as a new pastime, and a zoo you can visit.",
           "status": "Reported"
+        },
+        {
+          "title": "Fewer, fuller activities, and no darts",
+          "text": "Rockstar North's Rob Nelson says side pastimes like pool, weightlifting and basketball were built as proper activities, and darts was cut because it didn't reach that standard in time.",
+          "status": "Shown"
         },
         {
           "title": "The gym",

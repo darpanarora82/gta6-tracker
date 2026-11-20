@@ -1,6 +1,6 @@
 {
   "intro": "What people are saying about GTA 6 that Rockstar hasn't confirmed. Each claim has a status, what would settle it and where it came from. We check them against the real game after launch and move them to Confirmed or Debunked.",
-  "updated": "2026-11-19",
+  "updated": "2026-11-20",
   "statuses": {
     "rumour": "Rumour: a claim from an insider or leaker, nothing official",
     "leak": "Leak: material that appeared without Rockstar's approval; not fully verified",
@@ -38,9 +38,9 @@
     },
     {
       "id": "day-one-sales",
-      "title": "About 17 million copies sold on day one",
+      "title": "About 19 million copies sold on day one",
       "status": "estimate",
-      "summary": "Analytics firm Sensor Tower estimates GTA 6 sold more than 17 million copies, worth over $1.65 billion, by early on launch day, which would be well past GTA V's first-day revenue. Take-Two and Rockstar haven't published any sales figures yet.",
+      "summary": "Analytics firm Sensor Tower first put sales at about 17 million copies ($1.65 billion) on 18 November, then raised its estimate to about 19 million copies and $1.84 billion by the morning of launch day, counting pre-orders. That would be well past GTA V's first-day figures, though those were official and these are not. Take-Two has only said demand was far above expectations, and analysts at Wedbush expect around 30 million copies by the end of the year.",
       "settles": "Official numbers from Take-Two, most likely in a press release or its next earnings report.",
       "sources": [
         {
@@ -50,9 +50,18 @@
         {
           "title": "Happy Gamer: the figure is not an official number",
           "url": "https://happygamer.com/gta-6-launch-night-psn-ps5-update-sales-176014/"
+        },
+        {
+          "title": "Reuters via The Star: Sensor Tower's updated estimate, Take-Two on demand",
+          "url": "https://www.thestar.com.my/tech/tech-news/2026/11/20/take-two-set-to-shatter-sales-records-as-039gta-vi039-launches-to-massive-fanfare"
+        },
+        {
+          "title": "Men's Journal: 19 million estimate and the Wedbush forecast",
+          "url": "https://www.mensjournal.com/news/gta-6-sales-19-million-copies-gta-v-record"
         }
       ],
-      "added": "2026-11-19"
+      "added": "2026-11-19",
+      "changed": "2026-11-20"
     },
     {
       "id": "story-dlc",
