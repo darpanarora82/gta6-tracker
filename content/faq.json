@@ -64,6 +64,22 @@
   {
    "title": "TheSixthAxis – Vintage Vice City Pack availability",
    "url": "https://www.thesixthaxis.com/2026/06/24/gta-6-ultimate-edition-pre-order-bonus-and-vintage-vice-city-pack-revealed/"
+  },
+  {
+   "title": "Take-Two – official day-one sales figures",
+   "url": "https://www.take2games.com/ir/news/grand-theft-auto-vi-shatters-entertainment-box-office-records"
+  },
+  {
+   "title": "Rockstar Support – Grand Theft Auto VI settings",
+   "url": "https://support.rockstargames.com/articles/4jUHNdP22SmaKSF8DWqhXC/how-to-change-grand-theft-auto-vi-settings"
+  },
+  {
+   "title": "GamesRadar – no first-person mode at launch",
+   "url": "https://www.gamesradar.com/games/grand-theft-auto/gta-6-glitch-adds-the-first-person-mode-that-rockstar-skipped/"
+  },
+  {
+   "title": "PlayStation LifeStyle – no dedicated first-person mode",
+   "url": "https://www.playstationlifestyle.net/2026/11/20/rockstar-games-gta-6-first-person-mode-glitch"
   }
  ],
  "items": [
@@ -76,6 +92,11 @@
    "q": "Are the reviews good?",
    "a": "Yes. GTA 6 scored 99 on Metacritic, tying The Legend of Zelda: Ocarina of Time for the highest score on the site. Critics praised the world and the story; the 30 fps target, some clunky combat and a crowded Vice City were the most common complaints.",
    "link": null
+  },
+  {
+   "q": "How many copies has GTA 6 sold?",
+   "a": "Take-Two says it sold 32.5 million units before release and made about $3.79 billion in retail sales worldwide by the end of launch day, 19 November. Those are the company's own estimates, and it called it the biggest launch of any entertainment product.",
+   "link": "/rumors/#day-one-sales"
   },
   {
    "q": "How much does GTA 6 cost?",
@@ -101,6 +122,16 @@
    "q": "What frame rate does it run at?",
    "a": "30 frames per second on every console, PS5 Pro included, and there's no performance or 60 fps mode. Digital Foundry found the PS5 Pro holds 30 most steadily, with sharper upscaling and ray-traced shadows. Base PS5 and Series X mostly hold 30 but dip into the 20s in heavy action, and Series S renders at 720p, upscaled to about 1080p, and often runs in the mid-20s.",
    "link": "/launch/"
+  },
+  {
+   "q": "Is there a first-person mode?",
+   "a": "No. GTA 6 is played in third person, and the camera settings have no first-person option. Players have found a glitch that switches the view, but it isn't an official mode and Rockstar hasn't said whether one is coming.",
+   "link": "/features/"
+  },
+  {
+   "q": "Does it have accessibility options?",
+   "a": "Yes. Rockstar's settings guide lists an accessibility section under Gameplay, high-contrast shaders, text scaling, subtitles and captions, camera comfort options and audio narration. Controls can be remapped separately for walking, aiming, driving, flying and swimming.",
+   "link": null
   },
   {
    "q": "How big is the download?",

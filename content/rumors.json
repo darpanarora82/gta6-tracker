@@ -1,6 +1,6 @@
 {
   "intro": "What people are saying about GTA 6 that Rockstar hasn't confirmed. Each claim has a status, what would settle it and where it came from. We check them against the real game after launch and move them to Confirmed or Debunked.",
-  "updated": "2026-11-20",
+  "updated": "2026-11-21",
   "statuses": {
     "rumour": "Rumour: a claim from an insider or leaker, nothing official",
     "leak": "Leak: material that appeared without Rockstar's approval; not fully verified",
@@ -38,30 +38,30 @@
     },
     {
       "id": "day-one-sales",
-      "title": "About 19 million copies sold on day one",
-      "status": "estimate",
-      "summary": "Analytics firm Sensor Tower first put sales at about 17 million copies ($1.65 billion) on 18 November, then raised its estimate to about 19 million copies and $1.84 billion by the morning of launch day, counting pre-orders. That would be well past GTA V's first-day figures, though those were official and these are not. Take-Two has only said demand was far above expectations, and analysts at Wedbush expect around 30 million copies by the end of the year.",
-      "settles": "Official numbers from Take-Two, most likely in a press release or its next earnings report.",
+      "title": "Record launch: $3.79 billion by the end of launch day",
+      "status": "confirmed",
+      "summary": "Take-Two has now given official figures. On 20 November it said GTA 6 sold 32.5 million units before release and took about $3.79 billion in retail sales worldwide by the end of 19 November, based on its own estimates. It called this the biggest launch of any entertainment product. The figures don't say how sales split between consoles or between digital and boxed copies. Before this, analytics firm Sensor Tower had estimated about 19 million copies and $1.84 billion, so the official numbers came in well above the outside guesses.",
+      "settles": "Settled: Take-Two published official launch figures on 20 November 2026.",
       "sources": [
         {
-          "title": "Reuters via Dawn: Sensor Tower estimate and launch reaction",
-          "url": "https://www.dawn.com/news/2045650/grand-theft-auto-vi-draws-rave-reviews-as-gamers-enter-vice-city"
+          "title": "Take-Two: official day-one sales announcement",
+          "url": "https://www.take2games.com/ir/news/grand-theft-auto-vi-shatters-entertainment-box-office-records"
         },
         {
-          "title": "Happy Gamer: the figure is not an official number",
-          "url": "https://happygamer.com/gta-6-launch-night-psn-ps5-update-sales-176014/"
+          "title": "The Next Web: what Take-Two's figures cover",
+          "url": "https://thenextweb.com/news/gta-vi-3-79b-day-one-sales-biggest-launch"
         },
         {
-          "title": "Reuters via The Star: Sensor Tower's updated estimate, Take-Two on demand",
+          "title": "Seeking Alpha: Take-Two reports $3.79B in day-one sales",
+          "url": "https://seekingalpha.com/news/4675294-take-two-says-gta-vi-posts-record-379b-in-day-one-sales"
+        },
+        {
+          "title": "Reuters via The Star: Sensor Tower's earlier estimate",
           "url": "https://www.thestar.com.my/tech/tech-news/2026/11/20/take-two-set-to-shatter-sales-records-as-039gta-vi039-launches-to-massive-fanfare"
-        },
-        {
-          "title": "Men's Journal: 19 million estimate and the Wedbush forecast",
-          "url": "https://www.mensjournal.com/news/gta-6-sales-19-million-copies-gta-v-record"
         }
       ],
       "added": "2026-11-19",
-      "changed": "2026-11-20"
+      "changed": "2026-11-21"
     },
     {
       "id": "story-dlc",
@@ -80,6 +80,28 @@
         }
       ],
       "added": "2026-11-18"
+    },
+    {
+      "id": "cyberleek-xbox-build",
+      "title": "A hacker says it has leaked a full Xbox build",
+      "status": "leak",
+      "summary": "On 19 November, the day the game came out, the account known as Cyberleek posted what it says is a near-complete Xbox build of GTA 6, about 200 GB, labelled as a November 2026 version. The main program file was held back; the account says it will follow on 23 November, or sooner if a crypto token it promotes reaches a set value. PC Gamer, VGC and Kotaku all say they could not verify the files, and Rockstar and Take-Two have not commented on this claim. Since the game is already out, a real build would mostly matter for what it reveals about unreleased content.",
+      "settles": "Reputable outlets confirming the files are genuine, or a statement from Rockstar or Take-Two.",
+      "sources": [
+        {
+          "title": "PC Gamer: Cyberleek's claimed Xbox build",
+          "url": "https://www.pcgamer.com/games/grand-theft-auto/cyberleek-drops-what-they-claim-is-a-near-complete-gta-6-xbox-build-online/"
+        },
+        {
+          "title": "VGC: Cyberleek claims to release a development build",
+          "url": "https://www.videogameschronicle.com/news/cyberleek-claims-to-release-development-build-of-gta-6/"
+        },
+        {
+          "title": "Kotaku: the files could not be verified",
+          "url": "https://kotaku.com/cyberleek-is-threatening-to-unleash-chaos-again-after-tossing-an-alleged-xbox-build-of-gta-6-onto-the-internet-2000758544"
+        }
+      ],
+      "added": "2026-11-21"
     },
     {
       "id": "five-counties",
