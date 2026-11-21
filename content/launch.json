@@ -1,5 +1,5 @@
 {
-  "intro": "GTA 6 launches on Thursday 19 November 2026 on PS5 and Xbox Series X|S. It unlocks at midnight local time, country by country, so launch rolls around the world over about 19 hours.",
+  "intro": "GTA 6 came out on Thursday 19 November 2026 on PS5 and Xbox Series X|S. It unlocked at midnight local time, country by country, starting in New Zealand, so the launch rolled around the world over about 19 hours.",
   "sources": [
     {
       "title": "Digit – GTA 6 India unlock time",
@@ -14,16 +14,36 @@
       "url": "https://www.gtaboom.com/gta-6-release-date-platforms-and-what-is-locked-in-aa48"
     },
     {
-      "title": "Beebom – review embargo date (reported)",
-      "url": "https://beebom.com/gta-6-review-embargo-date-revealed/"
-    },
-    {
       "title": "NoobFeed – install size (reported)",
       "url": "https://www.noobfeed.com/articles/gta-6-know-before-launch"
     },
     {
       "title": "Dexerto – GamesBeat report on the PC version",
       "url": "https://www.dexerto.com/gta/gta-6-releasing-on-pc-much-earlier-than-expected-report-3418569/"
+    },
+    {
+      "title": "Notebookcheck – 99 on Metacritic",
+      "url": "https://www.notebookcheck.net/GTA-6-reviews-award-99-Metacritic-score-topping-GTA-4-to-become-Rockstar-s-top-rated.1453363.0.html"
+    },
+    {
+      "title": "Tech Times – pre-launch updates and install sizes",
+      "url": "https://www.techtimes.com/articles/330886/20261117/gta-6-gets-second-pre-launch-update-602-mb-ps5-16-gb-xbox-still-no-patch-notes.htm"
+    },
+    {
+      "title": "Happy Gamer – PS5 system update needed before playing",
+      "url": "https://happygamer.com/gta-6-launch-night-psn-ps5-update-sales-176014/"
+    },
+    {
+      "title": "Take-Two – official day-one sales figures",
+      "url": "https://www.take2games.com/ir/news/grand-theft-auto-vi-shatters-entertainment-box-office-records"
+    },
+    {
+      "title": "Rockstar Games – GTA VI: The Festival",
+      "url": "https://www.rockstargames.com/VI/gtavi-thefestival"
+    },
+    {
+      "title": "Worthplaying – festival announcement",
+      "url": "https://worthplaying.com/article/2026/11/9/news/151386-grand-theft-auto-vi-goes-live-next-week-with-musical-performances-at-mana-wynwood-in-miami/"
     }
   ],
   "facts": [
@@ -46,7 +66,7 @@
     },
     {
       "label": "Install size (PS5)",
-      "value": "210 GB"
+      "value": "Up to 212 GB"
     },
     {
       "label": "PC",
@@ -149,18 +169,29 @@
     },
     {
       "date": "2026-11-18",
-      "title": "Reviews (reported)",
-      "text": "Review embargo reported for the day before launch."
+      "title": "Reviews: 99 on Metacritic",
+      "text": "Reviews go live and the game ties the highest Metacritic score ever."
     },
     {
       "date": "2026-11-19",
       "title": "Launch",
-      "text": "GTA 6 unlocks at midnight local time."
+      "text": "GTA 6 unlocks at midnight local time, starting in New Zealand."
+    },
+    {
+      "date": "2026-11-20",
+      "title": "Record sales",
+      "text": "Take-Two says 32.5 million units sold before release and about $3.79 billion in retail sales by the end of launch day."
+    },
+    {
+      "date": "2026-11-21",
+      "title": "GTA VI: The Festival",
+      "text": "Rockstar and PlayStation hold a launch concert in Miami with artists from the soundtrack."
     }
   ],
   "notes": [
     "Online: Rockstar describes GTA 6 as a single-player experience. No online mode has been announced, and dates you see elsewhere are rumours.",
     "PC: not at launch. GamesBeat reported, citing four sources, that it's planned for January to March 2027. Rockstar hasn't confirmed it.",
-    "Playing early: some players switch to a New Zealand account or region. On PlayStation that needs a separate NZ account and a copy bought from that store."
+    "Playing early: some players switch to a New Zealand account or region. On PlayStation that needs a separate NZ account and a copy bought from that store.",
+    "PS5: Sony released a system software update that you need to install before GTA 6 will start. Rockstar shared PlayStation's notice on launch night."
   ]
 }

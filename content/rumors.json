@@ -1,6 +1,6 @@
 {
   "intro": "What people are saying about GTA 6 that Rockstar hasn't confirmed. Each claim has a status, what would settle it and where it came from. We check them against the real game after launch and move them to Confirmed or Debunked.",
-  "updated": "2026-11-18",
+  "updated": "2026-11-21",
   "statuses": {
     "rumour": "Rumour: a claim from an insider or leaker, nothing official",
     "leak": "Leak: material that appeared without Rockstar's approval; not fully verified",
@@ -37,6 +37,33 @@
       "added": "2026-11-18"
     },
     {
+      "id": "day-one-sales",
+      "title": "Record launch: $3.79 billion by the end of launch day",
+      "status": "confirmed",
+      "summary": "Take-Two has now given official figures. On 20 November it said GTA 6 sold 32.5 million units before release and took about $3.79 billion in retail sales worldwide by the end of 19 November, based on its own estimates. It called this the biggest launch of any entertainment product. The figures don't say how sales split between consoles or between digital and boxed copies. Before this, analytics firm Sensor Tower had estimated about 19 million copies and $1.84 billion, so the official numbers came in well above the outside guesses.",
+      "settles": "Settled: Take-Two published official launch figures on 20 November 2026.",
+      "sources": [
+        {
+          "title": "Take-Two: official day-one sales announcement",
+          "url": "https://www.take2games.com/ir/news/grand-theft-auto-vi-shatters-entertainment-box-office-records"
+        },
+        {
+          "title": "The Next Web: what Take-Two's figures cover",
+          "url": "https://thenextweb.com/news/gta-vi-3-79b-day-one-sales-biggest-launch"
+        },
+        {
+          "title": "Seeking Alpha: Take-Two reports $3.79B in day-one sales",
+          "url": "https://seekingalpha.com/news/4675294-take-two-says-gta-vi-posts-record-379b-in-day-one-sales"
+        },
+        {
+          "title": "Reuters via The Star: Sensor Tower's earlier estimate",
+          "url": "https://www.thestar.com.my/tech/tech-news/2026/11/20/take-two-set-to-shatter-sales-records-as-039gta-vi039-launches-to-massive-fanfare"
+        }
+      ],
+      "added": "2026-11-19",
+      "changed": "2026-11-21"
+    },
+    {
       "id": "story-dlc",
       "title": "Story DLC with new cities and missions",
       "status": "rumour",
@@ -55,11 +82,33 @@
       "added": "2026-11-18"
     },
     {
+      "id": "cyberleek-xbox-build",
+      "title": "A hacker says it has leaked a full Xbox build",
+      "status": "leak",
+      "summary": "On 19 November, the day the game came out, the account known as Cyberleek posted what it says is a near-complete Xbox build of GTA 6, about 200 GB, labelled as a November 2026 version. The main program file was held back; the account says it will follow on 23 November, or sooner if a crypto token it promotes reaches a set value. PC Gamer, VGC and Kotaku all say they could not verify the files, and Rockstar and Take-Two have not commented on this claim. Since the game is already out, a real build would mostly matter for what it reveals about unreleased content.",
+      "settles": "Reputable outlets confirming the files are genuine, or a statement from Rockstar or Take-Two.",
+      "sources": [
+        {
+          "title": "PC Gamer: Cyberleek's claimed Xbox build",
+          "url": "https://www.pcgamer.com/games/grand-theft-auto/cyberleek-drops-what-they-claim-is-a-near-complete-gta-6-xbox-build-online/"
+        },
+        {
+          "title": "VGC: Cyberleek claims to release a development build",
+          "url": "https://www.videogameschronicle.com/news/cyberleek-claims-to-release-development-build-of-gta-6/"
+        },
+        {
+          "title": "Kotaku: the files could not be verified",
+          "url": "https://kotaku.com/cyberleek-is-threatening-to-unleash-chaos-again-after-tossing-an-alleged-xbox-build-of-gta-6-onto-the-internet-2000758544"
+        }
+      ],
+      "added": "2026-11-21"
+    },
+    {
       "id": "five-counties",
       "title": "Leonida has five counties: Vice Dale, Mariana, Kelly, Leonard and Lummox",
-      "status": "leak",
-      "summary": "A full map of Leonida was posted on 18–19 August 2026 alongside two short gameplay clips. It splits the state into five counties with a rail network and many small islands. Rockstar acknowledged that gameplay videos had leaked but didn't vouch for everything shared with them, and the fan mapping project first called the map fake. Some county names had already appeared in the community's own reconstruction.",
-      "settles": "The in-game map on launch day.",
+      "status": "confirmed",
+      "summary": "The in-game map of the released game splits Leonida into the same five counties the August leak showed: Vice-Dale, Mariana, Kelly, Leonard and Lummox. Before launch, the printed map in the Collector's Edition, put on display at Selfridges in Manchester, had already shown Lummox County, the one name nobody had seen before the leak.",
+      "settles": "Settled: the in-game map shows all five counties.",
       "sources": [
         {
           "title": "Gfinity: what the August leak showed",
@@ -72,16 +121,29 @@
         {
           "title": "GTA BOOM: Rockstar's response to the leaked videos",
           "url": "https://www.gtaboom.com/gta-6-release-date-map-missions-characters-and-other-leaks-93bc"
+        },
+        {
+          "title": "PowerPyx: the full in-game map with county names",
+          "url": "https://www.powerpyx.com/gta-6-full-world-map-revealed/"
+        },
+        {
+          "title": "Notebookcheck: Collector's Edition map shows Lummox County",
+          "url": "https://www.notebookcheck.net/Full-GTA-6-map-from-Collector-s-Edition-leaks-showing-new-parts-of-Leonida.1448856.0.html"
+        },
+        {
+          "title": "Game Rant: the Leonida map spotted at Selfridges",
+          "url": "https://gamerant.com/gta-6-map-leonida-map-leak/"
         }
       ],
-      "added": "2026-11-18"
+      "added": "2026-11-18",
+      "changed": "2026-11-19"
     },
     {
       "id": "map-size",
-      "title": "The map is about 1.5 to 2 times the size of GTA V's",
+      "title": "How much bigger the map is than GTA V's",
       "status": "estimate",
-      "summary": "Rockstar hasn't given a size. Fans measuring the leaked map against GTA V's land mostly land between 1.5 and 3 times bigger, with the most cited estimate around 125 square kilometres against GTA V's 48. Much bigger figures, like 3.5 times or 'thousands of times', have been widely dismissed.",
-      "settles": "Measurements from the real game, which the community will do within days of launch.",
+      "summary": "Rockstar still hasn't given a size. Before launch, fans measuring the leaked map mostly landed between 1.5 and 3 times GTA V's land, with about 125 square kilometres the most cited figure against GTA V's 48. The first measurement of the released game's map puts the whole play area at about 175 square kilometres (roughly 16 by 11 km), around 65% of it land. That works out to about 114 square kilometres of land, a little under two and a half times GTA V's.",
+      "settles": "More measurements from the released game agreeing, or an official figure from Rockstar.",
       "sources": [
         {
           "title": "All Things How: how Leonida stacks up against GTA V",
@@ -90,23 +152,45 @@
         {
           "title": "Gfinity: how big is the GTA 6 map",
           "url": "https://www.gfinityesports.com/article/how-big-is-the-gta-6-map-leonida-size-and-confirmed-locations"
+        },
+        {
+          "title": "PowerPyx: size of the in-game map",
+          "url": "https://www.powerpyx.com/gta-6-full-world-map-revealed/"
         }
       ],
-      "added": "2026-11-18"
+      "added": "2026-11-18",
+      "changed": "2026-11-19"
     },
     {
       "id": "leaked-mechanics",
-      "title": "Vehicles need refuelling, and weapons are picked from a loadout",
-      "status": "leak",
-      "summary": "The August gameplay clips appeared to show filling up a car and choosing weapons from a loadout rather than carrying everything at once, plus police that react to what you're wearing. None of these were in Rockstar's own trailers.",
-      "settles": "Playing the game.",
+      "title": "Vehicles need refuelling, and police notice what you're wearing",
+      "status": "confirmed",
+      "summary": "Both ideas first surfaced in the August leak and now hold up. Refuelling was shown at Rockstar's own preview at Rockstar North: gas stations let you refuel, charge an electric car or repair, with a short animation of about 10 seconds, and the studio's co-head commented on it. Reviews of the finished game say witnesses, cameras and your clothes or car all affect how police look for you. The leak's third claim, picking weapons from a loadout, only partly held: Bloomberg's Jason Schreier reported that the final game uses a weapon wheel again, though outlets report a limit on how many guns you carry.",
+      "settles": "Settled for refuelling and police: Rockstar showed refuelling at its preview, and reviewers saw the police behaviour in the finished game.",
       "sources": [
         {
           "title": "Gfinity: mechanics seen in the leaked clips",
           "url": "https://www.gfinityesports.com/article/all-gta-6-leaks-so-far-new-gameplay-cutscenes-and-features-revealed"
+        },
+        {
+          "title": "GamesRadar: Rockstar North co-head on the refuelling system",
+          "url": "https://www.gamesradar.com/games/grand-theft-auto/rockstar-boss-says-well-see-what-people-say-about-gta-6s-controversial-refueling-system-but-thinks-its-so-fast-that-you-cant-complain/"
+        },
+        {
+          "title": "PC Gamer: refuelling takes about 10 seconds",
+          "url": "https://www.pcgamer.com/games/grand-theft-auto/grand-theft-auto-6s-controversial-refuelling-action-reportedly-takes-about-10-seconds-to-perform-which-rockstars-co-studio-head-says-is-pretty-fast-for-a-fill-up/"
+        },
+        {
+          "title": "The National: what reviewers say about police searches",
+          "url": "https://www.thenationalnews.com/arts-culture/pop-culture/2026/11/18/gta-6-reviews-metacritic/"
+        },
+        {
+          "title": "TechRadar: Schreier says the final game keeps a weapon wheel",
+          "url": "https://www.techradar.com/gaming/rockstar-spent-months-if-not-years-trying-a-million-different-things-that-would-replace-the-weapon-wheel-to-make-loadouts-more-realistic-in-gta-6"
         }
       ],
-      "added": "2026-11-18"
+      "added": "2026-11-18",
+      "changed": "2026-11-19"
     },
     {
       "id": "pc-q1-2027",
@@ -130,8 +214,8 @@
       "id": "delay-2027",
       "title": "Another delay to 2027",
       "status": "debunked",
-      "summary": "Delay claims went viral several times in 2026, often from misread comments. The game kept its 19 November date: pre-orders opened in June, and pre-loading started on 10 November.",
-      "settles": "Settled: GTA 6 launches on 19 November 2026.",
+      "summary": "Delay claims went viral several times in 2026, often from misread comments. The game kept its date: pre-orders opened in June, pre-loading started on 10 November, and it launched on 19 November.",
+      "settles": "Settled: GTA 6 launched on 19 November 2026.",
       "sources": [
         {
           "title": "GTA BOOM: no, GTA 6 has not been delayed to 2027",
@@ -140,9 +224,14 @@
         {
           "title": "PC Gamer: how casual speculation turned into a delay rumour",
           "url": "https://www.pcgamer.com/games/grand-theft-auto/casual-gta-6-speculation-mutates-into-delay-rumor-leading-to-anxious-fans-and-prediction-market-frenzy-for-no-good-reason"
+        },
+        {
+          "title": "Reuters via Dawn: GTA VI launches to rave reviews",
+          "url": "https://www.dawn.com/news/2045650/grand-theft-auto-vi-draws-rave-reviews-as-gamers-enter-vice-city"
         }
       ],
-      "added": "2026-11-18"
+      "added": "2026-11-18",
+      "changed": "2026-11-19"
     }
   ]
 }
