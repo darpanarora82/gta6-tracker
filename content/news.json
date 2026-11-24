@@ -1,6 +1,24 @@
 {
-  "updated": "2026-11-24T00:17:45.285Z",
+  "updated": "2026-11-24T01:17:45.838Z",
   "items": [
+    {
+      "kind": "news",
+      "id": "gn-alJKb3F1T3h6a0RwQ3NjRHpO",
+      "title": "GTA 6 Was Biggest Launch in PlayStation History",
+      "source": "IGN Southeast Asia",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOOFVEZmhQcDA1c2pBS3JERlJwaUhaQkxJNDVVNEIzX2pRYXR0MTY3bHBaNHdhQmE1WDNwR1M4Yk82Yk5QRVZYcVc2NXBKRlM1Y1hzWUgzVkU3RkIwLUo5VU9qT3Q1TmNJOTB0NzFwTFNYQ0ZuckxmV0MyM3l4NkVBUDFQY21YQjF4cjNpMmxMSENCVzFuU3dKeXNtalJKb3F1T3h6a0RwQ3NjRHpO?oc=5",
+      "date": "2026-11-24T01:01:44.000Z",
+      "seen": "2026-11-24T01:17:45.838Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-NXaEg4SnVUVi1ZZmF4dHF6bw",
+      "title": "9 Ways 'GTA 6' Actually Got Worse After 13 Years (Rockstar Needs To Fix #3 ASAP)",
+      "source": "MovieWeb",
+      "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE1JRUdIU2w5UkxrZjdWVTZWQ3ZDTjVCYXkybEhsWmRDZ0pmU1BPSTl3aEpkYmJwTDJNejllZUZOZXUzYTdaS3NXaEg4SnVUVi1ZZmF4dHF6bw?oc=5",
+      "date": "2026-11-24T01:00:00.000Z",
+      "seen": "2026-11-24T01:17:45.838Z"
+    },
     {
       "kind": "news",
       "id": "gn-NlFXUTA4M1pqck9QNllOMzRy",
@@ -9,6 +27,15 @@
       "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1DMlpJeWpxVVVTdzdKX195NDdiQ2g4bDJTakJFbW1pY204YW85SE1OYW84RHpaYXh1M2xab3YydllDZ3BaYXh4MDNfeUxjY1YxcDYwdGt1amhGY0FDRERzUnlpNlFXUTA4M1pqck9QNllOMzRy?oc=5",
       "date": "2026-11-24T00:03:45.000Z",
       "seen": "2026-11-24T00:17:45.285Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-KSW55ZFBFcmp6UU5GMUsxc1U",
+      "title": "‘GTA 6’ Boss Strauss Zelnick Among First Raft of SXSW London 2027 Speakers",
+      "source": "The Hollywood Reporter",
+      "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQRmRCeDF5OHN5dEtYdmwwcVVCdzU4M1pScjZadU0tWURjQkhSYVBydnNyWjkyMEk3NUh4TnI5Tkh6VXJ5SXZHaHQyMmJGTUROcHdkX3pSX29JeEpRS2o4M0dqWDlhNTk2aFRlc2VKaUNDNEx4WW40R1JYUGNpaVRWVEkyMmNiTXBJa1hPTnF3SjhDV0dONGlwVVR1NVJXMU15TTROX1RDSHR3bkpPR1dacGpKSW55ZFBFcmp6UU5GMUsxc1U?oc=5",
+      "date": "2026-11-24T00:01:33.000Z",
+      "seen": "2026-11-24T01:17:45.838Z"
     },
     {
       "kind": "news",
@@ -138,12 +165,30 @@
     },
     {
       "kind": "news",
+      "id": "gn-Yko2YVJCVkFxbGw3QjNYazJ3",
+      "title": "This GTA 6 Glitch (Almost) Ruined The Game’s Most Iconic Scene",
+      "source": "GameSpot",
+      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQY3VRY0JmZXdVN2duVzhYUHg4YWVYa0NDZkY1bVN2NU43NFBVbE8xam5yRkN2dExLbWxZWWFOY2JvbGlwcWVySzRMTkVqWWNOakdaU1ppTm5rRHRLQnQzaGllSERIaWtSNGlwcVVjcUhXb1R1b0NEOEdjVW5oMGh2WWd1SC12dUZ5Yko2YVJCVkFxbGw3QjNYazJ3?oc=5",
+      "date": "2026-11-23T21:01:22.000Z",
+      "seen": "2026-11-24T01:17:45.838Z"
+    },
+    {
+      "kind": "news",
       "id": "gn-VueTVGVFc0NHB0RFZyWTh0Zw",
       "title": "GTA 6 Includes A Mario And Luigi Easter Egg",
       "source": "Kotaku",
       "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE1kRl9VOW04cUpTeUdLRG4wbTFmNzFTaEktMFhDczRPcnl3TTFYNHZtdFI4SUVoWFU4M21LZHVZeG5aMzRIWU43RWs5RXlYVENIYXgtbTE4QnFKWWN4T1QzR3Y2ZTlFRUpQLVpQejVueTVGVFc0NHB0RFZyWTh0Zw?oc=5",
       "date": "2026-11-23T20:48:42.000Z",
       "seen": "2026-11-24T00:17:45.285Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-eEFXZTFwZ3lJYmRvWkkxZ2VB",
+      "title": "Fact Check Team: GTA VI generates $3.79 billion in first-day sales",
+      "source": "KFOX",
+      "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxQQm5EQThKMFQ1bmktY3l5RG5xWF8wdnVxLXFrbjU5b1piTVlCSWhZQWUySElaZDVwTTcwdXJNSU95N0JabXZyU2hZTU14em9xb1FadHF4X2tYT1VVcFgySzZ5ZVlTWm9BTGh0X3BkWnVlRk56RkNzcVBJTGVOWWE4RGJ2aGFqUDNFV0g4X05xeldkSkZTRG9QeTVMZHF0aHozcVgwS0JnNFZ1U09ydkgyLVMtUE9raldWNjg3UmJRMjFSaDB6cTNJeDhmRVQ0c2NSeEFXZTFwZ3lJYmRvWkkxZ2VB?oc=5",
+      "date": "2026-11-23T20:34:37.000Z",
+      "seen": "2026-11-24T01:17:45.838Z"
     },
     {
       "kind": "news",
@@ -207,6 +252,15 @@
       "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE1nS2tnU0ctbTVEMXJmYTZoMEgwV294NjFsa1VEZWJDaTllQ0V1Z1M1YjBGUmV5WEYxcDlzWk44WmRZNUh2VjJnbXYwSC1WV1locW9kZTlfU0FKNVJuRzFfeDJvemdjMDlxbV9yUW5ydG5uNzRHU0VQZUpn?oc=5",
       "date": "2026-11-23T18:39:58.000Z",
       "seen": "2026-11-24T00:17:45.285Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-ZWW91TjdhS3lSR0pBU0VNOFE",
+      "title": "‘Grand Theft Auto VI’ first impressions: A love story, in my ‘GTA’?",
+      "source": "The Seattle Times",
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNSHBVY0ZEM2JndE1GZEVOTW1UaUNaOW50cjVxTWtXcW54emtWQldLSlUxZ3g4M3BabGtBRVlna25nWU9zbGlDdW1JRHZJV3ZydkpqaW1LNW0xT1V6M3ZMekZsNTlhbnRNNnc2alNxdUJZN2h1dlY0NUZPMUQ2cFJmR3dsTVBGc29DVFFGYzRHXzkwQ0lOeTJvbHFOX3hsSG9LSC00OUNZWW91TjdhS3lSR0pBU0VNOFE?oc=5",
+      "date": "2026-11-23T18:09:36.000Z",
+      "seen": "2026-11-24T01:17:45.838Z"
     },
     {
       "kind": "news",
@@ -372,6 +426,15 @@
     },
     {
       "kind": "news",
+      "id": "gn-b2ZBMXNwZ0RzOERTbWdpUzd1",
+      "title": "Grand Theft Auto VI and the Illusion of Monoculture",
+      "source": "National Review",
+      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOVnNvR1dVNC05YUFEWGRfSndUMHhQclB1XzA4ampLSktyZmtKV0dYY2lTaUJENTRJbDB2Tl9oYmNONUcxWUxfZUNoN0NHTm9UbUNEMDNtODNKaXZTZGt4cjREMTBkRFJ0ZU9rUE04MFROSmYwWTJYVGhsMUxTOUI4cnhKa0ZoRjVYVkVZU2FZb2ZBMXNwZ0RzOERTbWdpUzd1?oc=5",
+      "date": "2026-11-23T15:16:37.000Z",
+      "seen": "2026-11-24T01:17:45.838Z"
+    },
+    {
+      "kind": "news",
       "id": "gn-5MjlVQnczTFEyT3NZZm5tb1U",
       "title": "Power Trip's \"Mutual Death Warrant\" From GTA 6 Now Streaming Everywhere",
       "source": "Consequence of Sound",
@@ -468,6 +531,15 @@
       "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNX01fTjFQZUxLWjhaTGR1YlB1RXF0RzlXQktRazJLeFdleDYyR1lobUM2SXdZUG9WNklEQmg3a0NmRmlrQ2V3WGcyVVZRTXVjcWgyVks2TjhZZFB6Wld0UXNNQ0VTWURrc3NOX3pJQmZZRkVOTm9lMURlRlBaclhlakhlSmRwQdIBiwFBVV95cUxPVWhia285QUtmakxtOVRTM21KRVpMQWRoOGVmNDJXWjFyTW9qUENsZ2hXSjNTTDl2STljRmZpZm1oTnpaUmI2WHRJcDdETzJDV2pkWUliZElRMzhFd0F4ODZETmZiRDItTWVhWXJ6N0FiMGRkN1VXSXhjQkJ2cjBERGhSbzNjZEk3NnhJ?oc=5",
       "date": "2026-11-23T13:30:00.000Z",
       "seen": "2026-11-23T17:17:45.618Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-BHUFJNMTlhV2NGWTN3Qk12Zw",
+      "title": "'GTA 6' sales left every 2026 entertainment release in the dust. Here's how much.",
+      "source": "Business Insider",
+      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPclpoUWRtN19FVHdrX2YxWTNCWFVwTlU0UG5JdHhmTndGb1NkYkhHVUgyYUgxQlZlNV9iTzFwNzVMbThkSE1kbUp2VkhJcEVMTzU4REZyTjRHVmdqQWR1a0ZrOXJpWnR6Q3NkelQyWnNCQ1EyWFBHUFJNMTlhV2NGWTN3Qk12Zw?oc=5",
+      "date": "2026-11-23T13:11:00.000Z",
+      "seen": "2026-11-24T01:17:45.838Z"
     },
     {
       "kind": "news",
@@ -648,78 +720,6 @@
       "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPVGU2YzNlQ3VBNzM2MGZza2dFWHhQbENPeVNfYVZjeTdyeUVEaVUyNlVEMWwwYkV3V19jS1dMVE91UEZrNTNKLUNjQVYtaUFmMVNjOUxCVmd6dWxzQTFvSm1ZNXMyZXZfUmU3dHA1SDhwb28tNDNVRXhEamlBdmtlQUxOUUZIdE1NVVMzX2s0S0JIMUpYWmJJ?oc=5",
       "date": "2026-11-23T10:00:00.000Z",
       "seen": "2026-11-23T11:17:45.602Z"
-    },
-    {
-      "kind": "news",
-      "id": "gn-kza1JfdFVkdllKRlRwcS1HNA",
-      "title": "Lana Del Rey celebrates ‘GTA 6’ launch with Miami tour and Vice City Birkin",
-      "source": "NME",
-      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNS3JlcTNuT3FGTl93bEQ4M0VDdklhM1B6Z0xCT3E5allSdVZRSTBBLTdBQ0tiUnEyT0gwbWF3ajY2NnNfUm5HalppV0I4cHNOdXlCVHZtUXVOMWFPSjdtUVRJV21iQ1g0M2hRZGh5cTBGdTAtNnJMdDBmNV9TNW1iVjJjeUxvUmpjaTFPLTZIMG5iSlpxVTF4X0VldGhfbWkza1JfdFVkdllKRlRwcS1HNA?oc=5",
-      "date": "2026-11-23T09:41:08.000Z",
-      "seen": "2026-11-23T11:17:45.602Z"
-    },
-    {
-      "kind": "news",
-      "id": "gn-maG1LNW9JdUV3bUVpVzZpTEM",
-      "title": "GTA 6 breaks sales records as Trump administration co-opt game and get ridiculed online",
-      "source": "Euronews.com",
-      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOSi03NXpzUzA4MDE3bURSb2FCcml4Q1loeDF3WURWTmxjSFpzdkprZ21BejU2eWVVWU5Qd1l1bFFyYnpqT2FSN1UySWdLVGFrV2N6RHdpNWZ1ajFRd0otYVRwVVBiYlZxXzYzUHg5N1RuVjNQVTdfN3Z4dF90UGluVlFuVFdxTGJUVzZZSzNyR0g3RjQ4OF9RdnB1T05CakVIR2FWeEt5N1ZJTGNPOGVmaG1LNW9JdUV3bUVpVzZpTEM?oc=5",
-      "date": "2026-11-23T09:19:13.000Z",
-      "seen": "2026-11-23T11:17:45.602Z"
-    },
-    {
-      "kind": "news",
-      "id": "gn-qOEJQLVVMUjNIamxnWDI0bUQ",
-      "title": "Naughty Dog Dev: GTA 6 Appears to Him ‘as a Bugatti Veyron Would to a Nervous Victorian Child’",
-      "source": "IGN",
-      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQdURLZUljV0cwcjZqZTJSeWcxZmpHX0RJVjRSR2lFQS1QQUo4cFYxTURQQVd5WEhDdjNzd1ljSUZIYjA4anpfRWo1SmtvcThXdDJYTFl6MlJrWUlGUXFuN3N6ZF9mSkE5bWJtRjFvVDgtb2c4aWUwRVQxMDY3eTBOTEhGMjNxeVB1TkZYSld1eFZrZjZubTdvZUg5Nk12c3ljbmQ2Y3V1aXg5aVR6MDJqOEJQLVVMUjNIamxnWDI0bUQ?oc=5",
-      "date": "2026-11-23T07:58:00.000Z",
-      "seen": "2026-11-23T11:17:45.602Z"
-    },
-    {
-      "kind": "news",
-      "id": "gn-k4b3hyQnRhX01TSTlwUzFMZw",
-      "title": "Robbing Banks is a Blast, But I Wish There Were More Houses to Repair in GTA 6",
-      "source": "IGN",
-      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPRjJmd0FSSTJPTVlzS0ZiMVhnQkRXTUlvU3hXNDhBdi1JU09OWHhOdWtBd1hodUtxQkZqSXpMVFZpWm1tWmloMjBmMjd4V09LZkhRUGl2TG9CdHYxWk5JeU5yRmRYWWZveDFIMFpBR1ZxVnNLUERYbEVDdUxvRHRybkN1bGpHUVAyUVF0aW5Zc1JRQTBsTXo4eWk4b3hyQnRhX01TSTlwUzFMZw?oc=5",
-      "date": "2026-11-23T06:51:00.000Z",
-      "seen": "2026-11-23T11:17:45.602Z"
-    },
-    {
-      "kind": "news",
-      "id": "gn-UksyNTF1Vkk2YU5GRll4U2du",
-      "title": "Grand Theft Auto VI’s economic impact",
-      "source": "royalpurplenews.com",
-      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNZ3Fzb2lJOGFMVjJuUGxZbXNzUUVqN3VQbEFvQUxmbkI1VmREMVJQcHM3cjM0NEdHbnZWNktsT3hWUzRxbzB5LXlXSEt2MmR6cUZVUEJZb1B2M0dNd2NiYVpUckVoaXFmVlBKenZKdzlpMlZLUHdVUksyNTF1Vkk2YU5GRll4U2du?oc=5",
-      "date": "2026-11-23T06:02:57.000Z",
-      "seen": "2026-11-23T06:17:45.441Z"
-    },
-    {
-      "kind": "news",
-      "id": "gn-bUxtSlVMZUNyQ095bEVQc2h6",
-      "title": "GTA 6 Launch-Day Players Averaged Over 8 Hours, Circana Says",
-      "source": "GameLuster",
-      "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9VQUlFNG93T0FNOER4YXZQOHc1dk42Rk4tQUJIanVKdnhleWJUaE4wRnB1YjFLWWNveWZBTXBoelRmaUI5ZE9KLXJmdmRmeVV4UVM1QmxXbUxtSlVMZUNyQ095bEVQc2h6?oc=5",
-      "date": "2026-11-23T05:00:27.000Z",
-      "seen": "2026-11-23T06:17:45.441Z"
-    },
-    {
-      "kind": "news",
-      "id": "gn-RKNmJWb0xDNGJWdF91ZHRfUQ",
-      "title": "Abby’s Angle: It's not a GTA VI problem, it's a boyfriend problem",
-      "source": "The Post",
-      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQTXFZX3k3MVd5YWlqVWZvTjVrWmJtZy0xRE90SnRDNmdLSTRyMHlnNHZCUVBoei1XTm9TX0RNRmlxelJVX2M4cHBfYjJqeHhLNnI3Y1hQSXVRQVdnaVN5VjFvbDhObGJEQ2RLcUhrMU0zVzhUSk1heDFudlJPaDJlRHRmdWEzTVlqbFluekx0QndpWktfd0M4ZGRKNmJWb0xDNGJWdF91ZHRfUQ?oc=5",
-      "date": "2026-11-23T05:00:00.000Z",
-      "seen": "2026-11-23T06:17:45.441Z"
-    },
-    {
-      "kind": "news",
-      "id": "gn-PQXJLZG0tNmVneUN1OUx4cnc",
-      "title": "'Grand Theft Auto VI' sets record with $3.79B in first-day retail sales, Rockstar Games reports",
-      "source": "KSL News",
-      "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNR0hhMW1hbERPLXpIdnpDNkVPYzdWOW5rWmZkSGFRTkRnclBSWkNwT1JUSkxya1ZYeVFQRXcyOVVwQ0MzMkZPREx0V1c0bkptUk4zUU92dnY5N0ppd2hqMEF1aDQ5TnN4WGZKMnUwc2dRSWFUMm16Vmo0QkNwYV9TUzhyN3ZGUTdIYmtIcG5SM1hjaVFKZFd3RGtYbTFFb3J0WEZVSFgyZlBBMWFpV1JXVWt1dHZPQXJLZG0tNmVneUN1OUx4cnc?oc=5",
-      "date": "2026-11-23T04:46:18.000Z",
-      "seen": "2026-11-23T06:17:45.441Z"
     }
   ]
 }
