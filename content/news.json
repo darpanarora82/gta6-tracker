@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-25T23:17:52.161Z",
+  "updated": "2026-11-26T00:17:50.666Z",
   "items": [
     {
       "kind": "news",
@@ -189,6 +189,24 @@
       "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPUVpuQ1ZvU2F2aThEQmFmS3ZxZUtSTEg0c0xYUXZYY3RqaS1QTFlOb21SU1N6QmlGTTd4N00tMmhuaUJERjdiSnFRVlhoU3puT3hiWi1qaEpsV2tDTjFyeFFWZUVkOFRrbE1XMEw2ejJ0TXEwXzZJR3RyTVFrYlA2YUt6UmZlTVgtdTlwVF9jamlvSG1zc1Z0Wg?oc=5",
       "date": "2026-11-25T16:17:56.000Z",
       "seen": "2026-11-25T18:17:45.334Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-ktTU1hWTBZRFZCOW5jQ2p6bA",
+      "title": "'GTA 6' chapter 1 is so good that I'm afraid to move on to chapter 2",
+      "source": "Mashable",
+      "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQUERUaGJBUEpZWGpoa244OTJMTU1wdGRpUkFUYkktSzhBcUpVX1FRdEdtYmJRQkNwMjBySmpuV0VfNWY5TTZGdmpHUi1USjlVSWcxbm5NVFI3bXlYSmRzaXZnRHdXblIyajd4SUN0U0ktTU1hWTBZRFZCOW5jQ2p6bA?oc=5",
+      "date": "2026-11-25T15:56:56.000Z",
+      "seen": "2026-11-26T00:17:50.666Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-xyVjQ2dXI3RGVVU2pqT0o3VQ",
+      "title": "'GTA 6' is giving Carly Rae Jepsen's 'Run Away With Me' a second life",
+      "source": "Mashable",
+      "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPTE1iamg3RDJFclNOTnRBSS0xZE4ydnoxcHduS2pEV2FjQmh3dm9WUUpZZ2JuSDFCR2ZuVXpzNjRsbWdfMVNHWk1BZ2ZoU2JqSVdyUG1oM1NON0FkTHdQNXJNcUs0Q19Fc1AzcGZLOWREOGxyVjQ2dXI3RGVVU2pqT0o3VQ?oc=5",
+      "date": "2026-11-25T15:56:56.000Z",
+      "seen": "2026-11-26T00:17:50.666Z"
     },
     {
       "kind": "news",
@@ -701,24 +719,6 @@
       "source": "Forbes",
       "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxPZ3IwaVlIRWlQWGVBb3ZxY2UzS3Y0aE1aS1RUNWdlUlo0SktZNGZmMnhxaVdGOEdoeWpsQmZDYjFSV0ZxT2Z1VGk0ZVU0UEYzQnRwbmxFOXdxanlsUzExcUlfMEY0Zm1TaFVMSV8ycy1UNWZtY0QtN2txQ3V3V19WeU9VM3gtQWJlbksyaHE4VmlsR1hhdkRVc3h0R1EtbTZYYkE3N09fTmlKMUpBR1FJclg1N0R4X1g3TVFRRF8yUVJrNEJBVjJqd2hteUNYSXQzVVBtUl8zdk81QW54VkdGZU9TMmc?oc=5",
       "date": "2026-11-24T20:48:25.000Z",
-      "seen": "2026-11-25T00:17:45.866Z"
-    },
-    {
-      "kind": "news",
-      "id": "gn-aWFLdE1NdVBadUt6WkxPb2l3",
-      "title": "Review: ‘Grand Theft Auto VI’ focuses on romance but there’s more to love",
-      "source": "The Mercury News",
-      "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE9VRXB2c2o3Y2JIM2FLazBRdndISEdBYVR3X1AxUGM5Q3o4ek1EczJ0eDJickI3b1FMbWx0c29JR19pSHJBbTdZNjFLVmZPTS15aWFLdE1NdVBadUt6WkxPb2l3?oc=5",
-      "date": "2026-11-24T20:44:07.000Z",
-      "seen": "2026-11-25T00:17:45.866Z"
-    },
-    {
-      "kind": "news",
-      "id": "gn-R3RnNTenA1LUZ1LW5KdkRGQQ",
-      "title": "In 'GTA VI,' every stolen car is a music discovery machine",
-      "source": "NPR",
-      "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE15QUwySXZWWWQ5RDRlVUp2QXMweHNGdjhsblVrbHkxdWZnZTEyUWRxUTB5SEE0QWNRR0pQU2xwckI3M3NiMWZJd3lOUkJiaWw1TW51b2l4VHplT3U5QkNkSzhXWDN0TkdnREUzSTR3RnNTenA1LUZ1LW5KdkRGQQ?oc=5",
-      "date": "2026-11-24T20:12:17.000Z",
       "seen": "2026-11-25T00:17:45.866Z"
     }
   ]
