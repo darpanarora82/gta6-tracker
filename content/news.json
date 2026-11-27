@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-27T01:17:45.082Z",
+  "updated": "2026-11-27T02:17:45.195Z",
   "items": [
     {
       "kind": "news",
@@ -36,6 +36,15 @@
       "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE5oOENmNXBnZFVWZ0REek9hMG5ZcDdoUW5zMFVzdjdTTU91eEwzUjliV2dESm9jaWVnajlyOVhxZ1FiWTBfMG0ySklseTYwWS05YlNiTjJkdzhCaFhUellBQjdNSENSUQ?oc=5",
       "date": "2026-11-26T22:49:32.000Z",
       "seen": "2026-11-27T01:17:45.082Z"
+    },
+    {
+      "kind": "news",
+      "id": "gn-TWh5aWVlUGUyMklKV1RpLTZR",
+      "title": "Vibecoded GTA 6 PC Ports Are Now Rendering In-Game Graphics Despite Take-Two Crackdown",
+      "source": "Decrypt",
+      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPNzFncERzMlFvZDlNd1ZyelBZeUNNNlh5d0xDTEZ2REFzLVlraDc2N0VlZzZWVEdJREhMSXg0TjlaUHljMlh5YUlJN204VVo0ZUQyQ1d5MmZYVHpFeWlHZDlLMWptMjV0OHdjc0RHakgyekVpWG02eE01alowU2VCaWoxZW5rU0xlVmFrR0tDT2dRTV9GYm1uZ1dha3h0bUZ4TWh5aWVlUGUyMklKV1RpLTZR?oc=5",
+      "date": "2026-11-26T22:01:02.000Z",
+      "seen": "2026-11-27T02:17:45.195Z"
     },
     {
       "kind": "news",
@@ -710,15 +719,6 @@
       "source": "Polygon.com",
       "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxOUV95NWdfTkZNVjluejRueDVqQnJnSUhfWXZvdFBjS1BzX0p4Z1A4LU4xQ2VkelJQUkdUYXR0NmU5cTVmSWpXWHVWOWQ0c2JHMks1TEZscnlFT0dpSXI1V0FhS1c5Nk5ubHRCOXhOdFY0R0xXMVZnY3dTOXlGMy1QTlItMm1RQQ?oc=5",
       "date": "2026-11-25T15:27:45.000Z",
-      "seen": "2026-11-25T18:17:45.334Z"
-    },
-    {
-      "kind": "news",
-      "id": "gn-a185Qnp1OWVDaUdHYU5FVlR3",
-      "title": "GTA 6 PlayStation Record: 39M Players, 683M Hours",
-      "source": "shattered.io",
-      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNNmVoWXJRQkI4UjctUkpFVmJZYXdkaWNnNW1EUjFoNmpfWXh5UjQtYmVxNC03VmFFU3c5ZXVNTEJNU2QxWWZzdVcxVUJxa2FTSUYySEEwYmZ0TDdOcWhqVkhrSjUtdEVoc0JMV0pTMU1wdmlKOEFjT1JWUjY0UlRLX1N3dkRuVFJKa185Qnp1OWVDaUdHYU5FVlR3?oc=5",
-      "date": "2026-11-25T15:26:28.000Z",
       "seen": "2026-11-25T18:17:45.334Z"
     }
   ]
