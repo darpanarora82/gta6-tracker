@@ -30,15 +30,36 @@
    "url": "https://www.nettosgameroom.com/2026/11/grand-theft-auto-vi-pre-load-now.html"
   },
   {
-   "title": "GamesRadar – 210 GB PS5 download size",
-   "url": "https://gamesradar.com/games/grand-theft-auto/gta-6-is-a-210gb-download-says-playstation-store-sleuth"
+   "title": "Notebookcheck – 99 on Metacritic",
+   "url": "https://www.notebookcheck.net/GTA-6-reviews-award-99-Metacritic-score-topping-GTA-4-to-become-Rockstar-s-top-rated.1453363.0.html"
+  },
+  {
+   "title": "The National – what critics liked and didn't",
+   "url": "https://www.thenationalnews.com/arts-culture/pop-culture/2026/11/18/gta-6-reviews-metacritic/"
+  },
+  {
+   "title": "Tech Times – pre-launch updates and install sizes",
+   "url": "https://www.techtimes.com/articles/330886/20261117/gta-6-gets-second-pre-launch-update-602-mb-ps5-16-gb-xbox-still-no-patch-notes.htm"
+  },
+  {
+   "title": "Happy Gamer – PS5 system update needed before playing",
+   "url": "https://happygamer.com/gta-6-launch-night-psn-ps5-update-sales-176014/"
+  },
+  {
+   "title": "Press Start – full trophy list",
+   "url": "https://press-start.com.au/news/2026/11/18/gta-6-trophy-list/"
   }
  ],
  "items": [
   {
-   "q": "When does GTA 6 unlock?",
-   "a": "At midnight local time on Thursday 19 November 2026 in most countries, starting with New Zealand. The US and Canada unlock together at midnight Eastern, which is 9 PM Pacific on the 18th. Where you are, it unlocks {unlock}.",
+   "q": "When did GTA 6 come out?",
+   "a": "On Thursday 19 November 2026, at midnight local time in most countries, starting with New Zealand. The US and Canada unlocked together at midnight Eastern, which was 9 PM Pacific on the 18th. Where you are, it unlocked {unlock}.",
    "link": "/launch/"
+  },
+  {
+   "q": "Are the reviews good?",
+   "a": "Yes. GTA 6 scored 99 on Metacritic, tying The Legend of Zelda: Ocarina of Time for the highest score on the site. Critics praised the world and the story; the 30 fps target, some clunky combat and a crowded Vice City were the most common complaints.",
+   "link": null
   },
   {
    "q": "How much does GTA 6 cost?",
@@ -67,7 +88,7 @@
   },
   {
    "q": "How big is the download?",
-   "a": "210 GB on PS5, going by the PlayStation Store listing. Leave some extra room for the day-one patch. The Xbox size hasn't been announced. Pre-loading opened on 10 November for digital pre-orders.",
+   "a": "Rockstar lists up to 212 GB on PS5, depending on your console, and the Xbox Series X|S install is reported at about 212 GB too. Two updates arrived before launch: about 1 GB on 13 November, then about 600 MB on PS5 and 1.6 GB on Xbox on 16 November. On PS5 you also need Sony's latest system update before the game will start.",
    "link": "/launch/"
   },
   {
@@ -99,6 +120,11 @@
    "q": "How many wanted stars are there?",
    "a": "Six, up from five in GTA V.",
    "link": "/features/"
+  },
+  {
+   "q": "How many trophies are there?",
+   "a": "55 on PlayStation, with matching achievements on Xbox: a Platinum, 2 Gold, 6 Silver and 46 Bronze. Some are hidden.",
+   "link": "/tracker/"
   },
   {
    "q": "Are there cheat codes?",
