@@ -1,6 +1,6 @@
 {
   "intro": "Every GTA 6 vehicle we can back up, from the cars Rockstar has named to the ones spotted in its trailers. Each one is labelled by how sure we are, and the list grows as the game is played.",
-  "updated": "2026-11-18",
+  "updated": "2026-11-20",
   "statuses": {
     "named": "Named by Rockstar: the name appears in Rockstar's own material",
     "seen": "Seen in official footage: shown in a trailer, screenshot or the Extended Look; the name comes from fans matching it to earlier GTA games",
@@ -225,6 +225,24 @@
         }
       ],
       "added": "2026-11-18"
+    },
+    {
+      "id": "principe-alvino-v1",
+      "name": "Principe Alvino V1",
+      "class": "Motorcycle",
+      "status": "seen",
+      "note": "A sport bike Jason rides in an official screenshot, also on one panel of the cover art.",
+      "sources": [
+        {
+          "title": "PC Gamer: GTA 6 cars and bikes spotted so far",
+          "url": "https://www.pcgamer.com/games/grand-theft-auto/gta-6-cars-list/"
+        },
+        {
+          "title": "GTA BOOM: Principe Alvino V1",
+          "url": "https://www.gtaboom.com/principe-alvino-v1-6cc6"
+        }
+      ],
+      "added": "2026-11-20"
     },
     {
       "id": "ranchero-style-coupe-utility",
