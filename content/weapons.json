@@ -1,6 +1,6 @@
 {
   "intro": "GTA 6's arsenal so far: what Rockstar has named, what its footage shows, and what only leaks suggest. Updated as the game is played.",
-  "updated": "2026-11-18",
+  "updated": "2026-11-19",
   "statuses": {
     "named": "Named by Rockstar: the name appears in Rockstar's own material",
     "seen": "Seen in official footage: shown in a trailer, screenshot or the Extended Look; the name comes from fans matching it to earlier GTA games",
@@ -155,6 +155,88 @@
         }
       ],
       "added": "2026-11-18"
+    },
+    {
+      "id": "mustang-357",
+      "name": "Mustang .357",
+      "class": "Handgun",
+      "status": "seen",
+      "note": "A .357 revolver that shows up in an official screenshot.",
+      "sources": [
+        {
+          "title": "GamesRadar: every GTA 6 weapon seen so far",
+          "url": "https://www.gamesradar.com/games/grand-theft-auto/gta-6-weapons/"
+        },
+        {
+          "title": "PC Gamer: GTA 6 weapons list",
+          "url": "https://www.pcgamer.com/games/grand-theft-auto/gta-6-weapons-list/"
+        }
+      ],
+      "added": "2026-11-19"
+    },
+    {
+      "id": "double-barrel-shotgun",
+      "name": "Double-barrel shotgun",
+      "class": "Shotgun",
+      "status": "seen",
+      "note": "A side-by-side shotgun aimed at an alligator in an official screenshot. Name from earlier GTA games.",
+      "sources": [
+        {
+          "title": "GamesRadar: every GTA 6 weapon seen so far",
+          "url": "https://www.gamesradar.com/games/grand-theft-auto/gta-6-weapons/"
+        },
+        {
+          "title": "PC Gamer: GTA 6 weapons list",
+          "url": "https://www.pcgamer.com/games/grand-theft-auto/gta-6-weapons-list/"
+        }
+      ],
+      "added": "2026-11-19"
+    },
+    {
+      "id": "grenade-launcher",
+      "name": "Grenade launcher",
+      "class": "Heavy",
+      "status": "seen",
+      "note": "Returns from GTA V; glimpsed in Trailer 2.",
+      "sources": [
+        {
+          "title": "GamesRadar: every GTA 6 weapon seen so far",
+          "url": "https://www.gamesradar.com/games/grand-theft-auto/gta-6-weapons/"
+        },
+        {
+          "title": "PC Gamer: GTA 6 weapons list",
+          "url": "https://www.pcgamer.com/games/grand-theft-auto/gta-6-weapons-list/"
+        }
+      ],
+      "added": "2026-11-19"
+    },
+    {
+      "id": "molotov",
+      "name": "Molotov",
+      "class": "Thrown",
+      "status": "seen",
+      "note": "A petrol bomb thrown during the Extended Look.",
+      "sources": [
+        {
+          "title": "GamesRadar: every GTA 6 weapon seen so far",
+          "url": "https://www.gamesradar.com/games/grand-theft-auto/gta-6-weapons/"
+        }
+      ],
+      "added": "2026-11-19"
+    },
+    {
+      "id": "baseball-bat",
+      "name": "Baseball bat",
+      "class": "Melee",
+      "status": "seen",
+      "note": "Seen in official screenshots, alongside a pool cue and a mini-golf club.",
+      "sources": [
+        {
+          "title": "GamesRadar: every GTA 6 weapon seen so far",
+          "url": "https://www.gamesradar.com/games/grand-theft-auto/gta-6-weapons/"
+        }
+      ],
+      "added": "2026-11-19"
     }
   ]
 }
